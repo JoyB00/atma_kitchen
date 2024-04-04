@@ -1,9 +1,18 @@
 import Navbar from "../Component/Navbar";
+import Intro from "./HomePartition/IntroPart";
+import Product from "./HomePartition/ProductPart";
+import About from "./HomePartition/AboutPart";
+import Footer from "../Component/Footer";
 export default function Home() {
   return (
-    <div className="w-full">
-      <Navbar />
-      <div className="h-screen  md:flex bg-gradient-to-r from-cyan-100 via-transparent pt-16"></div>
+    <div className="w-full bg-transparent">
+      <div className="bg-white w-full">
+        <Navbar />
+      </div>
+      <Intro />
+      <Product />
+      <About />
+      <Footer />
     </div>
   );
 }

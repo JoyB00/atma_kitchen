@@ -12,7 +12,7 @@ export default function Login() {
   return (
     <div className="w-full ">
       <Navbar />
-      <div className="h-screen  md:flex bg-gradient-to-r from-cyan-100 via-transparent pt-16">
+      <div className="h-screen md:flex bg-gradient-to-r from-cyan-100 via-transparent pt-16">
         <div className="md:w-1/2 my-auto md:pb-8">
           <div className="mx-auto drop-shadow-lg md:w-full lg:w-11/12 sm:w-0">
             <Lottie animationData={AnimationLogin} />
