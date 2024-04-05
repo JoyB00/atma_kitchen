@@ -3,7 +3,7 @@ import Navbar from "../Component/Navbar";
 
 export default function RootLayout() {
   return (
-    <main className="w-full">
+    <main>
       <Outlet />
     </main>
   );
