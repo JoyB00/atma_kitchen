@@ -36,6 +36,7 @@ export default function Navbar() {
         onClose={toggleMenu}
         direction="right"
         enableOverlay={true}
+        className="z-100 lg:hidden"
       >
         <div>test</div>
       </Drawer>
