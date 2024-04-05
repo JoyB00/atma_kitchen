@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer className=" pt-12 ">
-      <div className=" text-black grid grid-cols-4 text-start xl:px-56 lg:px-32 md:px-36 sm:px-12">
+    <footer className=" pt-12 max-w-screen overflow-x-clip">
+      <div className=" text-black grid grid-cols-4 text-start xl:px-56 lg:px-32 md:px-36 sm:px-12 ">
         <div className="col-span-1 px-2">
           <ul className="text-gray-500">
             <li className="font-extrabold text-lg text-black">
@@ -41,7 +41,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="py-2 bg-orange-500 lg:px-56 md:px-36">
+      <div className="py-2 bg-orange-500 lg:px-56 md:px-36 max-w-screen">
         <p className="text-white font-normal ">
           &copy; Copyright AtmaKitchen . All Rights Reserved
         </p>
