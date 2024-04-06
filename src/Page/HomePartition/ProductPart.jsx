@@ -3,14 +3,14 @@ import Category from "../../assets/CategoryProduct/Category";
 import { NavLink } from "react-router-dom";
 export default function Product() {
   return (
-    <div className=" bg-gradient-to-bl to-indigo-100 via-current from-transparent pt-16 ">
-      <h1 className="text-black font-medium">Welcome To Our Store</h1>
+    <div className=" pt-16 ">
+      <h1 className="text-black font-semibold">Welcome To Our Store</h1>
       <p className="text-black px-52 my-3">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dolore
         ab vitae explicabo doloremque hic iure iusto distinctio non esse beatae
         vel ad reprehenderit harum nihil rerum, odio ut placeat!
       </p>
-      <div className="gap-14 grid grid-cols-5 px-16 mt-8">
+      <div className="gap-14 grid grid-cols-5 px-32 mt-8">
         {Category.map((category) => (
           <NavLink>
             <motion.div

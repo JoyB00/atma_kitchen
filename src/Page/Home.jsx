@@ -2,6 +2,8 @@ import Navbar from "../Component/Navbar";
 import Intro from "./HomePartition/IntroPart";
 import Product from "./HomePartition/ProductPart";
 import About from "./HomePartition/AboutPart";
+import FeaturedProduct from "./HomePartition/FeaturedProductPart";
+import BestSeller from "./HomePartition/BestSellerPart";
 import Footer from "../Component/Footer";
 export default function Home() {
   return (
@@ -12,6 +14,8 @@ export default function Home() {
       <Intro />
       <Product />
       <About />
+      <FeaturedProduct />
+      <BestSeller />
       <Footer />
     </div>
   );

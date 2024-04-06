@@ -8,8 +8,12 @@ export default function Intro() {
           Fresh Baked Cake Everyday !
         </h1>
         <p className="mb-7 text-lg">
-          Welcome to "Atma Kitchen"! We are a place where deliciousness is met
-          with joy.
+          {/* Welcome to "Atma Kitchen"! We are a place where deliciousness is met
+          with joy. */}
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
+          ipsum atque fugiat, eius unde numquam laudantium? Mollitia ipsa magni
+          rem. Est reprehenderit sapiente commodi fugiat consequatur. Vitae
+          omnis reprehenderit fuga.
         </p>
         <div className="flex ">
           <Button className="rounded-3xl bg-orange-500 text-white me-2">
