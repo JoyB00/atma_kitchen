@@ -10,15 +10,18 @@ export default function AboutPart() {
         <h1 className="font-semibold">About</h1>
         <h1 className="font-semibold mb-2">Atma Kitchen</h1>
         <p>
-          It’s a long established fact that a reader will be distracted by the
-          readable content of a page when looking at it’s layout. The Point of
-          Using Lorem Ipsum
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident
+          recusandae rerum nam nisi sed ad corporis aliquid, ratione iure a
+          obcaecati distinctio cum nesciunt ab dolorum quibusdam pariatur maxime
+          ea. Optio voluptas voluptatum impedit id eos deleniti sunt soluta quis
+          nam sint! Quam cumque consequatur corrupti aperiam explicabo rerum,
+          nisi omnis nihil ipsam tenetur pariatur alias dignissimos quibusdam
+          unde nobis. Quas eveniet, possimus commodi deleniti cumque facere
+          officiis rem eligendi autem. Unde ea saepe dolores odit doloremque
+          ullam tenetur eum? Cumque ea, doloribus fugiat nihil doloremque
+          molestiae incidunt. Ab, ea?
         </p>
-        <p>
-          It gas a more-or-less normal distribution of letters, as oppoesed to
-          using ‘Content here, content here’.
-        </p>
-        <Button className="rounded-3xl bg-orange-500 text-white me-2 mt-7">
+        <Button className="rounded-xl bg-orange-500 text-white me-2 mt-7">
           Read More
         </Button>
       </div>

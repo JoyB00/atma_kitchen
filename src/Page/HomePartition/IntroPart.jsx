@@ -2,9 +2,9 @@ import Button from "../../Component/Button";
 import Brownies from "../../assets/HomeAssets/brownies.png";
 export default function Intro() {
   return (
-    <div className="h-screen md:flex bg-gradient-to-tr to-red-100 via-current from-transparent pt-16 ps-16 ">
+    <div className="h-screen md:flex bg-gradient-to-tr to-red-100 via-current from-transparent pt-16 ps-24">
       <div className="w-1/2 my-auto text-start text-black pe-24">
-        <h1 className="font-semibold mb-7 text-7xl">
+        <h1 className="font-semibold mb-7 text-6xl">
           Fresh Baked Cake Everyday !
         </h1>
         <p className="mb-7 text-lg">

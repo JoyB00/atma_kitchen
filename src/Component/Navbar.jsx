@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import Button from "./Button";
 export default function Navbar() {
   return (
-    <div className="w-full fixed py-5 drop-shadow-sm z-10  ">
+    <div className="w-full fixed py-5 drop-shadow-sm z-10 bg-opacity-30 bg-white ">
       <div className="flex justify-between px-8 ">
         <div className="flex">
           <NavLink

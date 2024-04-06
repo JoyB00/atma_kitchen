@@ -5,6 +5,16 @@
   text-align: center;
 }
 
+.swiper-button-prev,
+.swiper-button-next {
+  --swiper-navigation-color: orange;
+  --swiper-navigation-sides-offset: -1px;
+}
+
+.swiper-pagination-bullet {
+  --swiper-pagination-color: orange;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -17,6 +27,7 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+
 
 @keyframes logo-spin {
   from {

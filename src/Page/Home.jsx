@@ -4,6 +4,7 @@ import Product from "./HomePartition/ProductPart";
 import About from "./HomePartition/AboutPart";
 import FeaturedProduct from "./HomePartition/FeaturedProductPart";
 import BestSeller from "./HomePartition/BestSellerPart";
+import MobilePart from "./HomePartition/MobilePart";
 import Footer from "../Component/Footer";
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <About />
       <FeaturedProduct />
       <BestSeller />
+      <MobilePart />
       <Footer />
     </div>
   );

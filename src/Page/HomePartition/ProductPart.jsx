@@ -11,8 +11,8 @@ export default function Product() {
         vel ad reprehenderit harum nihil rerum, odio ut placeat!
       </p>
       <div className="gap-14 grid grid-cols-5 px-32 mt-8">
-        {Category.map((category) => (
-          <NavLink>
+        {Category.map((category, index) => (
+          <NavLink key={index}>
             <motion.div
               whileHover={{
                 scale: 1.02,

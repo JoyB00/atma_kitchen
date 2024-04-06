@@ -63,4 +63,11 @@ export default [
     title: "Milk Bun",
     price: 850,
   },
+  {
+    no: 9,
+    src: MilkBun,
+    alt: "Milk Bun",
+    title: "Milk Bun",
+    price: 850,
+  },
 ];
