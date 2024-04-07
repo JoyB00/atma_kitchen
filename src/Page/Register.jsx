@@ -10,34 +10,39 @@ import delivery from "../assets/delivery.json";
 import chef from "../assets/chef.json";
 import kue from "../assets/kue.json";
 import React from "react";
-import Slider from "react-slick";
+import Carousel from "../Component/RegularCaraousel.jsx";
+import { Pagination, Scrollbar, A11y, Autoplay } from "swiper/modules";
+import { SwiperSlide } from "swiper/react";
 import { motion } from "framer-motion";
 import Button from "../Component/Button.jsx";
 
 export default function Register() {
   var settings = {
-    dots: true,
-    infinite: true,
-    speed: 900,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+    modules: [Pagination, Scrollbar, A11y, Autoplay],
+    spaceBetween: 50,
+    slidesPerView: 1,
+    pagination: { clickable: true },
+    autoplay: {
+      delay: 15000,
+      disableOnInteraction: false,
+    },
   };
   return (
     <div className="w-full ">
       <Navbar />
       <div className=" md:flex  bg-gradient-to-r from-cyan-100 via-transparent pt-24">
         <div className="w-1/2 pb-16 my-auto max-w-screen-md">
-          <Slider {...settings}>
-            <div className="px-8  drop-shadow-md">
+          <Carousel {...settings} className="mySwiper">
+            <SwiperSlide className="px-8  drop-shadow-md">
               <Lottie animationData={kue} />
-            </div>
-            <div className=" px-8 drop-shadow-md">
+            </SwiperSlide>
+            <SwiperSlide className=" px-8 drop-shadow-md">
               <Lottie animationData={chef} />
-            </div>
-            <div className="px-6 ms-12 drop-shadow-md">
+            </SwiperSlide>
+            <SwiperSlide className="px-6 ms-12 drop-shadow-md">
               <Lottie animationData={delivery} />
-            </div>
-          </Slider>
+            </SwiperSlide>
+          </Carousel>
         </div>
         <div className="w-1/2 my-auto">
           {/* Box register */}

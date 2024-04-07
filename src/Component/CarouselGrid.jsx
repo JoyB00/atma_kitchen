@@ -15,7 +15,7 @@ import "swiper/css/scrollbar";
 import "swiper/css/grid";
 import "../App.css";
 
-export default function CarouselComp({ children }) {
+export default function CarouselGrid({ children }) {
   return (
     <div className="w-full my-auto max-w-[1440px] mx-auto">
       <Swiper

@@ -3,7 +3,7 @@ import Button from "../../Component/Button";
 import Badge from "../../Component/Badge";
 export default function BestSeller() {
   return (
-    <div className="bg-gradient-to-br to-red-100 via-current from-transparent  ps-36 flex py-32">
+    <div className="bg-gradient-to-br to-cyan-50 via-current from-transparent ps-36  flex py-32">
       <div className="w-1/2 text-black text-left">
         <h1 className=" font-semibold text-5xl">Best Seller</h1>
         <h1 className=" font-semibold text-5xl">Product In Atma Kitchen</h1>
@@ -23,8 +23,8 @@ export default function BestSeller() {
           Add To Cart
         </Button>
       </div>
-      <div className="w-1/2 flex justify-center">
-        <img src={LapisLegit} alt="" className="w-11/12" />
+      <div className="w-1/2 flex justify-end">
+        <img src={LapisLegit} alt="bestseller" />
       </div>
     </div>
   );

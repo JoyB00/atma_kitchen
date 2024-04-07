@@ -6,7 +6,7 @@ import Playstore from "../../assets/HomeAssets/playstore.png";
 import { motion } from "framer-motion";
 export default function MobilePart() {
   return (
-    <div className="bg-gradient-to-tr to-red-100 via-transparent from-transparent  ps-28 flex">
+    <div className="bg-gradient-to-tr to-cyan-50 via-transparent from-transparent  ps-28 flex">
       <div className="w-1/2">
         <Lottie animationData={delivery} />
       </div>

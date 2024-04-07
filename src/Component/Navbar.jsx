@@ -1,8 +1,35 @@
 import { NavLink } from "react-router-dom";
 import Button from "./Button";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 export default function Navbar() {
+  const [navbar, setNavbar] = useState(false);
+
+  const changeBackground = () => {
+    if (window.scrollY >= 40) {
+      // console.log(window.scrollY);
+      setNavbar(true);
+    } else {
+      setNavbar(false);
+    }
+  };
+
+  useEffect(() => {
+    changeBackground();
+    window.addEventListener("scroll", changeBackground);
+  });
+
   return (
-    <div className="w-full fixed py-5 drop-shadow-sm z-10 bg-opacity-30 bg-white ">
+    <motion.div
+      className={`w-full fixed py-5 drop-shadow-sm z-10  ${
+        navbar ? "bg-white" : "bg-transparent"
+      }`}
+      style={{
+        transition: "background-color",
+        transitionDuration: "200ms",
+        transitionBehavior: "linear",
+      }}
+    >
       <div className="flex justify-between px-8 ">
         <div className="flex">
           <NavLink
@@ -25,7 +52,7 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="text-black font-normal">
+              <NavLink to="/menu" className="text-black font-normal">
                 Menu
               </NavLink>
             </li>
@@ -63,6 +90,6 @@ export default function Navbar() {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
