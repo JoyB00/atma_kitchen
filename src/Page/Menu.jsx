@@ -123,9 +123,9 @@ export default function Menu() {
             />
           </motion.ul>
         </div>
-      </div>
-      <div className="from-cyan-100 via-transparent md:pt-12">
-        <Footer />
+        <div className="from-cyan-100 via-transparent md:pt-12">
+          <Footer />
+        </div>
       </div>
     </AnimatePresence>
   );

@@ -39,7 +39,7 @@ export default function Product() {
     },
   };
   return (
-    <div className=" pt-16 ">
+    <div className="bg-red-50/40 py-24">
       <h1 className="text-black font-semibold">Welcome To Our Store</h1>
       <p className="text-black px-52 my-3">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dolore

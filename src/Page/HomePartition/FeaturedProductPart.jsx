@@ -5,8 +5,8 @@ import ProductList from "../../assets/ProductAsset/Product";
 import { SwiperSlide } from "swiper/react";
 export default function FeaturedProduct() {
   return (
-    <div className="bg-gradient-to-tl to-orange-50 via-current from-transparent">
-      <div className=" text-center pt-16 px-52 ">
+    <div className="bg-gradient-to-tl to-orange-50 via-current from-transparent py-24">
+      <div className=" text-center px-52 ">
         <h1 className="text-black font-semibold">Our Featured Product</h1>
         <p className="text-black mt-2 ">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam

@@ -2,7 +2,7 @@ import Drink from "../../assets/HomeAssets/Coffee.png";
 import Button from "../../Component/Button";
 export default function AboutPart() {
   return (
-    <div className="h-screen flex bg-gradient-to-bl to-orange-50 via-current from-transparent pt-44">
+    <div className="h-screen flex bg-gradient-to-bl to-orange-50 via-current from-transparent py-24">
       <div className="w-1/2 text-black">
         <img src={Drink} alt="" className="w-8/12 drop-shadow-md" />
       </div>

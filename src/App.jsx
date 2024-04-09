@@ -6,6 +6,7 @@ import Register from "./Page/Register";
 import RootLayout from "./Page/Root";
 import Home from "./Page/Home";
 import Menu from "./Page/Menu";
+import MainDashboard from "./AdminPage/MainDashboard/MainDashboard";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <MainDashboard />,
       },
       {
         path: "login",

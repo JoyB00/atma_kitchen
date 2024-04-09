@@ -3,7 +3,7 @@ import Button from "../../Component/Button";
 import Badge from "../../Component/Badge";
 export default function BestSeller() {
   return (
-    <div className="bg-gradient-to-br to-cyan-50 via-current from-transparent ps-36  flex py-32">
+    <div className="bg-gradient-to-tl from-cyan-50 via-transparent to-transparent  ps-36  flex py-24">
       <div className="w-1/2 text-black text-left">
         <h1 className=" font-semibold text-5xl">Best Seller</h1>
         <h1 className=" font-semibold text-5xl">Product In Atma Kitchen</h1>

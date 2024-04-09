@@ -3,10 +3,10 @@ import Brownies from "../../assets/HomeAssets/brownies.png";
 import { motion } from "framer-motion";
 export default function Intro() {
   return (
-    <div className=" md:flex bg-gradient-to-tr to-red-100 via-current from-transparent py-36 ps-24">
+    <div className=" flex bg-gradient-to-tr to-red-100 via-current from-transparent py-36 ps-24">
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1  }}
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
         className="w-1/2 my-auto text-start text-black pe-24"
       >
         <h1 className="font-semibold mb-7 text-6xl">
