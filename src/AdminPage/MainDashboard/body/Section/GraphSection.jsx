@@ -1,4 +1,10 @@
-import { faChartLine, faChartSimple } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpZA,
+  faChartLine,
+  faChartSimple,
+  faCheckCircle,
+  faSortUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import BarChart from "../../component/BarChart";
 import LineChart from "../../component/LineChart";
@@ -32,7 +38,18 @@ export default function GraphSection() {
           </div>
           <div className="grid grid-cols-4 h-full">
             <div className="col-span-1 ps-4">
-              <p className="text-2xl font-semibold">Rp 150K</p>
+              <p className="text-5xl font-semibold">150K</p>
+              <div className="flex justify-center items-center mt-2">
+                <p className="text-gray-400 text-center text-sm pe-3">
+                  Total Spent
+                </p>
+                <p className="text-green-500 font-semibold ">
+                  <FontAwesomeIcon icon={faSortUp} /> +2.45%
+                </p>
+              </div>
+              <p className="text-green-500 font-semibold mt-2">
+                <FontAwesomeIcon icon={faCheckCircle} /> On Track
+              </p>
             </div>
             <div className="col-span-3 h-full">
               <LineChart

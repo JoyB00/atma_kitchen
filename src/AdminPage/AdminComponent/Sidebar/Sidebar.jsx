@@ -15,11 +15,32 @@ export default function Sidebar() {
       </h1>
       <hr className="mt-6" />
       <ul className="py-6 mx-4 text-left">
-        <Navigation label="Main Dashbord" icon={faHouse} active />
-        <Navigation label="Ingredient" icon={faEgg} />
-        <Navigation label="Product" icon={faBreadSlice} />
-        <Navigation label="Hampers" icon={faBreadSlice} />
-        <Navigation label="Main Dashbord" icon={faHouse} />
+        <Navigation
+          label="Main Dashbord"
+          icon={faHouse}
+          url={"/dashboard"}
+          end
+        />
+        <Navigation
+          label="Ingredient"
+          icon={faEgg}
+          url={"/dashboard/ingredient"}
+        />
+        <Navigation
+          label="Product"
+          icon={faBreadSlice}
+          url={"/dashboard/product"}
+        />
+        <Navigation
+          label="Hampers"
+          icon={faBreadSlice}
+          url={"/dashboard/hampers"}
+        />
+        <Navigation
+          label="Main Dashbord"
+          icon={faHouse}
+          url={"/dashboard/temp"}
+        />
       </ul>
     </div>
   );

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
-export default function NavbarAdmin() {
+export default function NavbarAdmin({ url, page }) {
   const [scroll, setScroll] = useState(false);
 
   const changeBackground = () => {
@@ -27,8 +27,20 @@ export default function NavbarAdmin() {
       } backdrop-blur-xl flex justify-between mt-6 fixed p-4 `}
     >
       <div>
-        <h5>Page / Main Dashboard</h5>
-        <h1 className="font-semibold text-4xl">Main Dashboard</h1>
+        <div className="flex gap-x-1">
+          <NavLink className="text-black" to="/dashboard">
+            Page
+          </NavLink>
+          <p> / </p>
+          <NavLink className="text-black" to={url}>
+            {page}
+          </NavLink>
+        </div>
+        <div>
+          <h1 className="font-semibold text-4xl text-black" to={url}>
+            {page}
+          </h1>
+        </div>
       </div>
       <div className="w-[32%] bg-white rounded-full flex justify-between px-4 drop-shadow-md">
         <Input
