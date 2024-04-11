@@ -1,4 +1,4 @@
-export default function FileUploader({ id }) {
+export default function FileUploader({ id, ...props }) {
   return (
     <label htmlFor={id} className="col-span-full cursor-pointer">
       <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -21,7 +21,13 @@ export default function FileUploader({ id }) {
               className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600  hover:text-indigo-500"
             >
               <span>Upload a file</span>
-              <input id={id} name={id} type="file" className="sr-only" />
+              <input
+                id={id}
+                name={id}
+                type="file"
+                className="sr-only"
+                {...props}
+              />
             </label>
             <p className="pl-1">or drag and drop</p>
           </div>

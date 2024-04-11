@@ -44,12 +44,14 @@ export default function Login() {
                 Enter your email and password to login
               </p>
               <Input
+                withAnimate
                 label="Email"
                 id="Email"
                 type="Email"
                 placeholder="Email"
               />
               <Input
+                withAnimate
                 label="Password"
                 id="Password"
                 type="Password"

@@ -1,4 +1,3 @@
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Page/Login";
 import "./App.css";
@@ -9,9 +8,15 @@ import Menu from "./Page/Menu";
 // root Dashboard
 import RootDashboard from "./Root/AdminDashboard/RootDashboard";
 import MainDashboard from "./AdminPage/MainDashboard/MainDashboard";
+// Root Product
+import RootProduct from "./Root/AdminDashboard/Product/RootProduct";
 import ProductPage from "./AdminPage/ProductPage/ProductPage";
 import AddProduct from "./AdminPage/ProductPage/AddProduct/AddProduct";
-import RootProduct from "./Root/AdminDashboard/Product/RootProduct";
+import EditProduct, {
+  loader as eventDetailLoader,
+} from "./AdminPage/ProductPage/EditProduct/EditProduct";
+
+import IngredientPage from "./AdminPage/IngredientPage/IngredientPage";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +59,22 @@ const router = createBrowserRouter([
                 path: "addProduct",
                 element: <AddProduct />,
               },
+              {
+                path: ":productId",
+                id: "product-detail",
+                loader: eventDetailLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <EditProduct />,
+                  },
+                ],
+              },
             ],
+          },
+          {
+            path: "ingredient",
+            element: <IngredientPage />,
           },
         ],
       },

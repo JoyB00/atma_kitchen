@@ -1,5 +1,13 @@
 import { motion } from "framer-motion";
-export default function Input({ label, id, withLabel, ...props }) {
+export default function Input({ label, id, withLabel, withAnimate, ...props }) {
+  let animate = {};
+  if (withAnimate) {
+    animate = {
+      initial: { opacity: 0, y: -100 },
+      animate: { opacity: 1, y: 0 },
+      exit: { opacity: 0, y: -20 },
+    };
+  }
   return (
     <div className="items-center py-3">
       {withLabel ? (
@@ -11,10 +19,8 @@ export default function Input({ label, id, withLabel, ...props }) {
       )}
 
       <motion.input
+        {...animate}
         key="fallback"
-        initial={{ opacity: 0, y: -100 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
         id={id}
         name={id}
         type={id}

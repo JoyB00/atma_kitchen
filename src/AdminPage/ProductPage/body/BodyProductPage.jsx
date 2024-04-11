@@ -6,12 +6,14 @@ import {
   faFilter,
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
-import Top5Selling from "../DataTable/Top5Selling";
-import ProductTable from "../DataTable/ProductTable";
+import Top5Selling from "../Component/Top5Selling";
+import ProductTable from "../Component/ProductTable";
 import Drawer from "../../../Component/Drawer";
 import Checkbox from "../../../Component/Checkbox";
+import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+
 export default function Body() {
   const Category = [
     {
@@ -32,10 +34,12 @@ export default function Body() {
     },
   ];
 
+
+
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <div className="w-full flex justify-between">
+      <div className="w-full grid grid-cols-6">
         {/* <div className="w-1/3 "> */}
         {/* <Input
             id="searchProduct"
@@ -49,10 +53,17 @@ export default function Body() {
             }}
           /> */}
         {/* </div> */}
-        <h1 className="px-3 pt-6 font-semibold text-orange-500 ">
-          <FontAwesomeIcon icon={faCookie} /> Product Table{" "}
-        </h1>
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2"
+        >
+          <h1 className="px-3 pt-6 col-span-2 font-semibold text-white ">
+            <FontAwesomeIcon icon={faCookie} /> Product Data{" "}
+          </h1>
+          <div className="ms-12 col-span-1 bg-orange-600 rounded-tl-full" />
+        </motion.div>
+        <div className="pt-6 col-span-2 ms-auto">
           <Button
             className="bg-transparent border-2 border-orange-500 my-4 text-orange-500 me-2 hover:text-white"
             onClick={() => setIsOpen(true)}

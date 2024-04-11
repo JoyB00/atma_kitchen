@@ -69,24 +69,28 @@ export default function Register() {
                 Legit indulgence awaits.”
               </p>
               <Input
+                withAnimate
                 label="Full Name"
                 id="Full Name"
                 type="text"
                 placeholder="Full Name"
               />
               <Input
+                withAnimate
                 label="Email"
                 id="Email"
                 type="Email"
                 placeholder="Email"
               />
               <Input
+                withAnimate
                 label="Password"
                 id="Password"
                 type="Password"
                 placeholder="Create Your Password"
               />
               <Input
+                withAnimate
                 label="Password"
                 id="ConfirmPassword"
                 type="Password"
@@ -95,6 +99,7 @@ export default function Register() {
               <div className="grid grid-cols-2 gap-2">
                 <div className="col-span-1">
                   <Input
+                    withAnimate
                     label="PhoneNumber"
                     id="PhoneNumber"
                     type="Number"

@@ -5,7 +5,7 @@ export default function Navigation({ label, icon, url, ...props }) {
   return (
     <motion.div
       whileHover={{
-        scale: 1.1,
+        scale: 1.05,
       }}
       transition={{ type: "just" }}
     >

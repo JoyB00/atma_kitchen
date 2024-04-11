@@ -1,6 +1,7 @@
 import Sidebar from "../AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../AdminComponent/NavbarAdmin/NavbarAdmin";
 import Body from "./body/BodyProductPage";
+import FooterDashboard from "../../Component/FooterDashboard";
 export default function ProductPage() {
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
@@ -9,6 +10,7 @@ export default function ProductPage() {
         <NavbarAdmin url="/dashboard/product" page="Product" />
         <div className="mt-32 px-4 ">
           <Body />
+          <FooterDashboard />
         </div>
       </div>
     </div>

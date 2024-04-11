@@ -46,7 +46,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: black;
+  /* background-color: black; */
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -54,9 +54,9 @@ button {
 button:hover {
   border-color: white;
 }
-button:focus,
+
 button:focus-visible {
-  outline: 4px auto #f97316;
+  outline: 4px auto ;
 }
 
 @media (prefers-color-scheme: light) {

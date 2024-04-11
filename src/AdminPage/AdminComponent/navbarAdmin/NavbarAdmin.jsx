@@ -3,7 +3,8 @@ import Button from "../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 export default function NavbarAdmin({ url, page }) {
   const [scroll, setScroll] = useState(false);
 
@@ -50,12 +51,19 @@ export default function NavbarAdmin({ url, page }) {
           type="text"
           style={{ backgroundColor: "#f4f7fe" }}
         />
-        <NavLink className="my-auto text-gray-400">
+        <Button
+          withoutAnimate
+          className="my-auto text-gray-400 bg-transparent p-0 hover:text-orange-400 "
+        >
           <FontAwesomeIcon icon={faBell} />
-        </NavLink>
-        <NavLink className="my-auto text-gray-400">
+        </Button>
+        <Button
+          withoutAnimate
+          className="my-auto text-gray-400 bg-transparent p-0 hover:text-orange-400 "
+        >
           <FontAwesomeIcon icon={faCircleExclamation} />
-        </NavLink>
+        </Button>
+
         <Button
           className="rounded-full my-2 bg-orange-500 drop-shadow-md text-sm text-white "
           style={{ backgroundColor: "#f99417" }}

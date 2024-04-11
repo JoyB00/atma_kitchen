@@ -2,7 +2,11 @@ import Sidebar from "../../AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminComponent/NavbarAdmin/NavbarAdmin";
 import FormProduct from "../Component/FormProduct";
 import FooterDashboard from "../../../Component/FooterDashboard";
-export default function AddProduct() {
+import Product from "../../../assets/ProductAsset/Product";
+import { useRouteLoaderData } from "react-router-dom";
+export default function EditProduct() {
+  const product = useRouteLoaderData("product-detail");
+  console.log(product);
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
       <Sidebar />
@@ -10,12 +14,18 @@ export default function AddProduct() {
         <NavbarAdmin url="/dashboard/product" page="Product" />
         <div className="mt-32 px-4 ">
           <div className=" w-full bg-white rounded-2xl p-8 mb-8 shadow-md">
-            <h1 className="font-medium text-2xl">Add New Product</h1>
-            <FormProduct />
+            <h1 className="font-medium text-2xl">Edit Product</h1>
+            <FormProduct product={product} />
           </div>
           <FooterDashboard />
         </div>
       </div>
     </div>
   );
+}
+
+export function loader({ params }) {
+  const product = Product.find((item) => item.no == params.productId);
+  console.log(product.title);
+  return product;
 }
