@@ -1,5 +1,5 @@
-import Input from "../../../Component/Input";
-import Button from "../../../Component/Button";
+import Input from "../../../../Component/Input";
+import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCookie,
@@ -8,13 +8,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Top5Selling from "../Component/Top5Selling";
 import ProductTable from "../Component/ProductTable";
-import Drawer from "../../../Component/Drawer";
-import Checkbox from "../../../Component/Checkbox";
+import Drawer from "../../../../Component/Drawer";
+import Checkbox from "../../../../Component/Checkbox";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
-export default function Body() {
+export default function Body({ search }) {
   const Category = [
     {
       no: 1,
@@ -34,8 +34,6 @@ export default function Body() {
     },
   ];
 
-
-
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
@@ -54,8 +52,8 @@ export default function Body() {
           /> */}
         {/* </div> */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          // initial={{ opacity: 0, y: 30 }}
+          // animate={{ opacity: 1, y: 0 }}
           className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2"
         >
           <h1 className="px-3 pt-6 col-span-2 font-semibold text-white ">
@@ -80,7 +78,7 @@ export default function Body() {
       </div>
       <div className="grid grid-cols-6 gap-x-5">
         <div className="col-span-4">
-          <ProductTable />
+          <ProductTable search={search} />
         </div>
         <div className="col-span-2">
           <Top5Selling />

@@ -1,11 +1,11 @@
-import Input from "../../../Component/Input";
-import Button from "../../../Component/Button";
+import Input from "../../../../Component/Input";
+import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
-export default function NavbarAdmin({ url, page }) {
+export default function NavbarAdmin({ url, page, setSearch }) {
   const [scroll, setScroll] = useState(false);
 
   const changeBackground = () => {
@@ -50,6 +50,7 @@ export default function NavbarAdmin({ url, page }) {
           placeholder="Search..."
           type="text"
           style={{ backgroundColor: "#f4f7fe" }}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <Button
           withoutAnimate

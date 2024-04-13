@@ -1,7 +1,7 @@
 import Sidebar from "../AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../AdminComponent/NavbarAdmin/NavbarAdmin";
 import Body from "./body/BodyMainDashboard";
-import FooterDashboard from "../../Component/FooterDashboard";
+import FooterDashboard from "../../../Component/FooterDashboard";
 export default function Dashboard() {
   return (
     <div className="flex bg-orange-100/50 w-full h-full">

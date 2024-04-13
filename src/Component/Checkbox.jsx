@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-export default function Checkbox({ id, label }) {
+export default function Checkbox({ id, label, ...props }) {
   return (
     <motion.div
       className="mt-6 space-y-6"
@@ -14,6 +14,7 @@ export default function Checkbox({ id, label }) {
             name={id}
             type="checkbox"
             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+            {...props}
           />
         </div>
         <div className="text-sm leading-6">

@@ -1,11 +1,10 @@
-import Input from "../Component/Input.jsx";
 import Footer from "../Component/Footer.jsx";
 import Navbar from "../Component/Navbar.jsx";
-import Button from "../Component/Button.jsx";
 import { NavLink } from "react-router-dom";
 import Logo from "../assets/atmak-removebg.png";
 import Lottie from "lottie-react";
 import AnimationLogin from "../assets/Comp 1.json";
+import FormLogin from "../Component/FormLogin.jsx";
 import { motion } from "framer-motion";
 
 export default function Login() {
@@ -43,33 +42,7 @@ export default function Login() {
               <p className="font-light text-black lg:px-8 md:px-4 mb-4 xl:text-base md:text-xs">
                 Enter your email and password to login
               </p>
-              <Input
-                withAnimate
-                label="Email"
-                id="Email"
-                type="Email"
-                placeholder="Email"
-              />
-              <Input
-                withAnimate
-                label="Password"
-                id="Password"
-                type="Password"
-                placeholder="Password"
-              />
-              <div className="flex justify-start mb-5">
-                <NavLink
-                  className="mx-2 bg-transparent my-auto text-orange-500 lg:text-base md:text-sm"
-                  to=""
-                >
-                  Forgot Password?
-                </NavLink>
-              </div>
-              <div className="grid  grid-cols-1 mb-5 ">
-                <Button className="mx-2 bg-orange-500 drop-shadow-md rounded-3xl col-span-1 py-3">
-                  LOGIN
-                </Button>
-              </div>
+              <FormLogin />
               <div className="lg:flex lg:justify-center md:mx-auto">
                 <p className="text-black lg:text-end md:text-center my-auto lg:text-base md:text-sm">
                   Don't have an account yet?

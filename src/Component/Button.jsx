@@ -7,8 +7,9 @@ export default function Button({ children, withoutAnimate, ...props }) {
       transition: { type: "tween", stiffness: 500 },
     };
   }
+
   return (
-    <motion.button {...setting} {...props} >
+    <motion.button {...setting} {...props}>
       {children}
     </motion.button>
   );

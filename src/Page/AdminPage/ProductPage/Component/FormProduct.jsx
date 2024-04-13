@@ -1,6 +1,6 @@
-import Input from "../../../Component/Input";
-import FileUploader from "../../../Component/FileUploader";
-import Button from "../../../Component/Button";
+import Input from "../../../../Component/Input";
+import FileUploader from "../../../../Component/FileUploader";
+import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { faSave } from "@fortawesome/free-solid-svg-icons";

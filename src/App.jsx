@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import Login from "./Page/Login";
 import "./App.css";
 import Register from "./Page/Register";
@@ -7,16 +8,16 @@ import Home from "./Page/Home";
 import Menu from "./Page/Menu";
 // root Dashboard
 import RootDashboard from "./Root/AdminDashboard/RootDashboard";
-import MainDashboard from "./AdminPage/MainDashboard/MainDashboard";
+import MainDashboard from "./Page/AdminPage/MainDashboard/MainDashboard";
 // Root Product
 import RootProduct from "./Root/AdminDashboard/Product/RootProduct";
-import ProductPage from "./AdminPage/ProductPage/ProductPage";
-import AddProduct from "./AdminPage/ProductPage/AddProduct/AddProduct";
+import ProductPage from "./Page/AdminPage/ProductPage/ProductPage";
+import AddProduct from "./Page/AdminPage/ProductPage/AddProduct/AddProduct";
 import EditProduct, {
   loader as eventDetailLoader,
-} from "./AdminPage/ProductPage/EditProduct/EditProduct";
+} from "./Page/AdminPage/ProductPage/EditProduct/EditProduct";
 
-import IngredientPage from "./AdminPage/IngredientPage/IngredientPage";
+import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
 
 const router = createBrowserRouter([
   {
@@ -82,8 +83,13 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
-  return <RouterProvider router={router} />;
-}
+const App = () => {
+  return (
+    <>
+      <Toaster />
+      <RouterProvider router={router} />
+    </>
+  );
+};
 
 export default App;

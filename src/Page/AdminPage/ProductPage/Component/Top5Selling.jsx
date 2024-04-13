@@ -1,5 +1,25 @@
-import Product from "../../../assets/ProductAsset/Product";
+import Product from "../../../../assets/ProductAsset/Product";
+import { motion } from "framer-motion";
 export default function Top5Selling() {
+  const row = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const productItem = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
   return (
     <table className=" w-full h-[50%] mt-4 mb-6 text-gray-500 bg-white rounded-3xl drop-shadow-lg">
       <thead className="border-b-2">
@@ -8,9 +28,13 @@ export default function Top5Selling() {
           <th className="text-start font-medium pe-6">Sold</th>
         </tr>
       </thead>
-      <tbody>
+      <motion.tbody variants={row} initial="hidden" animate="visible">
         {Product.slice(0, 5).map((item) => (
-          <tr className="border-t-2 border-gray-100  text-black" key={item.no}>
+          <motion.tr
+            variants={productItem}
+            className="border-t-2 border-gray-100  text-black"
+            key={item.no}
+          >
             <td className="font-medium py-6 ps-6 ">
               <div className="flex items-center ">
                 <img
@@ -22,9 +46,9 @@ export default function Top5Selling() {
               </div>
             </td>
             <td className="font-medium text-center pe-6">100 pcs</td>
-          </tr>
+          </motion.tr>
         ))}
-      </tbody>
+      </motion.tbody>
     </table>
   );
 }

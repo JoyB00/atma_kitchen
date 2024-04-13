@@ -1,4 +1,4 @@
-import Logo from "../../../assets/atmak-removebg.png";
+import Logo from "../../../../assets/atmak-removebg.png";
 import Navigation from "./component/Navigation";
 import {
   faBreadSlice,

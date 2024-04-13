@@ -1,7 +1,7 @@
 import Sidebar from "../../AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminComponent/NavbarAdmin/NavbarAdmin";
 import FormProduct from "../Component/FormProduct";
-import FooterDashboard from "../../../Component/FooterDashboard";
+import FooterDashboard from "../../../../Component/FooterDashboard";
 export default function AddProduct() {
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
