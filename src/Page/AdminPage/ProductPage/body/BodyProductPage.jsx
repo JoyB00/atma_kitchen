@@ -15,6 +15,8 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FetchAllProducts } from "../../../../api/ProductApi";
+import { RotateLoader } from "react-spinners";
+import LoadingTable from "../Component/LoadingTable";
 export default function Body({ search }) {
   const Category = [
     {
@@ -34,7 +36,7 @@ export default function Body({ search }) {
       name: "Entrusted",
     },
   ];
-  const { isPending, data } = useQuery({
+  const { isPending, data, isFetching } = useQuery({
     queryKey: ["products"],
     queryFn: FetchAllProducts,
   });
@@ -64,12 +66,18 @@ export default function Body({ search }) {
         </div>
       </div>
       <div className="grid grid-cols-6 gap-x-5">
-        <div className="col-span-4">
-          <ProductTable search={search} data={data} loading={isPending} />
-        </div>
-        <div className="col-span-2">
-          <Top5Selling data={data} loading={isPending} />
-        </div>
+        {isFetching ? (
+          <LoadingTable loading={isFetching} />
+        ) : (
+          <>
+            <div className="col-span-4">
+              <ProductTable search={search} data={data} />
+            </div>
+            <div className="col-span-2">
+              <Top5Selling data={data} />
+            </div>
+          </>
+        )}
       </div>
 
       {/* Drawer */}

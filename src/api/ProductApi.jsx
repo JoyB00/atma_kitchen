@@ -9,23 +9,33 @@ const FetchAllProducts = async () => {
   }
 };
 
+const AddProduct = async (data) => {
+  try {
+    const response = await useAxios.post("/products", data);
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response.data);
+    throw error.response.data;
+  }
+};
+
 const GetProductById = async (id) => {
   try {
     const response = await useAxios.get(`/products/${id}`);
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
-    return error.response;
+    return error.response.data;
   }
 };
 
-const UpdateProduct = async (id) => {
+const UpdateProduct = async (data) => {
   try {
-    const response = await useAxios.patch(`/products/${id}`);
+    const response = await useAxios.patch(`/products/${data.id}`, data);
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
-    return error.response.data;
+    throw error.response.data;
   }
 };
 
@@ -39,4 +49,10 @@ const DeleteProduct = async (id) => {
   }
 };
 
-export { FetchAllProducts, DeleteProduct, GetProductById, UpdateProduct };
+export {
+  FetchAllProducts,
+  AddProduct,
+  DeleteProduct,
+  GetProductById,
+  UpdateProduct,
+};
