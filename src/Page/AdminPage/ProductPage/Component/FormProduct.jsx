@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+import { Form } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UpdateProduct } from "../../../../api/ProductApi";
+import { useNavigate } from "react-router-dom";
 
 export default function FormProduct({ product }) {
   const Category = [
@@ -30,8 +34,23 @@ export default function FormProduct({ product }) {
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (id) => {
+      console.log(id);
+      await UpdateProduct(id);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["products"]);
+    },
+    onSuccess: () => {
+      // navigate("/dashboard/product");
+    },
+  });
   return (
-    <div>
+    <Form method="patch">
       <div className="grid grid-cols-5 mt-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -40,29 +59,32 @@ export default function FormProduct({ product }) {
           </p>
           <Input
             withAnimate
-            id="name"
+            id="nama_produk"
             label="Product Name"
             withLabel
             placeholder="Product Name"
             type="text"
-            defaultValue={product ? product.title : console.log("asdasdas")}
+            defaultValue={
+              product ? product.nama_produk : console.log("asdasdas")
+            }
           />
           <Input
             withAnimate
-            id="quantity"
+            id="kuantitas"
             label="Quantity"
             withLabel
             placeholder="Quantity"
             type="number"
+            defaultValue={product ? product.kuantitas : ""}
           />
           <Input
             withAnimate
-            id="price"
+            id="harga_produk"
             label="Price"
             withLabel
             placeholder="Quantity"
             type="number"
-            defaultValue={product ? product.price : ""}
+            defaultValue={product ? product.harga_produk : ""}
           />
 
           {/* category */}
@@ -73,11 +95,16 @@ export default function FormProduct({ product }) {
           <motion.select
             {...animate}
             className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
-            name="category"
+            name="id_kategori"
             id="category"
+            defaultValue={product ? product.id_kategori : Category[0].no}
           >
             {Category.map((category) => (
-              <option value={category.name} key={category.no}>
+              <option
+                value={category.no}
+                key={category.no}
+                selected={product && category.no === product.id_kategori}
+              >
                 {category.name}
               </option>
             ))}
@@ -89,11 +116,12 @@ export default function FormProduct({ product }) {
           </div>
           <motion.div {...animate} className="mt-2">
             <textarea
-              id="about"
-              name="about"
+              id="deskripsi"
+              name="deskripsi"
               rows="5"
               className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Description"
+              defaultValue={product ? product.deskripsi : ""}
             ></textarea>
           </motion.div>
         </div>
@@ -113,10 +141,10 @@ export default function FormProduct({ product }) {
             Discard
           </Button>
         </NavLink>
-        <Button className="mt-8 text-white me-2 bg-orange-500 ">
+        <Button className="mt-8 text-white me-2 bg-orange-500 " type="submit">
           <FontAwesomeIcon icon={faSave} className="me-1" /> Save
         </Button>
       </div>
-    </div>
+    </Form>
   );
 }

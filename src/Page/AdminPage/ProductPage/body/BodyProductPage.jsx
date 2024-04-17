@@ -13,7 +13,8 @@ import Checkbox from "../../../../Component/Checkbox";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-
+import { useQuery } from "@tanstack/react-query";
+import { FetchAllProducts } from "../../../../api/ProductApi";
 export default function Body({ search }) {
   const Category = [
     {
@@ -33,29 +34,15 @@ export default function Body({ search }) {
       name: "Entrusted",
     },
   ];
-
+  const { isPending, data } = useQuery({
+    queryKey: ["products"],
+    queryFn: FetchAllProducts,
+  });
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <div className="w-full grid grid-cols-6">
-        {/* <div className="w-1/3 "> */}
-        {/* <Input
-            id="searchProduct"
-            label="Search Products"
-            placeholder="Search Product..."
-            type="text"
-            style={{
-              borderRadius: "15px",
-              paddingTop: "15px",
-              paddingBottom: "15px"
-            }}
-          /> */}
-        {/* </div> */}
-        <motion.div
-          // initial={{ opacity: 0, y: 30 }}
-          // animate={{ opacity: 1, y: 0 }}
-          className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2"
-        >
+        <motion.div className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2">
           <h1 className="px-3 pt-6 col-span-2 font-semibold text-white ">
             <FontAwesomeIcon icon={faCookie} /> Product Data{" "}
           </h1>
@@ -78,10 +65,10 @@ export default function Body({ search }) {
       </div>
       <div className="grid grid-cols-6 gap-x-5">
         <div className="col-span-4">
-          <ProductTable search={search} />
+          <ProductTable search={search} data={data} loading={isPending} />
         </div>
         <div className="col-span-2">
-          <Top5Selling />
+          <Top5Selling data={data} loading={isPending} />
         </div>
       </div>
 

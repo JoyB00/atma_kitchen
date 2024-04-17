@@ -1,6 +1,7 @@
-import Product from "../../../../assets/ProductAsset/Product";
+import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
+import { RotateLoader } from "react-spinners";
 import { motion } from "framer-motion";
-export default function Top5Selling() {
+export default function Top5Selling({ data, loading }) {
   const row = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -20,6 +21,7 @@ export default function Top5Selling() {
       opacity: 1,
     },
   };
+
   return (
     <table className=" w-full h-[50%] mt-4 mb-6 text-gray-500 bg-white rounded-3xl drop-shadow-lg">
       <thead className="border-b-2">
@@ -28,27 +30,48 @@ export default function Top5Selling() {
           <th className="text-start font-medium pe-6">Sold</th>
         </tr>
       </thead>
-      <motion.tbody variants={row} initial="hidden" animate="visible">
-        {Product.slice(0, 5).map((item) => (
-          <motion.tr
-            variants={productItem}
-            className="border-t-2 border-gray-100  text-black"
-            key={item.no}
-          >
-            <td className="font-medium py-6 ps-6 ">
-              <div className="flex items-center ">
-                <img
-                  src={item.src}
-                  alt={item.alt}
-                  className="w-16 h-16 rounded-full object-cover"
-                />
-                <p className="ps-3 text-xl">{item.title}</p>
-              </div>
+      {loading ? (
+        <tbody>
+          <tr>
+            <td className="py-12 col-span-5" colSpan={5} align="center">
+              <RotateLoader
+                color="orange"
+                loading={loading}
+                cssOverride={{
+                  justifyContent: "center",
+                  // marginLeft: "50%",
+                  borderColor: "red",
+                }}
+                size={50}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
             </td>
-            <td className="font-medium text-center pe-6">100 pcs</td>
-          </motion.tr>
-        ))}
-      </motion.tbody>
+          </tr>
+        </tbody>
+      ) : (
+        <motion.tbody variants={row} initial="hidden" animate="visible">
+          {data.slice(0, 5).map((item) => (
+            <motion.tr
+              variants={productItem}
+              className="border-t-2 border-gray-100  text-black"
+              key={item.id}
+            >
+              <td className="font-medium py-6 ps-6 ">
+                <div className="flex items-center ">
+                  <img
+                    src={defaultImage}
+                    alt={item.nama_produk}
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
+                  <p className="ps-3 text-md">{item.nama_produk}</p>
+                </div>
+              </td>
+              <td className="font-medium text-center pe-6">100 pcs</td>
+            </motion.tr>
+          ))}
+        </motion.tbody>
+      )}
     </table>
   );
 }

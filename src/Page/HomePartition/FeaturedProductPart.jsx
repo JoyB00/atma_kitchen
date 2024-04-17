@@ -1,33 +1,67 @@
 import CarouselGrid from "../../Component/CarouselGrid";
 
 import CardProduct from "../../Component/Card";
-import ProductList from "../../assets/ProductAsset/Product";
 import { SwiperSlide } from "swiper/react";
-export default function FeaturedProduct() {
+import defaultImage from "../../assets/ProductAsset/lapis leggite.jpg";
+import { RotateLoader } from "react-spinners";
+import { motion } from "framer-motion";
+
+
+export default function FeaturedProduct({ data, loading }) {
   return (
-    <div className="bg-gradient-to-tl to-orange-50 via-current from-transparent py-24">
-      <div className=" text-center px-52 ">
-        <h1 className="text-black font-semibold">Our Featured Product</h1>
-        <p className="text-black mt-2 ">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-          dolore ab vitae explicabo doloremque hic iure iusto distinctio non
-          esse beatae vel ad reprehenderit harum nihil rerum, odio ut placeat!
-        </p>
-      </div>
-      <CarouselGrid>
-        {ProductList.map((product) => (
-          <SwiperSlide className="gap-8 py-3" key={product.no}>
-            <CardProduct
-              alt={product.alt}
-              image={product.src}
-              desc="
+    <>
+      {loading ? (
+        <div className="w-full h-screen bg-gradient-to-tl to-orange-50 via-transparent from-transparent">
+          <RotateLoader
+            color="orange"
+            loading={loading}
+            cssOverride={{
+              position: "absolute",
+              top: "320%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              borderColor: "red",
+            }}
+            size={50}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="bg-gradient-to-tl to-orange-50 via-current from-transparent py-24"
+        >
+          <div className=" text-center px-52 ">
+            <h1 className="text-black font-semibold">Our Featured Product</h1>
+            <p className="text-black mt-2 ">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
+              dolore ab vitae explicabo doloremque hic iure iusto distinctio non
+              esse beatae vel ad reprehenderit harum nihil rerum, odio ut
+              placeat!
+            </p>
+          </div>
+          <CarouselGrid>
+            {data?.map((product) => (
+              <SwiperSlide className="gap-8 py-3" key={product.id}>
+                <CardProduct
+                  // alt={product.alt}
+                  image={defaultImage}
+                  desc="
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim id eveniet nemo aut ad vel tempora?"
-              price={product.price}
-              title={product.alt}
-            />
-          </SwiperSlide>
-        ))}
-      </CarouselGrid>
-    </div>
+                  price={
+                    product.harga_produk <= 999
+                      ? product.harga_produk
+                      : (product.harga_produk / 1000).toFixed(1) + "K"
+                  }
+                  title={product.nama_produk}
+                />
+              </SwiperSlide>
+            ))}
+          </CarouselGrid>
+        </motion.div>
+      )}
+    </>
   );
 }

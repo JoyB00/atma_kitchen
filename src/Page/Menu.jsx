@@ -1,13 +1,17 @@
 import Navbar from "../Component/Navbar";
 import { NavLink } from "react-router-dom";
-import ProductList from "../assets/ProductAsset/Product";
+import defaultImage from "../assets/ProductAsset/lapis leggite.jpg";
 import CardProduct from "../Component/Card";
 import Footer from "../Component/Footer";
 import { Pagination } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FetchAllProducts } from "../api/ProductApi";
+import { RotateLoader } from "react-spinners";
+import { useQuery } from "@tanstack/react-query";
 export default function Menu() {
   const [page, setPage] = useState(1);
+
   const handleChange = (e, p) => {
     setPage(p);
   };
@@ -36,9 +40,14 @@ export default function Menu() {
     },
   };
 
+  const { isPending, data } = useQuery({
+    queryKey: ["products"],
+    queryFn: FetchAllProducts,
+  });
+
   return (
     <AnimatePresence>
-      <div className="w-full bg-transparent">
+      <div className="w-full h-screen bg-transparent">
         <Navbar />
         <div className="text-orange-500 pt-36 ps-6 pb-20">
           <div className="flex ps-6 text-xl ">
@@ -92,36 +101,61 @@ export default function Menu() {
               </li>
             </ul>
           </div>
-          <motion.ul
-            variants={card}
-            initial="hidden"
-            animate="visible"
-            className=" col-span-4 rounded-xl grid grid-cols-3 ms-24 gap-6"
-          >
-            {ProductList.slice(startIndex, endIndex).map((product) => (
-              <motion.li
-                className="col-span-1"
-                key={product.no}
-                variants={productItem}
-                transition={{ type: "spring" }}
-              >
-                <CardProduct
-                  alt={product.alt}
-                  image={product.src}
-                  desc="
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim id eveniet nemo aut ad vel tempora?"
-                  price={product.price}
-                  title={product.alt}
+          <div className="col-span-4">
+            {isPending ? (
+              <div className="w-full h-screen bg-transparent">
+                <RotateLoader
+                  color="orange"
+                  loading={isPending}
+                  cssOverride={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    borderColor: "red",
+                  }}
+                  size={100}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
                 />
-              </motion.li>
-            ))}
+              </div>
+            ) : (
+              <motion.ul
+                variants={card}
+                initial="hidden"
+                animate="visible"
+                className="  rounded-xl grid grid-cols-3 ms-8 me-6 gap-12"
+              >
+                {data.slice(startIndex, endIndex).map((product) => (
+                  <motion.li
+                    className="col-span-1"
+                    key={product.id}
+                    variants={productItem}
+                    transition={{ type: "spring" }}
+                  >
+                    <CardProduct
+                      alt={product.alt}
+                      image={defaultImage}
+                      desc="
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim id eveniet nemo aut ad vel tempora?"
+                      price={
+                        product.harga_produk <= 999
+                          ? product.harga_produk
+                          : (product.harga_produk / 1000).toFixed(1) + "K"
+                      }
+                      title={product.nama_produk}
+                    />
+                  </motion.li>
+                ))}
+              </motion.ul>
+            )}
             <Pagination
-              count={Math.ceil(ProductList.length / productPerPage)}
+              count={Math.ceil(data / productPerPage)}
               size="small"
-              className="col-span-3 flex justify-center mb-4"
+              className="flex justify-center mt-6"
               onChange={handleChange}
             />
-          </motion.ul>
+          </div>
         </div>
         <div className="from-cyan-100 via-transparent md:pt-12">
           <Footer />

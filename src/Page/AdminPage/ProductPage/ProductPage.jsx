@@ -5,7 +5,6 @@ import FooterDashboard from "../../../Component/FooterDashboard";
 import { useState } from "react";
 export default function ProductPage() {
   const [search, setSearch] = useState("");
-
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
       <Sidebar />

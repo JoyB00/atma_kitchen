@@ -4,9 +4,10 @@ import FormProduct from "../Component/FormProduct";
 import FooterDashboard from "../../../../Component/FooterDashboard";
 import Product from "../../../../assets/ProductAsset/Product";
 import { useRouteLoaderData } from "react-router-dom";
+import { GetProductById } from "../../../../api/ProductApi";
 export default function EditProduct() {
   const product = useRouteLoaderData("product-detail");
-  console.log(product);
+  // console.log(product);
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
       <Sidebar />
@@ -14,7 +15,7 @@ export default function EditProduct() {
         <NavbarAdmin url="/dashboard/product" page="Product" />
         <div className="mt-32 px-4 ">
           <div className=" w-full bg-white rounded-2xl p-8 mb-8 shadow-md">
-            <h1 className="font-medium text-2xl">Edit Product</h1>
+            <h1 className="font-medium text-2xl">Edit Product </h1>
             <FormProduct product={product} />
           </div>
           <FooterDashboard />
@@ -24,8 +25,9 @@ export default function EditProduct() {
   );
 }
 
-export function loader({ params }) {
-  const product = Product.find((item) => item.no == params.productId);
-  console.log(product.title);
+export async function loader({ params }) {
+  const id = params.productId;
+  console.log(id);
+  const product = await GetProductById(id);
   return product;
 }

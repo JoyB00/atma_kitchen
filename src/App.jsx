@@ -2,6 +2,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Login from "./Page/Login";
 import "./App.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Protected Root
+import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
+//
 import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
@@ -38,11 +43,19 @@ const router = createBrowserRouter([
       },
       {
         path: "menu",
-        element: <Menu />,
+        element: (
+          <ProtectedRoot role_id={4}>
+            <Menu />,
+          </ProtectedRoot>
+        ),
       },
       {
         path: "dashboard",
-        element: <RootDashboard />,
+        element: (
+          <ProtectedRoot role_id={2}>
+            <RootDashboard />
+          </ProtectedRoot>
+        ),
         children: [
           {
             index: true,
@@ -83,12 +96,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
 const App = () => {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Toaster />
       <RouterProvider router={router} />
-    </>
+    </QueryClientProvider>
   );
 };
 

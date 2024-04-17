@@ -4,6 +4,7 @@ import Input from "../Component/Input.jsx";
 import { Form, NavLink } from "react-router-dom";
 import { SignIn } from "../api/AuthApi.jsx";
 import { useNavigate } from "react-router-dom";
+import { RiseLoader } from "react-spinners";
 import toast from "react-hot-toast";
 export default function FormLogin() {
   const navigate = useNavigate();
@@ -24,9 +25,15 @@ export default function FormLogin() {
     setLoading(true);
     SignIn(data)
       .then((res) => {
-        navigate("/");
+        console.log(res.user.id_role);
+        if (res.user.id_role === 2) {
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
         sessionStorage.setItem("token", res.access_token);
         sessionStorage.setItem("user", JSON.stringify(res.user));
+
         toast.success(res.message, {
           style: {
             backgroundColor: "#000000",
@@ -80,7 +87,22 @@ export default function FormLogin() {
           className="mx-2 bg-orange-500 drop-shadow-md rounded-3xl col-span-1 py-3"
           type="submit"
         >
-          LOGIN
+          {loading ? (
+            <RiseLoader
+              color="#ffffff"
+              loading={loading}
+              cssOverride={{
+                display: "block",
+                margin: "0 auto",
+                borderColor: "red",
+              }}
+              size={10}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          ) : (
+            "LOGIN"
+          )}
         </Button>
       </div>
     </Form>
