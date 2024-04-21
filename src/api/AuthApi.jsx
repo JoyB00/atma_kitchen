@@ -1,4 +1,4 @@
-import useAxios from "./useAxios";
+import useAxios from "./index";
 const SignUp = async (data) => {
   try {
     const response = await useAxios.post("/register", data);

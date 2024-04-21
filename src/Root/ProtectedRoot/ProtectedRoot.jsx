@@ -7,14 +7,14 @@ export default function ProtectedRootWithRole({ children, role_id, url }) {
   useEffect(() => {
     if (sessionStorage.getItem("token") == null) {
       navigate("/login");
-    } else if (authUser.id_role != role_id) {
+    } else if (authUser.role_id != role_id) {
       navigate("/");
     }
   }, [navigate]);
 
   return (
     sessionStorage.getItem("token") &&
-    authUser.id_role === role_id &&
+    authUser.role_id === role_id &&
     (children ? children : <Outlet />)
   );
 }

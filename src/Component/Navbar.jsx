@@ -55,7 +55,7 @@ export default function Navbar() {
 
   return (
     <motion.div
-      className={`w-[95%] fixed py-2 z-10 ms-12 my-4 rounded-3xl ${
+      className={`w-[95%] fixed py-4 z-10 ms-12 my-4 rounded-3xl ${
         navbar
           ? "bg-white/50 text-white backdrop-blur-xl"
           : "bg-transparent drop-shadow-sm"
@@ -128,10 +128,23 @@ export default function Navbar() {
                   1
                 </Badge> */}
               </Button>
-              <h1 className="ms-4 text-lg font-medium text-black my-auto">
-                Welcome {"  "}
+              <Button
+                className="ms-3 rounded-full p-0 hover:border-transparent w-16"
+                withoutAnimate
+                type="submit"
+                onClick={logout}
+              >
+                <div className="bg-orang-500 w-16">
+                  <img
+                    src="https://api.dicebear.com/8.x/adventurer/svg?seed=Abby"
+                    alt="avatar"
+                    className="w-20 p-0 my-auto"
+                  />
+                </div>
+              </Button>
+              <h1 className="text-lg font-medium text-black my-auto">
                 <span
-                  className="font-bold text-2xl text-black"
+                  className="font-semibold text-xl text-black"
                   style={{
                     transitionProperty: " color",
                     transitionDuration: "200ms",
@@ -141,21 +154,6 @@ export default function Navbar() {
                   {authUser.fullName.substring(0, 5)}
                 </span>
               </h1>
-
-              <Button
-                className=" rounded-full p-0 hover:border-transparent w-16"
-                withoutAnimate
-                type="submit"
-                onClick={logout}
-              >
-                <div className="bg-orang-500 w-16">
-                  <img
-                    src="https://api.dicebear.com/8.x/adventurer/svg?seed=Angel"
-                    alt="avatar"
-                    className="w-20 p-0 my-auto"
-                  />
-                </div>
-              </Button>
             </>
           ) : (
             <>

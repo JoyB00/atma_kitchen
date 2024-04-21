@@ -10,7 +10,10 @@ import { motion } from "framer-motion";
 import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
 import { DeleteProduct } from "../../../../api/ProductApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-export default function ProductTable({ search, data }) {
+import toast from "react-hot-toast";
+import { getPicture } from "../../../../api";
+
+export default function ProductTable({ search, data, length }) {
   const [page, setPage] = useState(1);
   const productPerPage = 8;
   const startIndex = (page - 1) * productPerPage;
@@ -19,7 +22,7 @@ export default function ProductTable({ search, data }) {
   const swallDelete = (data) => {
     withReactContent(Swal)
       .fire({
-        title: `Are you sure to delete ${data.nama_produk} ?  `,
+        title: `Are you sure to delete ${data.product_name} ?  `,
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
@@ -29,12 +32,21 @@ export default function ProductTable({ search, data }) {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          mutation.mutate(data.id);
-          withReactContent(Swal).fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          toast.promise(
+            mutation.mutateAsync(data.id),
+            {
+              loading: "Loading",
+              success: "Your file has been Deleted",
+              error: (err) => err,
+            },
+            {
+              style: {
+                backgroundColor: "#000000",
+                color: "#ffffff",
+              },
+              position: "top-center",
+            }
+          );
         }
       });
   };
@@ -93,8 +105,8 @@ export default function ProductTable({ search, data }) {
           .filter((item) => {
             return search.toLowerCase() === ""
               ? item
-              : item.title.toLowerCase().includes(search) ||
-                  item.title.includes(search);
+              : item.product_name.toLowerCase().includes(search) ||
+                  item.product_name.includes(search);
           })
           .slice(startIndex, endIndex)
           .map((item) => (
@@ -106,19 +118,25 @@ export default function ProductTable({ search, data }) {
               <td className="font-medium py-6 ps-6 ">
                 <div className="flex items-center ">
                   <img
-                    src={defaultImage}
+                    src={
+                      item.product_picture
+                        ? getPicture(item.product_picture, "product")
+                        : defaultImage
+                    }
                     alt=""
                     className="w-16 h-16 rounded-full object-cover"
                   />
-                  <p className="ps-3 text-lg">{item.nama_produk}</p>
+                  <p className="ps-3 text-lg">{item.product_name}</p>
                 </div>
               </td>
-              <td className="font-medium text-start">Cake</td>
-              <td className="font-medium text-start">{item.kuantitas}</td>
+              <td className="font-medium text-start">
+                {item.categories.category_name}
+              </td>
+              <td className="font-medium text-start">{item.quantity}</td>
               <td className="text-start font-medium ">
-                {item.harga_produk <= 999
-                  ? item.harga_produk
-                  : (item.harga_produk / 1000).toFixed(1) + "K"}
+                {item.product_price <= 999
+                  ? item.product_price
+                  : (item.product_price / 1000).toFixed(1) + "K"}
               </td>
               <td className="font-medium ">
                 <div className="flex justify-center me-2">
@@ -144,7 +162,7 @@ export default function ProductTable({ search, data }) {
         <tr>
           <td colSpan={5}>
             <Pagination
-              count={Math.ceil(20 / productPerPage)}
+              count={Math.ceil(length / productPerPage)}
               size="small"
               className="flex justify-center mb-4"
               onChange={handleChange}

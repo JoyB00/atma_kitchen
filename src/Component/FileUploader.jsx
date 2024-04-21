@@ -26,6 +26,7 @@ export default function FileUploader({ id, ...props }) {
                 name={id}
                 type="file"
                 className="sr-only"
+                accept="image/*"
                 {...props}
               />
             </label>

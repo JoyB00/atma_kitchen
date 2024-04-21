@@ -1,7 +1,7 @@
-import useAxios from "./useAxios";
+import useAxios from ".";
 const FetchAllProducts = async () => {
   try {
-    const response = await useAxios.get("/products");
+    const response = await useAxios.get("/product");
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);
@@ -11,7 +11,11 @@ const FetchAllProducts = async () => {
 
 const AddProduct = async (data) => {
   try {
-    const response = await useAxios.post("/products", data);
+    const response = await useAxios.post("/product", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -21,7 +25,7 @@ const AddProduct = async (data) => {
 
 const GetProductById = async (id) => {
   try {
-    const response = await useAxios.get(`/products/${id}`);
+    const response = await useAxios.get(`/product/${id}`);
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -31,7 +35,11 @@ const GetProductById = async (id) => {
 
 const UpdateProduct = async (data) => {
   try {
-    const response = await useAxios.patch(`/products/${data.id}`, data);
+    const response = await useAxios.post(`/product/${data.id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -41,7 +49,7 @@ const UpdateProduct = async (data) => {
 
 const DeleteProduct = async (id) => {
   try {
-    const response = await useAxios.delete(`/products/${id}`);
+    const response = await useAxios.delete(`/product/${id}`);
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);

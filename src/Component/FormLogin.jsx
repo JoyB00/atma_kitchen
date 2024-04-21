@@ -26,7 +26,7 @@ export default function FormLogin() {
     SignIn(data)
       .then((res) => {
         console.log(res.user.id_role);
-        if (res.user.id_role === 2) {
+        if (res.user.role_id === 2) {
           navigate("/dashboard");
         } else {
           navigate("/");

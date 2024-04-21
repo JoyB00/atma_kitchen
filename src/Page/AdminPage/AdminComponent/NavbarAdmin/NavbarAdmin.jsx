@@ -9,7 +9,7 @@ export default function NavbarAdmin({ url, page, setSearch }) {
   const [scroll, setScroll] = useState(false);
 
   const changeBackground = () => {
-    if (window.screenY >= 40) {
+    if (window.scrollY >= 40) {
       setScroll(true);
     } else {
       setScroll(false);
@@ -24,7 +24,7 @@ export default function NavbarAdmin({ url, page, setSearch }) {
   return (
     <div
       className={`w-[77%] rounded-2xl z-10 ${
-        scroll ? "bg-white/40 " : "bg-transparent "
+        scroll ? "bg-white/60 " : "bg-transparent "
       } backdrop-blur-xl flex justify-between mt-6 fixed p-4 `}
     >
       <div>

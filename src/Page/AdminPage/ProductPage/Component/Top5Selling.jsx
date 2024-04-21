@@ -41,10 +41,10 @@ export default function Top5Selling({ data }) {
               <div className="flex items-center ">
                 <img
                   src={defaultImage}
-                  alt={item.nama_produk}
+                  alt={item.product_name}
                   className="w-16 h-16 rounded-full object-cover"
                 />
-                <p className="ps-3 text-md">{item.nama_produk}</p>
+                <p className="ps-3 text-md">{item.product_name}</p>
               </div>
             </td>
             <td className="font-medium text-center pe-6">100 pcs</td>

@@ -120,41 +120,43 @@ export default function Menu() {
                 />
               </div>
             ) : (
-              <motion.ul
-                variants={card}
-                initial="hidden"
-                animate="visible"
-                className="  rounded-xl grid grid-cols-3 ms-8 me-6 gap-12"
-              >
-                {data.slice(startIndex, endIndex).map((product) => (
-                  <motion.li
-                    className="col-span-1"
-                    key={product.id}
-                    variants={productItem}
-                    transition={{ type: "spring" }}
-                  >
-                    <CardProduct
-                      alt={product.alt}
-                      image={defaultImage}
-                      desc="
+              <>
+                <motion.ul
+                  variants={card}
+                  initial="hidden"
+                  animate="visible"
+                  className="  rounded-xl grid grid-cols-3 ms-8 me-6 gap-12"
+                >
+                  {data.slice(startIndex, endIndex).map((product) => (
+                    <motion.li
+                      className="col-span-1"
+                      key={product.id}
+                      variants={productItem}
+                      transition={{ type: "spring" }}
+                    >
+                      <CardProduct
+                        alt={product.product_name}
+                        image={defaultImage}
+                        desc="
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim id eveniet nemo aut ad vel tempora?"
-                      price={
-                        product.harga_produk <= 999
-                          ? product.harga_produk
-                          : (product.harga_produk / 1000).toFixed(1) + "K"
-                      }
-                      title={product.nama_produk}
-                    />
-                  </motion.li>
-                ))}
-              </motion.ul>
+                        price={
+                          product.product_price <= 999
+                            ? product.product_price
+                            : (product.product_price / 1000).toFixed(1) + "K"
+                        }
+                        title={product.product_name}
+                      />
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                <Pagination
+                  count={Math.ceil(data.length / productPerPage)}
+                  size="small"
+                  className="flex justify-center mt-6"
+                  onChange={handleChange}
+                />
+              </>
             )}
-            <Pagination
-              count={Math.ceil(data / productPerPage)}
-              size="small"
-              className="flex justify-center mt-6"
-              onChange={handleChange}
-            />
           </div>
         </div>
         <div className="from-cyan-100 via-transparent md:pt-12">

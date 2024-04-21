@@ -6,7 +6,6 @@ import defaultImage from "../../assets/ProductAsset/lapis leggite.jpg";
 import { RotateLoader } from "react-spinners";
 import { motion } from "framer-motion";
 
-
 export default function FeaturedProduct({ data, loading }) {
   return (
     <>
@@ -48,14 +47,17 @@ export default function FeaturedProduct({ data, loading }) {
                 <CardProduct
                   // alt={product.alt}
                   image={defaultImage}
-                  desc="
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim id eveniet nemo aut ad vel tempora?"
-                  price={
-                    product.harga_produk <= 999
-                      ? product.harga_produk
-                      : (product.harga_produk / 1000).toFixed(1) + "K"
+                  desc={
+                    product.description.length < 120
+                      ? product.description
+                      : `${product.description.substring(0, 120)}...`
                   }
-                  title={product.nama_produk}
+                  price={
+                    product.product_price <= 999
+                      ? product.product_price
+                      : (product.product_price / 1000).toFixed(1) + "K"
+                  }
+                  title={product.product_name}
                 />
               </SwiperSlide>
             ))}

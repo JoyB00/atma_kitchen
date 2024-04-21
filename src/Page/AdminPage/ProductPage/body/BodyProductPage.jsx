@@ -15,31 +15,15 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FetchAllProducts } from "../../../../api/ProductApi";
-import { RotateLoader } from "react-spinners";
+import { useAtom } from "jotai";
+import { allCategories } from "../../../../lib/CategoryFunctions";
 import LoadingTable from "../Component/LoadingTable";
 export default function Body({ search }) {
-  const Category = [
-    {
-      no: 1,
-      name: "Cake",
-    },
-    {
-      no: 2,
-      name: "Bread",
-    },
-    {
-      no: 3,
-      name: "Drink",
-    },
-    {
-      no: 4,
-      name: "Entrusted",
-    },
-  ];
-  const { isPending, data, isFetching } = useQuery({
+  const products = useQuery({
     queryKey: ["products"],
     queryFn: FetchAllProducts,
   });
+  const [categories] = useAtom(allCategories);
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
@@ -66,15 +50,19 @@ export default function Body({ search }) {
         </div>
       </div>
       <div className="grid grid-cols-6 gap-x-5">
-        {isFetching ? (
-          <LoadingTable loading={isFetching} />
+        {products.isFetching ? (
+          <LoadingTable loading={products.isFetching} />
         ) : (
           <>
             <div className="col-span-4">
-              <ProductTable search={search} data={data} />
+              <ProductTable
+                search={search}
+                data={products.data}
+                length={products.data.length}
+              />
             </div>
             <div className="col-span-2">
-              <Top5Selling data={data} />
+              <Top5Selling data={products.data} />
             </div>
           </>
         )}
@@ -84,11 +72,11 @@ export default function Body({ search }) {
       <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="FILTER">
         <div className="px-4">
           <h1 className="text-lg font-semibold">Category Product</h1>
-          {Category.map((category) => (
+          {categories.map((category) => (
             <Checkbox
-              id={category.name}
-              label={category.name}
-              key={category.no}
+              id={category.category_name}
+              label={category.category_name}
+              key={category.id}
             />
           ))}
           <h1 className="text-lg font-semibold pt-8">Stock Product</h1>

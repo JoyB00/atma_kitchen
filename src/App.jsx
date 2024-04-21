@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
+import LoadingPage from "./Component/LoadingPage";
 //
 import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
@@ -23,11 +24,19 @@ import EditProduct, {
 } from "./Page/AdminPage/ProductPage/EditProduct/EditProduct";
 
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
+import { lazy, Suspense } from "react";
 
+// const RootAdmin = lazy(() =>
+//   import("./Root/AdminDashboard/Product/RootProduct")
+// );
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <Suspense fallback={<LoadingPage />}>
+        <RootLayout />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
@@ -53,7 +62,9 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: (
           <ProtectedRoot role_id={2}>
-            <RootDashboard />
+            <Suspense fallback={<LoadingPage />}>
+              <RootDashboard />
+            </Suspense>
           </ProtectedRoot>
         ),
         children: [
