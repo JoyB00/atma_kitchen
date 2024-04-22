@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import Button from "../Component/Button";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 export default function CardComp({ title, price, desc, image, alt }) {
   return (
@@ -13,11 +15,8 @@ export default function CardComp({ title, price, desc, image, alt }) {
       transition={{ type: "spring" }}
     >
       <div className="drop-shadow-md rounded-xl bg-white text-black my-auto p-3 w-[21.5rem]">
-        <motion.img
-          whileHover={{
-            scale: 1.03,
-          }}
-          transition={{ type: "tween", stiffness: 1000 }}
+        <LazyLoadImage
+          effect="blur"
           src={image}
           alt={alt}
           className="h-64 w-[21.5rem]  object-cover rounded-xl mx-auto"

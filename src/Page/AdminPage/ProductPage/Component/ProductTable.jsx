@@ -12,6 +12,7 @@ import { DeleteProduct } from "../../../../api/ProductApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getPicture } from "../../../../api";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export default function ProductTable({ search, data, length }) {
   const [page, setPage] = useState(1);
@@ -100,7 +101,11 @@ export default function ProductTable({ search, data, length }) {
           <th className="text-center font-medium pe-6">Action</th>
         </tr>
       </thead>
-      <motion.tbody variants={row} initial="hidden" animate="visible">
+      <motion.tbody
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         {data
           .filter((item) => {
             return search.toLowerCase() === ""
@@ -117,7 +122,8 @@ export default function ProductTable({ search, data, length }) {
             >
               <td className="font-medium py-6 ps-6 ">
                 <div className="flex items-center ">
-                  <img
+                  <LazyLoadImage
+                    effect="blur"
                     src={
                       item.product_picture
                         ? getPicture(item.product_picture, "product")

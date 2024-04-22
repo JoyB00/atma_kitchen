@@ -1,6 +1,7 @@
 import LapisLegit from "../../assets/HomeAssets/lapis legit.png";
 import Button from "../../Component/Button";
 import Badge from "../../Component/Badge";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 export default function BestSeller() {
   return (
     <div className="bg-gradient-to-tl from-cyan-50 via-transparent to-transparent  ps-36  flex py-24">
@@ -24,7 +25,7 @@ export default function BestSeller() {
         </Button>
       </div>
       <div className="w-1/2 flex justify-end">
-        <img src={LapisLegit} alt="bestseller" />
+        <LazyLoadImage effect="blur" src={LapisLegit} alt="bestseller" />
       </div>
     </div>
   );

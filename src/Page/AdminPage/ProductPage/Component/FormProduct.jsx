@@ -3,7 +3,12 @@ import FileUploader from "../../../../Component/FileUploader";
 import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { faPencil, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPencil,
+  faPlus,
+  faSave,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -18,20 +23,21 @@ import { allCategories } from "../../../../lib/CategoryFunctions";
 import defaultImage from "../../../../assets/ProductAsset/bun susus.jpg";
 import { getPicture } from "../../../../api";
 
-export default function FormProduct({ product }) {
+export default function FormProduct({ productData, recipes }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [categories] = useAtom(allCategories);
+  console.log("dasdsa" + productData);
 
-  const initialState = product
+  const initialState = productData
     ? {
-        id: product.id,
-        product_name: product.product_name,
-        quantity: product.quantity,
-        product_price: product.product_price,
-        description: product.description,
-        category_id: product.category_id,
-        product_picture: product.product_picture,
+        id: productData.id,
+        product_name: productData.product_name,
+        quantity: productData.quantity,
+        product_price: productData.product_price,
+        description: productData.description,
+        category_id: productData.category_id,
+        product_picture: productData.product_picture,
       }
     : {
         product_name: "",
@@ -40,9 +46,12 @@ export default function FormProduct({ product }) {
         description: "",
         category_id: 1,
         product_picture: null,
+        recipe: [],
       };
   const [data, setData] = useState(initialState);
   const [picture, setPicture] = useState(null);
+  const [recipe, setRecipe] = useState(recipes ? recipes : []);
+  const [counterRecipe, setCounterRecipe] = useState(0);
 
   let animate = {
     initial: { opacity: 0, y: -100 },
@@ -60,8 +69,41 @@ export default function FormProduct({ product }) {
   };
   const removePicture = () => {
     setPicture(null);
-    setData({ ...data, [product_picture]: null });
-    product.product_picture = null;
+    setData({ ...data, product_picture: null });
+    productData.product_picture = null;
+  };
+
+  const handleAddRecipe = (event) => {
+    event.preventDefault();
+
+    setRecipe((dataPrev) => {
+      const addRecipe = {
+        id: counterRecipe,
+        ingredient_id: "",
+        quantity: "",
+      };
+      setCounterRecipe((counter) => counter + 1);
+      return [...dataPrev, addRecipe];
+    });
+  };
+
+  const handleChangeRecipe = (event, index) => {
+    event.preventDefault();
+    const currentData = [...recipe];
+    currentData[index][event.target.name] = event.target.value;
+    setRecipe(currentData);
+    setData({ ...data, recipe: currentData });
+    console.log(data.recipe);
+  };
+
+  const handleDeleteRecipe = (event, id) => {
+    event.preventDefault();
+    console.log(id);
+    const updatedRecipe = recipe.filter((recipe) => {
+      return recipe.id !== id;
+    });
+    setRecipe(updatedRecipe);
+    setData({ ...data, recipe: updatedRecipe });
   };
 
   const addProduct = useMutation({
@@ -90,7 +132,7 @@ export default function FormProduct({ product }) {
       queryClient.invalidateQueries(["products"]);
     },
     onSuccess: () => {
-      queryClient.setQueryData(["products", { id: product.id }], data);
+      queryClient.setQueryData(["products", { id: productData.id }], data);
       navigate("/dashboard/product");
     },
     onError: (error) => {
@@ -162,8 +204,8 @@ export default function FormProduct({ product }) {
   };
 
   return (
-    <Form method={product ? "patch" : "post"}>
-      <div className="grid grid-cols-5 mt-8">
+    <Form method={productData ? "patch" : "post"}>
+      <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
           <p className="text-gray-400 font-light mb-6">
@@ -177,7 +219,7 @@ export default function FormProduct({ product }) {
             withLabel
             placeholder="Product Name"
             type="text"
-            defaultValue={product ? product.product_name : ""}
+            defaultValue={productData ? productData.product_name : ""}
           />
           <Input
             onChange={handleChange}
@@ -187,7 +229,7 @@ export default function FormProduct({ product }) {
             withLabel
             placeholder="Quantity"
             type="number"
-            defaultValue={product ? product.quantity : ""}
+            defaultValue={productData ? productData.quantity : ""}
           />
           <Input
             onChange={handleChange}
@@ -197,7 +239,7 @@ export default function FormProduct({ product }) {
             withLabel
             placeholder="Price"
             type="number"
-            defaultValue={product ? product.product_price : ""}
+            defaultValue={productData ? productData.product_price : ""}
           />
 
           {/* category */}
@@ -211,13 +253,15 @@ export default function FormProduct({ product }) {
             onChange={handleChange}
             name="category_id"
             id="category_id"
-            defaultValue={product ? product.category_id : ""}
+            defaultValue={productData ? productData.category_id : ""}
           >
             {categories.map((category) => (
               <option
                 value={category.id}
                 key={category.category_name}
-                selected={product && category.no === product.category_id}
+                selected={
+                  productData && category.no === productData.category_id
+                }
               >
                 {category.category_name}
               </option>
@@ -236,7 +280,7 @@ export default function FormProduct({ product }) {
               rows="5"
               className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Description"
-              defaultValue={product ? product.description : ""}
+              defaultValue={productData ? productData.description : ""}
             ></textarea>
           </motion.div>
         </div>
@@ -246,14 +290,14 @@ export default function FormProduct({ product }) {
             Please add or change your image product.
           </p>
           <motion.div {...animate}>
-            {picture || product?.product_picture ? (
+            {picture || productData?.product_picture ? (
               <div className="mt-2 rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
                 <div className="flex justify-center">
                   <img
                     src={
-                      picture || !product
+                      picture || !productData
                         ? URL.createObjectURL(picture)
-                        : getPicture(product.product_picture, "product")
+                        : getPicture(productData.product_picture, "product")
                     }
                     alt="product picture"
                     className=" object-fit-cover "
@@ -283,7 +327,7 @@ export default function FormProduct({ product }) {
             )}
             <div
               className={`${
-                picture || product?.product_picture ? "hidden" : ""
+                picture || productData?.product_picture ? "hidden" : ""
               } `}
             >
               <FileUploader id="product_picture" onChange={handlePicture} />
@@ -291,6 +335,65 @@ export default function FormProduct({ product }) {
           </motion.div>
         </div>
       </div>
+      <h1 className="text-xl font-medium">Add Recipe</h1>
+      <p className="text-gray-400 font-light mb-6">
+        Please enter the recipe of your product.
+      </p>
+      <hr />
+      {/* add recipe */}
+      {recipe.map((data, index) => {
+        return (
+          <div className="grid grid-cols-5 gap-8" key={index}>
+            <div className="col-span-2">
+              <Input
+                onChange={(event) => handleChangeRecipe(event, index)}
+                withAnimate
+                id="ingredient_id"
+                label="Ingredient"
+                withLabel
+                placeholder="Ingredient"
+                type="text"
+                value={data ? data.ingredient_id : ""}
+              />
+            </div>
+            <div className="col-span-2">
+              <Input
+                onChange={(event) => handleChangeRecipe(event, index)}
+                withAnimate
+                id="quantity"
+                label="Quantity"
+                withLabel
+                placeholder="Quantity"
+                type="number"
+                defaultValue={data ? data.quantity : ""}
+              />
+            </div>
+            <div className="col-span-1 flex justify-center items-center">
+              <Button
+                className=" text-orange-500 bg-transparent hover:text-white mt-8"
+                type="button"
+                onClick={(event) => handleDeleteRecipe(event, data.id)}
+              >
+                <FontAwesomeIcon icon={faTrash} className="me-1" />
+                Delete Recipe
+              </Button>
+            </div>
+          </div>
+        );
+      })}
+      {console.log(recipe)}
+      <div className="">
+        <button
+          className="text-orange-400 hover:text-orange-500"
+          onClick={handleAddRecipe}
+        >
+          <FontAwesomeIcon icon={faPlus} className="me-1" />
+          Add Recipe
+        </button>
+      </div>
+
+      {/* save or discard button */}
+
       <div className="bg-white sticky bottom-0 -mx-px ">
         <div className="flex justify-start pb-6">
           <NavLink to="/dashboard/product">
@@ -301,7 +404,9 @@ export default function FormProduct({ product }) {
           <Button
             className="mt-8 text-white me-2 bg-orange-500 "
             type="button"
-            onClick={product ? () => swallUpdate(data) : () => swallAdd(data)}
+            onClick={
+              productData ? () => swallUpdate(data) : () => swallAdd(data)
+            }
           >
             <FontAwesomeIcon icon={faSave} className="me-1" /> Save
           </Button>
