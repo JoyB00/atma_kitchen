@@ -17,17 +17,18 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import toast from "react-hot-toast";
-import { useAtom } from "jotai";
 import { useState } from "react";
-import { allCategories } from "../../../../lib/CategoryFunctions";
 import defaultImage from "../../../../assets/ProductAsset/bun susus.jpg";
 import { getPicture } from "../../../../api";
 
-export default function FormProduct({ productData, recipes }) {
+export default function FormProduct({
+  productData,
+  recipes,
+  ingredient,
+  categories,
+}) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [categories] = useAtom(allCategories);
-  console.log("dasdsa" + productData);
 
   const initialState = productData
     ? {
@@ -38,6 +39,7 @@ export default function FormProduct({ productData, recipes }) {
         description: productData.description,
         category_id: productData.category_id,
         product_picture: productData.product_picture,
+        recipe: recipes,
       }
     : {
         product_name: "",
@@ -79,7 +81,7 @@ export default function FormProduct({ productData, recipes }) {
     setRecipe((dataPrev) => {
       const addRecipe = {
         id: counterRecipe,
-        ingredient_id: "",
+        ingredient_id: 1,
         quantity: "",
       };
       setCounterRecipe((counter) => counter + 1);
@@ -93,12 +95,12 @@ export default function FormProduct({ productData, recipes }) {
     currentData[index][event.target.name] = event.target.value;
     setRecipe(currentData);
     setData({ ...data, recipe: currentData });
-    console.log(data.recipe);
+    // console.log(data.recipe);
   };
 
   const handleDeleteRecipe = (event, id) => {
     event.preventDefault();
-    console.log(id);
+    // console.log(id);
     const updatedRecipe = recipe.filter((recipe) => {
       return recipe.id !== id;
     });
@@ -153,6 +155,7 @@ export default function FormProduct({ productData, recipes }) {
       })
       .then((result) => {
         if (result.isConfirmed) {
+          console.log(data.recipe);
           toast.promise(
             updateProduct.mutateAsync(data),
             {
@@ -260,7 +263,7 @@ export default function FormProduct({ productData, recipes }) {
                 value={category.id}
                 key={category.category_name}
                 selected={
-                  productData && category.no === productData.category_id
+                  productData && category.id === productData.category_id
                 }
               >
                 {category.category_name}
@@ -340,21 +343,33 @@ export default function FormProduct({ productData, recipes }) {
         Please enter the recipe of your product.
       </p>
       <hr />
+
       {/* add recipe */}
       {recipe.map((data, index) => {
         return (
           <div className="grid grid-cols-5 gap-8" key={index}>
-            <div className="col-span-2">
-              <Input
+            <div className="col-span-2 my-auto">
+              <label htmlFor="ingredient">Ingredient</label>
+              <motion.select
+                {...animate}
+                className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
                 onChange={(event) => handleChangeRecipe(event, index)}
-                withAnimate
+                name="ingredient_id"
                 id="ingredient_id"
-                label="Ingredient"
-                withLabel
-                placeholder="Ingredient"
-                type="text"
-                value={data ? data.ingredient_id : ""}
-              />
+                // defaultValue={productData ? productData.category_id : ""}
+              >
+                {ingredient.map((ingredient) => (
+                  <option
+                    value={ingredient.id}
+                    key={ingredient.ingredient_name}
+                    selected={
+                      productData && ingredient.id === data.ingredient_id
+                    }
+                  >
+                    {ingredient.ingredient_name}
+                  </option>
+                ))}
+              </motion.select>
             </div>
             <div className="col-span-2">
               <Input
@@ -381,7 +396,7 @@ export default function FormProduct({ productData, recipes }) {
           </div>
         );
       })}
-      {console.log(recipe)}
+      {/* {console.log(recipe)} */}
       <div className="">
         <button
           className="text-orange-400 hover:text-orange-500"

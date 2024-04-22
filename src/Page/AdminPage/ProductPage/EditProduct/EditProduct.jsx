@@ -5,8 +5,13 @@ import FooterDashboard from "../../../../Component/FooterDashboard";
 import Product from "../../../../assets/ProductAsset/Product";
 import { useRouteLoaderData } from "react-router-dom";
 import { GetProductById } from "../../../../api/ProductApi";
+import { allCategories } from "../../../../lib/CategoryFunctions";
+import allIngredients from "../../../../lib/IngredientFunctions";
+import { useAtom } from "jotai";
 export default function EditProduct() {
   const product = useRouteLoaderData("product-detail");
+  const [categories] = useAtom(allCategories);
+  const [ingredient] = useAtom(allIngredients);
 
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
@@ -19,6 +24,8 @@ export default function EditProduct() {
             <FormProduct
               productData={product.product}
               recipes={product.recipe}
+              ingredient={ingredient}
+              categories={categories}
             />
           </div>
           <FooterDashboard />
