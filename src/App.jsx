@@ -24,8 +24,12 @@ import EditProduct, {
   loader as eventDetailLoader,
 } from "./Page/AdminPage/ProductPage/EditProduct/EditProduct";
 
+// Root Hampers
+import RootHampers from "./Root/AdminDashboard/Hampers/RootHampers";
+import HampersPage from "./Page/AdminPage/HampersPage/HampersPage";
+
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
@@ -101,6 +105,16 @@ const router = createBrowserRouter([
           {
             path: "ingredient",
             element: <IngredientPage />,
+          },
+          {
+            path: "hampers",
+            element: <RootHampers />,
+            children: [
+              {
+                index: true,
+                element: <HampersPage />,
+              },
+            ],
           },
         ],
       },

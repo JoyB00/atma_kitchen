@@ -356,15 +356,13 @@ export default function FormProduct({
                 onChange={(event) => handleChangeRecipe(event, index)}
                 name="ingredient_id"
                 id="ingredient_id"
-                // defaultValue={productData ? productData.category_id : ""}
+                defaultValue={recipes ? recipes.ingredient_id : ""}
               >
                 {ingredient.map((ingredient) => (
                   <option
                     value={ingredient.id}
                     key={ingredient.ingredient_name}
-                    selected={
-                      productData && ingredient.id === data.ingredient_id
-                    }
+                    selected={recipes && ingredient.id === data.ingredient_id}
                   >
                     {ingredient.ingredient_name}
                   </option>

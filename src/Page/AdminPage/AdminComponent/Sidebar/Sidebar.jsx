@@ -3,6 +3,7 @@ import Navigation from "./component/Navigation";
 import {
   faBreadSlice,
   faEgg,
+  faGifts,
   faHouse,
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
@@ -31,11 +32,7 @@ export default function Sidebar() {
           icon={faBreadSlice}
           url={"/dashboard/product"}
         />
-        <Navigation
-          label="Hampers"
-          icon={faBreadSlice}
-          url={"/dashboard/hampers"}
-        />
+        <Navigation label="Hampers" icon={faGifts} url={"/dashboard/hampers"} />
         <Navigation
           label="Main Dashbord"
           icon={faHouse}

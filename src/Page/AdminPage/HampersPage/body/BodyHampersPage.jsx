@@ -3,33 +3,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCookie,
   faFilter,
+  faGifts,
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
-import Top5Selling from "../Component/Top5Selling";
-import ProductTable from "../Component/ProductTable";
-import Drawer from "../../../../Component/Drawer";
 import Checkbox from "../../../../Component/Checkbox";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { FetchAllProducts } from "../../../../api/ProductApi";
-import { useAtom } from "jotai";
-import { allCategories } from "../../../../lib/CategoryFunctions";
-import LoadingTable from "../Component/LoadingTable";
+import { FetchAllHampers } from "../../../../api/HampersApi";
+import LoadingTable from "../component/LoadingTable";
+import HampersTables from "../component/HampersTable";
+import HampersSalesTable from "../component/HampersSalesTable";
+
 export default function Body({ search }) {
-  const products = useQuery({
-    queryKey: ["products"],
-    queryFn: FetchAllProducts,
+  const hampers = useQuery({
+    queryKey: ["hampers"],
+    queryFn: FetchAllHampers,
   });
-  const [categories] = useAtom(allCategories);
+
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <div className="w-full grid grid-cols-6">
         <motion.div className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2">
           <h1 className="px-3 pt-6 col-span-2 font-semibold text-white ">
-            <FontAwesomeIcon icon={faCookie} /> Product Data{" "}
+            <FontAwesomeIcon icon={faGifts} /> Hampers Data{" "}
           </h1>
           <div className="ms-12 col-span-1 bg-orange-600 rounded-tl-full" />
         </motion.div>
@@ -43,32 +42,36 @@ export default function Body({ search }) {
           <NavLink to="addProduct">
             <Button className="bg-orange-500 my-4 text-white">
               <FontAwesomeIcon icon={faSquarePlus} className="me-1" /> Add
-              Product
+              Hampers
             </Button>
           </NavLink>
         </div>
       </div>
       <div className="grid grid-cols-6 gap-x-5">
-        {products.isFetching ? (
-          <LoadingTable loading={products.isFetching} />
+        {hampers.isFetching ? (
+          <LoadingTable loading={hampers.isFetching} />
         ) : (
           <>
             <div className="col-span-4">
-              <ProductTable
+              <HampersTables
                 search={search}
-                data={products.data}
-                length={products.data.length}
+                data={hampers.data.hampers}
+                length={hampers.data.hampers.length}
               />
             </div>
             <div className="col-span-2">
-              <Top5Selling data={products.data} />
+              <HampersSalesTable
+                search={search}
+                data={hampers.data.hampers}
+                length={hampers.data.hampers.length}
+              />
             </div>
           </>
         )}
       </div>
 
       {/* Drawer */}
-      <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="FILTER">
+      {/* <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="FILTER">
         <div className="px-4">
           <h1 className="text-lg font-semibold">Category Product</h1>
           {categories.map((category) => (
@@ -97,7 +100,7 @@ export default function Body({ search }) {
             <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
           </Button>
         </div>
-      </Drawer>
+      </Drawer> */}
     </div>
   );
 }
