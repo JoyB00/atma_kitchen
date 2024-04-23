@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useAtom } from "jotai";
-import { allCategories } from "../../lib/CategoryFunctions";
-import allIngredients from "../../lib/IngredientFunctions";
+import { allIngredients, allCategories } from "../../lib/FetchFunctions";
 export default function RootDashboard() {
   const [categories] = useAtom(allCategories);
   const [ingredient] = useAtom(allIngredients);

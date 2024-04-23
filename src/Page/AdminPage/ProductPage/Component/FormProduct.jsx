@@ -27,9 +27,6 @@ export default function FormProduct({
   ingredient,
   categories,
 }) {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   const initialState = productData
     ? {
         id: productData.id,
@@ -50,6 +47,8 @@ export default function FormProduct({
         product_picture: null,
         recipe: [],
       };
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [data, setData] = useState(initialState);
   const [picture, setPicture] = useState(null);
   const [recipe, setRecipe] = useState(recipes ? recipes : []);
@@ -208,6 +207,7 @@ export default function FormProduct({
 
   return (
     <Form method={productData ? "patch" : "post"}>
+      {console.log(productData.product_picture)}
       <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -394,7 +394,6 @@ export default function FormProduct({
           </div>
         );
       })}
-      {/* {console.log(recipe)} */}
       <div className="">
         <button
           className="text-orange-400 hover:text-orange-500"

@@ -39,7 +39,7 @@ export default function Body({ search }) {
           >
             <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
           </Button>
-          <NavLink to="addProduct">
+          <NavLink to="addHampers">
             <Button className="bg-orange-500 my-4 text-white">
               <FontAwesomeIcon icon={faSquarePlus} className="me-1" /> Add
               Hampers

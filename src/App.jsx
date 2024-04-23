@@ -21,12 +21,13 @@ import RootProduct from "./Root/AdminDashboard/Product/RootProduct";
 import ProductPage from "./Page/AdminPage/ProductPage/ProductPage";
 import AddProduct from "./Page/AdminPage/ProductPage/AddProduct/AddProduct";
 import EditProduct, {
-  loader as eventDetailLoader,
+  loader as productDetailLoader,
 } from "./Page/AdminPage/ProductPage/EditProduct/EditProduct";
 
 // Root Hampers
 import RootHampers from "./Root/AdminDashboard/Hampers/RootHampers";
 import HampersPage from "./Page/AdminPage/HampersPage/HampersPage";
+import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
 import { Suspense } from "react";
@@ -92,7 +93,7 @@ const router = createBrowserRouter([
               {
                 path: ":productId",
                 id: "product-detail",
-                loader: eventDetailLoader,
+                loader: productDetailLoader,
                 children: [
                   {
                     index: true,
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <HampersPage />,
+              },
+              {
+                path: "addHampers",
+                element: <AddHampers />,
               },
             ],
           },

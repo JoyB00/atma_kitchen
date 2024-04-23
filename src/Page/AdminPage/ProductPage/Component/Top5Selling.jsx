@@ -1,6 +1,7 @@
 import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
 import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { getPicture } from "../../../../api";
 export default function Top5Selling({ data }) {
   const row = {
     hidden: { opacity: 1, scale: 0 },
@@ -42,7 +43,11 @@ export default function Top5Selling({ data }) {
               <div className="flex items-center ">
                 <LazyLoadImage
                   effect="blur"
-                  src={defaultImage}
+                  src={
+                    item.product_picture
+                      ? getPicture(item.product_picture, "product")
+                      : defaultImage
+                  }
                   alt={item.product_name}
                   className="w-16 h-16 rounded-full object-cover"
                 />

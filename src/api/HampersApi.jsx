@@ -10,4 +10,26 @@ const FetchAllHampers = async () => {
   }
 };
 
-export { FetchAllHampers };
+const AddHampers = async (data) => {
+  try {
+    const response = await useAxios.post("/hampers", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const UpdateHampers = async (data) => {
+  try {
+    const response = await useAxios.post(`/hampers/${data.id}`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export { FetchAllHampers, AddHampers, UpdateHampers };

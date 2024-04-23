@@ -2,11 +2,9 @@ import Sidebar from "../../AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminComponent/NavbarAdmin/NavbarAdmin";
 import FormProduct from "../Component/FormProduct";
 import FooterDashboard from "../../../../Component/FooterDashboard";
-import Product from "../../../../assets/ProductAsset/Product";
 import { useRouteLoaderData } from "react-router-dom";
 import { GetProductById } from "../../../../api/ProductApi";
-import { allCategories } from "../../../../lib/CategoryFunctions";
-import allIngredients from "../../../../lib/IngredientFunctions";
+import { allCategories, allIngredients } from "../../../../lib/FetchFunctions";
 import { useAtom } from "jotai";
 export default function EditProduct() {
   const product = useRouteLoaderData("product-detail");

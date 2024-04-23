@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useState } from "react";
 import { Pagination } from "@mui/material";
+import { getPicture } from "../../../../api";
 export default function HampersSalesTable({ data, search, length }) {
   const [page, setPage] = useState(1);
   const productPerPage = 8;
@@ -59,7 +60,11 @@ export default function HampersSalesTable({ data, search, length }) {
                 <div className="flex items-center ">
                   <LazyLoadImage
                     effect="blur"
-                    src={defaultImage}
+                    src={
+                      item.hampers_picture
+                        ? getPicture(item.hampers_picture, "hampers")
+                        : defaultImage
+                    }
                     alt={item.hampers_name}
                     className="w-16 h-16 rounded-full object-cover"
                   />

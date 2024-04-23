@@ -57,12 +57,12 @@ export default function HampersTable({ data, search, length }) {
                   <LazyLoadImage
                     effect="blur"
                     src={
-                      item.product_picture
-                        ? getPicture(item.product_picture, "product")
+                      item.hampers_picture
+                        ? getPicture(item.hampers_picture, "hampers")
                         : defaultImage
                     }
                     alt=""
-                    className="w-16 h-16 rounded-3xl object-cover"
+                    className="w-24 h-24 rounded-3xl object-cover"
                   />
                   <p className="ps-3 text-lg">{item.hampers_name}</p>
                 </div>
