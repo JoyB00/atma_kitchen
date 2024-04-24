@@ -93,15 +93,14 @@ export default function FormHampers({
     const currentDetail = [...details];
     currentDetail[index][event.target.name] = event.target.value;
     console.log(currentDetail[index]["category"]);
-    // if (currentDetail[index]["category"] == 1) {
-    //   currentDetail[index]["ingredient_id"] =
-    //     currentDetail[index]["product_id"];
-    //   currentDetail[index]["product_id"] = null;
-    // } else if (currentDetail[index]["category"] == 2) {
-    //   currentDetail[index]["product_id"] =
-    //     currentDetail[index]["ingredient_id"];
-    //   currentDetail[index]["ingredient_id"] = null;
-    // }
+
+    if (currentDetail[index]["category"] == 1) {
+      currentDetail[index]["ingredient_id"] = event.target.value;
+      currentDetail[index]["product_id"] = null;
+    } else if (currentDetail[index]["category"] == 2) {
+      currentDetail[index]["product_id"] = event.target.value;
+      currentDetail[index]["ingredient_id"] = null;
+    }
     setDetails(currentDetail);
     setData({ ...data, details: currentDetail });
   };
@@ -342,7 +341,7 @@ export default function FormHampers({
               <label htmlFor="ingredient">
                 {data.category == 1 ? "Ingredient" : "Product"}
               </label>
-              {data.category == 1 ? (
+              {data.category == 1 || data.ingredient_id !== null ? (
                 <>
                   <motion.select
                     {...animate}
