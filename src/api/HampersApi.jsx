@@ -21,6 +21,15 @@ const AddHampers = async (data) => {
   }
 };
 
+const GetHampersById = async (id) => {
+  try {
+    const response = await useAxios.get(`/hampers/${id}`);
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 const UpdateHampers = async (data) => {
   try {
     const response = await useAxios.post(`/hampers/${data.id}`, data, {
@@ -28,8 +37,24 @@ const UpdateHampers = async (data) => {
     });
     return response.data.data;
   } catch (error) {
+    console.log(error.response.data);
+    throw error.response.data;
+  }
+};
+
+const DeleteHampers = async (id) => {
+  try {
+    const response = await useAxios.delete(`/hampers/${id}`);
+    return response.data.data;
+  } catch (error) {
     return error.response.data;
   }
 };
 
-export { FetchAllHampers, AddHampers, UpdateHampers };
+export {
+  FetchAllHampers,
+  AddHampers,
+  GetHampersById,
+  UpdateHampers,
+  DeleteHampers,
+};

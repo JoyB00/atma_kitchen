@@ -15,6 +15,7 @@ import { FetchAllHampers } from "../../../../api/HampersApi";
 import LoadingTable from "../component/LoadingTable";
 import HampersTables from "../component/HampersTable";
 import HampersSalesTable from "../component/HampersSalesTable";
+import Drawer from "../../../../Component/Drawer";
 
 export default function Body({ search }) {
   const hampers = useQuery({
@@ -71,17 +72,17 @@ export default function Body({ search }) {
       </div>
 
       {/* Drawer */}
-      {/* <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="FILTER">
+      <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="FILTER">
         <div className="px-4">
-          <h1 className="text-lg font-semibold">Category Product</h1>
-          {categories.map((category) => (
+          {/* <h1 className="text-lg font-semibold">Category Product</h1> */}
+          {/* {categories.map((category) => (
             <Checkbox
               id={category.category_name}
               label={category.category_name}
               key={category.id}
             />
-          ))}
-          <h1 className="text-lg font-semibold pt-8">Stock Product</h1>
+          ))} */}
+          <h1 className="text-lg font-semibold pt-8">Stock Hampers</h1>
           <Checkbox id="In Stock" label="In Stock" />
           <Checkbox id="Limited" label="Limited" />
           <Checkbox id="Out of Stock" label="Out of Stock" />
@@ -100,7 +101,7 @@ export default function Body({ search }) {
             <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
           </Button>
         </div>
-      </Drawer> */}
+      </Drawer>
     </div>
   );
 }

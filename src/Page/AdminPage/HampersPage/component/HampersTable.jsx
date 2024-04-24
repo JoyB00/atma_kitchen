@@ -8,7 +8,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
-import { DeleteProduct } from "../../../../api/ProductApi";
+import { DeleteHampers } from "../../../../api/HampersApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getPicture } from "../../../../api";
@@ -18,9 +18,51 @@ export default function HampersTable({ data, search, length }) {
   const productPerPage = 8;
   const startIndex = (page - 1) * productPerPage;
   const endIndex = page * productPerPage;
+  const queryClient = useQueryClient();
 
   const handleChange = (e, p) => {
     setPage(p);
+  };
+
+  const deleteHampers = useMutation({
+    mutationFn: async (id) => {
+      await DeleteHampers(id);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["hampers"]);
+    },
+  });
+
+  const swalDelete = (data) => {
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to delete ${data.hampers_name} ?  `,
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          toast.promise(
+            deleteHampers.mutateAsync(data.id),
+            {
+              loading: "Loading",
+              success: "Your file has been Deleted",
+              error: (err) => err,
+            },
+            {
+              style: {
+                backgroundColor: "#000000",
+                color: "#ffffff",
+              },
+              position: "top-center",
+            }
+          );
+        }
+      });
   };
   return (
     <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
@@ -84,7 +126,7 @@ export default function HampersTable({ data, search, length }) {
               </td>
               <td className="font-medium ">
                 <div className="flex justify-center me-2">
-                  <NavLink to={`/dashboard/product/${item.id}`}>
+                  <NavLink to={`/dashboard/hampers/${item.id}`}>
                     <Button className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]">
                       <FontAwesomeIcon icon={faPencil} className="me-2" />
                       Edit
@@ -92,7 +134,7 @@ export default function HampersTable({ data, search, length }) {
                   </NavLink>
                   <Button
                     className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-[0.9rem]"
-                    // onClick={() => swallDelete(item)}
+                    onClick={() => swalDelete(item)}
                   >
                     <FontAwesomeIcon icon={faTrash} className="me-2" />
                     Hapus

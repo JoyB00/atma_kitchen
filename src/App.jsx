@@ -28,6 +28,8 @@ import EditProduct, {
 import RootHampers from "./Root/AdminDashboard/Hampers/RootHampers";
 import HampersPage from "./Page/AdminPage/HampersPage/HampersPage";
 import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
+import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
+import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
 import { Suspense } from "react";
@@ -118,6 +120,17 @@ const router = createBrowserRouter([
               {
                 path: "addHampers",
                 element: <AddHampers />,
+              },
+              {
+                path: ":hampersId",
+                id: "hampers-detail",
+                loader: hampersDetailLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <EditHampers />,
+                  },
+                ],
               },
             ],
           },

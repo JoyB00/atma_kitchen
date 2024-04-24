@@ -83,7 +83,8 @@ export default function FormProduct({
         ingredient_id: 1,
         quantity: "",
       };
-      setCounterRecipe((counter) => counter + 1);
+      setCounterRecipe(counterRecipe + 1);
+      setData({ ...data, recipe: [...dataPrev, addRecipe] });
       return [...dataPrev, addRecipe];
     });
   };
@@ -207,7 +208,6 @@ export default function FormProduct({
 
   return (
     <Form method={productData ? "patch" : "post"}>
-      {console.log(productData.product_picture)}
       <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -346,6 +346,9 @@ export default function FormProduct({
 
       {/* add recipe */}
       {recipe.map((data, index) => {
+        {
+          console.log(data);
+        }
         return (
           <div className="grid grid-cols-5 gap-8" key={index}>
             <div className="col-span-2 my-auto">
@@ -362,7 +365,7 @@ export default function FormProduct({
                   <option
                     value={ingredient.id}
                     key={ingredient.ingredient_name}
-                    selected={recipes && ingredient.id === data.ingredient_id}
+                    selected={ingredient.id == data.ingredient_id}
                   >
                     {ingredient.ingredient_name}
                   </option>
@@ -379,6 +382,7 @@ export default function FormProduct({
                 placeholder="Quantity"
                 type="number"
                 defaultValue={data ? data.quantity : ""}
+                value={data.quantity}
               />
             </div>
             <div className="col-span-1 flex justify-center items-center">
