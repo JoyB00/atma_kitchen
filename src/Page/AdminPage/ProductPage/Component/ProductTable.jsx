@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Pagination } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
@@ -13,12 +13,22 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getPicture } from "../../../../api";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useAtom } from "jotai";
+import { loadEdit } from "../../HampersPage/HampersPage";
+import { BeatLoader } from "react-spinners";
 
 export default function ProductTable({ search, data, length }) {
   const [page, setPage] = useState(1);
   const productPerPage = 8;
   const startIndex = (page - 1) * productPerPage;
   const endIndex = page * productPerPage;
+  const [load, setLoad] = useAtom(loadEdit);
+  const [idItemLoad, setIdItemLoad] = useState();
+
+  const handleLoadEdit = (id) => {
+    setLoad(true);
+    setIdItemLoad(id);
+  };
 
   const swallDelete = (data) => {
     withReactContent(Swal)
@@ -56,18 +66,6 @@ export default function ProductTable({ search, data, length }) {
     setPage(p);
   };
 
-  const row = {
-    hidden: { opacity: 1, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delayChildren: 0.1,
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
   const productItem = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -90,6 +88,9 @@ export default function ProductTable({ search, data, length }) {
     },
   });
 
+  useEffect(() => {
+    setLoad(false);
+  }, []);
   return (
     <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
       <thead className="border-b-2">
@@ -147,9 +148,18 @@ export default function ProductTable({ search, data, length }) {
               <td className="font-medium ">
                 <div className="flex justify-center me-2">
                   <NavLink to={`/dashboard/product/${item.id}`}>
-                    <Button className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]">
-                      <FontAwesomeIcon icon={faPencil} className="me-2" />
-                      Edit
+                    <Button
+                      className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
+                      onClick={() => handleLoadEdit(item.id)}
+                    >
+                      {load && idItemLoad == item.id ? (
+                        <BeatLoader color="white" loading={load} size={10} />
+                      ) : (
+                        <>
+                          <FontAwesomeIcon icon={faPencil} className="me-2" />
+                          Edit
+                        </>
+                      )}
                     </Button>
                   </NavLink>
                   <Button
@@ -157,7 +167,7 @@ export default function ProductTable({ search, data, length }) {
                     onClick={() => swallDelete(item)}
                   >
                     <FontAwesomeIcon icon={faTrash} className="me-2" />
-                    Hapus
+                    Delete
                   </Button>
                 </div>
               </td>

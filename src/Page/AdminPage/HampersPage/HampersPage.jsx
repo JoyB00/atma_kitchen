@@ -3,6 +3,8 @@ import NavbarAdmin from "../AdminComponent/NavbarAdmin/NavbarAdmin";
 import Body from "./body/BodyHampersPage";
 import FooterDashboard from "../../../Component/FooterDashboard";
 import { useState } from "react";
+import { atom } from "jotai";
+export const loadEdit = atom(false);
 export default function HampersPage() {
   const [search, setSearch] = useState("");
   return (

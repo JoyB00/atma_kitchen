@@ -19,7 +19,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { counter } from "@fortawesome/fontawesome-svg-core";
 export default function FormHampers({
   hampersData,
   detailHampers,

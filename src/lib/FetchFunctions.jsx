@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { GetAllIngredients } from "../api/IngredientApi";
 import { FetchAllCategories } from "../api/CategoryApi";
 import { FetchAllProducts } from "../api/ProductApi";
+import { GetHampersById } from "../api/HampersApi";
 
 const fetchCategories = async () => {
   try {
@@ -34,4 +35,5 @@ const fetchAllProduct = async () => {
   }
 };
 const allProducts = atom(fetchAllProduct);
+
 export { allIngredients, allCategories, allProducts };
