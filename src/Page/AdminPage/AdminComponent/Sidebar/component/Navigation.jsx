@@ -12,7 +12,7 @@ export default function Navigation({ label, icon, url, ...props }) {
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "py-4 mt-2 grid-cols-3 grid text-white rounded-full bg-gradient-to-b from-orange-400 to-orange-500  hover:text-white "
+            ? "py-4 mt-2 grid-cols-3 grid rounded-xl text-orange-400 bg-orange-100"
             : "py-2 mt-2 grid-cols-3 grid text-gray-400 "
         }
         to={url}

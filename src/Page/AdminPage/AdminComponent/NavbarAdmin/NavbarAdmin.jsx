@@ -8,6 +8,7 @@ import MenuComponent from "../../../../Component/Menu";
 
 export default function NavbarAdmin({ url, page, setSearch }) {
   const [scroll, setScroll] = useState(false);
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   const changeBackground = () => {
     if (window.scrollY >= 40) {
@@ -30,7 +31,16 @@ export default function NavbarAdmin({ url, page, setSearch }) {
     >
       <div>
         <div className="flex gap-x-1">
-          <NavLink className="text-black" to="/dashboard">
+          <NavLink
+            className="text-black"
+            to={
+              user.role_id == 2
+                ? "/AdminDashboard"
+                : user.role_id == 3
+                ? "/MoDashboard"
+                : ""
+            }
+          >
             Page
           </NavLink>
           <p> / </p>

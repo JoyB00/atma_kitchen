@@ -7,12 +7,13 @@ import { atom } from "jotai";
 export const loadEdit = atom(false);
 export default function HampersPage() {
   const [search, setSearch] = useState("");
+  const user = JSON.parse(sessionStorage.getItem("user"));
   return (
     <div className="flex items-start bg-orange-100/50 w-full h-full min-h-screen min-w-full">
-      <Sidebar role="admin" />
+      <Sidebar role={user.role_id} />
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin
-          url="/dashboard/hampers"
+          url="/AdminDashboard/hampers"
           page="Hampers"
           setSearch={setSearch}
         />

@@ -122,7 +122,7 @@ export default function FormHampers({
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["hampers"], data);
-      navigate("/dashboard/hampers");
+      navigate("/AdminDashboard/hampers");
     },
     onError: (error) => {
       throw error.message;
@@ -137,7 +137,7 @@ export default function FormHampers({
     },
     onSuccess: (data) => {
       queryClient.setQueryData(["hampers", { id: hampersData.id }], data);
-      navigate("/dashboard/hampers");
+      navigate("/AdminDashboard/hampers");
     },
     onError: (error) => {
       throw error.message;
@@ -404,7 +404,7 @@ export default function FormHampers({
       </div>
       <div className="bg-white sticky bottom-0 -mx-px ">
         <div className="flex justify-start pb-6">
-          <NavLink to="/dashboard/hampers">
+          <NavLink to="/AdminDashboard/hampers">
             <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
               Discard
             </Button>

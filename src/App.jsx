@@ -13,9 +13,10 @@ import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
 import Menu from "./Page/Menu";
-// root Dashboard
-import RootDashboard from "./Root/AdminDashboard/RootDashboard";
+// root Admin Dashboard
+import RootAdminDashboard from "./Root/AdminDashboard/RootAdminDashboard";
 import MainDashboard from "./Page/AdminPage/MainDashboard/MainDashboard";
+
 // Root Product
 import RootProduct from "./Root/AdminDashboard/Product/RootProduct";
 import ProductPage from "./Page/AdminPage/ProductPage/ProductPage";
@@ -33,6 +34,12 @@ import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
 import { Suspense } from "react";
+
+// Root MO
+import RootMoDashboard from "./Root/MoDashboard/RootMoDashboard";
+// Root Ingredient Procurement
+import RootIngredientProcurement from "./Root/MoDashboard/IngredientProcurement/RootIngredientProcurement";
+import IngredientProcurement from "./Page/MOPage/IngredientProcurement/IngredientProcurement";
 
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
@@ -67,11 +74,11 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "dashboard",
+        path: "AdminDashboard",
         element: (
           <ProtectedRoot role_id={2}>
             <Suspense fallback={<LoadingPage />}>
-              <RootDashboard />
+              <RootAdminDashboard />
             </Suspense>
           </ProtectedRoot>
         ),
@@ -131,6 +138,32 @@ const router = createBrowserRouter([
                     element: <EditHampers />,
                   },
                 ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "MoDashboard",
+        element: (
+          <ProtectedRoot role_id={3}>
+            <Suspense fallback={<LoadingPage />}>
+              <RootMoDashboard />
+            </Suspense>
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <MainDashboard />,
+          },
+          {
+            path: "ingredientProcurement",
+            element: <RootIngredientProcurement />,
+            children: [
+              {
+                index: true,
+                element: <IngredientProcurement />,
               },
             ],
           },

@@ -1,5 +1,6 @@
-import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
-import Button from "../../../../Component/Button";
+import { faGifts, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Button from "../../../Component/Button";
+import ModalHampersDetail from "../../AdminPage/HampersPage/component/ModalHampersDetail";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,33 +8,49 @@ import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
-import { DeleteProduct } from "../../../../api/ProductApi";
+import { DeleteHampers } from "../../../api/HampersApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { getPicture } from "../../../../api";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { loadEdit } from "../../AdminPage/HampersPage/HampersPage";
 import { useAtom } from "jotai";
-import { loadEdit } from "../../HampersPage/HampersPage";
 import { BeatLoader } from "react-spinners";
 
-export default function ProductTable({ search, data, length }) {
+export default function IngredientProcurementTable({ search, data, length }) {
   const [page, setPage] = useState(1);
   const productPerPage = 8;
   const startIndex = (page - 1) * productPerPage;
   const endIndex = page * productPerPage;
+  const queryClient = useQueryClient();
   const [load, setLoad] = useAtom(loadEdit);
-  const [idItemLoad, setIdItemLoad] = useState();
+  const [itemId, setItemId] = useState();
+  const [openModal, setOpenModal] = useState(false);
 
+  const handleChange = (e, p) => {
+    setPage(p);
+  };
   const handleLoadEdit = (id) => {
     setLoad(true);
-    setIdItemLoad(id);
+    setItemId(id);
   };
 
-  const swallDelete = (data) => {
+  const handleOpenModal = (id) => {
+    setOpenModal(true);
+    setItemId(id);
+  };
+
+  const deleteHampers = useMutation({
+    mutationFn: async (id) => {
+      await DeleteHampers(id);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["hampers"]);
+    },
+  });
+
+  const swalDelete = (data) => {
     withReactContent(Swal)
       .fire({
-        title: `Are you sure to delete ${data.product_name} ?  `,
+        title: `Are you sure to delete ${data.hampers_name} ?  `,
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
@@ -44,7 +61,7 @@ export default function ProductTable({ search, data, length }) {
       .then((result) => {
         if (result.isConfirmed) {
           toast.promise(
-            mutation.mutateAsync(data.id),
+            deleteHampers.mutateAsync(data.id),
             {
               loading: "Loading",
               success: "Your file has been Deleted",
@@ -61,33 +78,6 @@ export default function ProductTable({ search, data, length }) {
         }
       });
   };
-
-  const handleChange = (e, p) => {
-    setPage(p);
-  };
-
-  const productItem = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
-  };
-
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: async (id) => {
-      console.log(id);
-      await DeleteProduct(id);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(["products"]);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
   useEffect(() => {
     setLoad(false);
   }, []);
@@ -95,11 +85,11 @@ export default function ProductTable({ search, data, length }) {
     <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
       <thead className="border-b-2">
         <tr>
-          <th className="text-start font-medium py-8 ps-8">Product Name</th>
-          <th className="text-start font-medium pe-6">Category</th>
-          <th className="text-start font-medium pe-6 ">Qty</th>
-          <th className="text-start font-medium pe-6">Price</th>
-          <th className="text-center font-medium pe-6">Action</th>
+          <th className="text-center font-medium px-6">No</th>
+          <th className="text-start font-medium py-8 ">Procurement Date</th>
+          <th className="text-start font-medium px-6 ">Details</th>
+          <th className="text-start font-medium pe-6 ">Total Price</th>
+          <th className="text-start font-medium pe-6 ">Actions</th>
         </tr>
       </thead>
       <motion.tbody
@@ -111,39 +101,34 @@ export default function ProductTable({ search, data, length }) {
           .filter((item) => {
             return search.toLowerCase() === ""
               ? item
-              : item.product_name.toLowerCase().includes(search) ||
-                  item.product_name.includes(search);
+              : item.procurement_date.toLowerCase().includes(search) ||
+                  item.procurement_date.includes(search);
           })
           .slice(startIndex, endIndex)
-          .map((item) => (
+          .map((item, index) => (
             <motion.tr
-              variants={productItem}
+              // variants={productItem}
               className="border-t-2 border-gray-100  text-black"
               key={item.id}
             >
-              <td className="font-medium py-6 ps-6 ">
-                <div className="flex items-center ">
-                  <LazyLoadImage
-                    effect="blur"
-                    src={
-                      item.product_picture
-                        ? getPicture(item.product_picture, "product")
-                        : defaultImage
-                    }
-                    alt=""
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <p className="ps-3 text-[1rem]">{item.product_name}</p>
-                </div>
+              <td className="font-medium py-6 px-6 text-center">{index + 1}</td>
+              <td className="font-medium text-start">
+                {item.procurement_date}
               </td>
               <td className="font-medium text-start">
-                {item.categories.category_name}
+                {" "}
+                <Button
+                  className=" text-orange-500 me-2 px-4 text-[0.9rem] bg-transparent hover:text-white"
+                  onClick={() => handleOpenModal(item.id)}
+                >
+                  <FontAwesomeIcon icon={faGifts} className="me-2" />
+                  See Details
+                </Button>
               </td>
-              <td className="font-medium text-start">{item.quantity}</td>
               <td className="text-start font-medium ">
-                {item.product_price <= 999
-                  ? item.product_price
-                  : (item.product_price / 1000).toFixed(1) + "K"}
+                {item.total_price <= 999
+                  ? item.total_price
+                  : (item.total_price / 1000).toFixed(1) + "K"}
               </td>
               <td className="font-medium ">
                 <div className="flex justify-center me-2">
@@ -152,7 +137,7 @@ export default function ProductTable({ search, data, length }) {
                       className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
                       onClick={() => handleLoadEdit(item.id)}
                     >
-                      {load && idItemLoad == item.id ? (
+                      {load && itemId == item.id ? (
                         <BeatLoader color="white" loading={load} size={10} />
                       ) : (
                         <>

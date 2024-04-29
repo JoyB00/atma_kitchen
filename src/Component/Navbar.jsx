@@ -69,7 +69,7 @@ export default function Navbar() {
       <div className="flex justify-between px-8 ">
         <div className="flex ">
           <NavLink
-            to="/dashboard"
+            to="/Admindashboard"
             className="text-black font-extrabold text-xl my-auto hover:text-black"
           >
             <span className="text-orange-500">ATMA </span>

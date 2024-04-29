@@ -15,11 +15,10 @@ export default function EditProduct() {
   const [categories] = useAtom(allCategories);
   const [ingredient] = useAtom(allIngredients);
   const [consignor] = useAtom(allConsignors);
-
+  const user = JSON.parse(sessionStorage.getItem("user"));
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
-      {console.log("penitip", consignor)}
-      <Sidebar role="admin" />
+      <Sidebar role={user.role_id} />
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin url="/dashboard/product" page="Product" />
         <div className="mt-32 px-4 ">

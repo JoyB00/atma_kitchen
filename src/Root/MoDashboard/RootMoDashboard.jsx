@@ -6,7 +6,8 @@ import {
   allProducts,
   allConsignors,
 } from "../../lib/FetchFunctions";
-export default function RootDashboard() {
+
+export default function RootMoDashboard() {
   const [categories] = useAtom(allCategories);
   const [ingredient] = useAtom(allIngredients);
   const [products] = useAtom(allProducts);

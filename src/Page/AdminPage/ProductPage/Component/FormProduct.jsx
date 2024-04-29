@@ -121,7 +121,7 @@ export default function FormProduct({
     },
     onSuccess: () => {
       queryClient.setQueryData(["products"], data);
-      navigate("/dashboard/product");
+      navigate("/AdminDashboard/product");
     },
     onError: (error) => {
       throw error.message;
@@ -138,7 +138,7 @@ export default function FormProduct({
     },
     onSuccess: () => {
       queryClient.setQueryData(["products", { id: productData.id }], data);
-      navigate("/dashboard/product");
+      navigate("/AdminDashboard/product");
     },
     onError: (error) => {
       throw error.message;
@@ -443,7 +443,7 @@ export default function FormProduct({
 
       <div className="bg-white sticky bottom-0 -mx-px ">
         <div className="flex justify-start pb-6">
-          <NavLink to="/dashboard/product">
+          <NavLink to="/AdminDashboard/product">
             <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
               Discard
             </Button>

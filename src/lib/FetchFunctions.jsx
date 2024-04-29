@@ -49,4 +49,6 @@ const fetchAllConsignors = async () => {
 
 const allConsignors = atom(fetchAllConsignors);
 
+// const fetchAllIngredientDetails = async ()
+
 export { allIngredients, allCategories, allProducts, allConsignors };

@@ -16,7 +16,6 @@ export default function FormLogin() {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
@@ -25,9 +24,11 @@ export default function FormLogin() {
     setLoading(true);
     SignIn(data)
       .then((res) => {
-        console.log(res.user.id_role);
+        console.log(res.user.role_id);
         if (res.user.role_id === 2) {
-          navigate("/dashboard");
+          navigate("/AdminDashboard");
+        } else if (res.user.role_id === 3) {
+          navigate("/MoDashboard");
         } else {
           navigate("/");
         }

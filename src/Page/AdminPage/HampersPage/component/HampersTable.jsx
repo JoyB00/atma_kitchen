@@ -147,7 +147,7 @@ export default function HampersTable({ data, search, length }) {
                 </td>
                 <td className="font-medium ">
                   <div className="flex justify-center me-2">
-                    <NavLink to={`/dashboard/hampers/${item.id}`}>
+                    <NavLink to={`/AdminDashboard/hampers/${item.id}`}>
                       <Button
                         className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
                         onClick={() => handleLoadEdit(item.id)}
