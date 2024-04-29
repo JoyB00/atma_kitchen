@@ -7,7 +7,7 @@ import {
   faHouse,
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
-export default function Sidebar() {
+export default function Sidebar({ role }) {
   return (
     <div className="w-[20rem] h-full bg-white text-black py-12 px-6 fixed drop-shadow-lg rounded-r-3xl z-10">
       <img src={Logo} alt="" className="w-1/6 mx-auto pb-3" />
@@ -22,22 +22,32 @@ export default function Sidebar() {
           url={"/dashboard"}
           end
         />
-        <Navigation
-          label="Ingredient"
-          icon={faEgg}
-          url={"/dashboard/ingredient"}
-        />
-        <Navigation
-          label="Product"
-          icon={faBreadSlice}
-          url={"/dashboard/product"}
-        />
-        <Navigation label="Hampers" icon={faGifts} url={"/dashboard/hampers"} />
-        <Navigation
-          label="Main Dashbord"
-          icon={faHouse}
-          url={"/dashboard/temp"}
-        />
+        {role == "admin" ? (
+          <>
+            <Navigation
+              label="Ingredient"
+              icon={faEgg}
+              url={"/dashboard/ingredient"}
+            />
+            <Navigation
+              label="Product"
+              icon={faBreadSlice}
+              url={"/dashboard/product"}
+            />
+            <Navigation
+              label="Hampers"
+              icon={faGifts}
+              url={"/dashboard/hampers"}
+            />
+            <Navigation
+              label="Main Dashbord"
+              icon={faHouse}
+              url={"/dashboard/temp"}
+            />
+          </>
+        ) : role == "MO" ? (
+          <></>
+        ) : undefined}
       </ul>
     </div>
   );

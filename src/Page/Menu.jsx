@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { FetchAllProducts } from "../api/ProductApi";
 import { RotateLoader } from "react-spinners";
 import { useQuery } from "@tanstack/react-query";
+import { getPicture } from "../api";
 export default function Menu() {
   const [page, setPage] = useState(1);
 
@@ -136,7 +137,11 @@ export default function Menu() {
                     >
                       <CardProduct
                         alt={product.product_name}
-                        image={defaultImage}
+                        image={
+                          product.product_picture
+                            ? getPicture(product.product_picture, "product")
+                            : defaultImage
+                        }
                         desc="
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim id eveniet nemo aut ad vel tempora?"
                         price={

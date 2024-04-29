@@ -7,7 +7,7 @@ export default function ProductPage() {
   const [search, setSearch] = useState("");
   return (
     <div className="flex items-start bg-orange-100/50 w-full h-full min-h-screen min-w-full">
-      <Sidebar />
+      <Sidebar role="admin" />
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin
           url="/dashboard/product"

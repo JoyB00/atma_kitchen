@@ -4,16 +4,22 @@ import FormProduct from "../Component/FormProduct";
 import FooterDashboard from "../../../../Component/FooterDashboard";
 import { useRouteLoaderData } from "react-router-dom";
 import { GetProductById } from "../../../../api/ProductApi";
-import { allCategories, allIngredients } from "../../../../lib/FetchFunctions";
+import {
+  allCategories,
+  allConsignors,
+  allIngredients,
+} from "../../../../lib/FetchFunctions";
 import { useAtom } from "jotai";
 export default function EditProduct() {
   const product = useRouteLoaderData("product-detail");
   const [categories] = useAtom(allCategories);
   const [ingredient] = useAtom(allIngredients);
+  const [consignor] = useAtom(allConsignors);
 
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
-      <Sidebar />
+      {console.log("penitip", consignor)}
+      <Sidebar role="admin" />
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin url="/dashboard/product" page="Product" />
         <div className="mt-32 px-4 ">
@@ -24,6 +30,7 @@ export default function EditProduct() {
               recipes={product.recipe}
               ingredient={ingredient}
               categories={categories}
+              consignor={consignor}
             />
           </div>
           <FooterDashboard />

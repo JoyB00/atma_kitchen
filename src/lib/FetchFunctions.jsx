@@ -3,6 +3,7 @@ import { GetAllIngredients } from "../api/IngredientApi";
 import { FetchAllCategories } from "../api/CategoryApi";
 import { FetchAllProducts } from "../api/ProductApi";
 import { GetHampersById } from "../api/HampersApi";
+import { FetchAllConsignors } from "../api/ConsignorApi";
 
 const fetchCategories = async () => {
   try {
@@ -36,4 +37,16 @@ const fetchAllProduct = async () => {
 };
 const allProducts = atom(fetchAllProduct);
 
-export { allIngredients, allCategories, allProducts };
+const fetchAllConsignors = async () => {
+  try {
+    const response = await FetchAllConsignors();
+    console.log("penitip di lib", response);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+const allConsignors = atom(fetchAllConsignors);
+
+export { allIngredients, allCategories, allProducts, allConsignors };

@@ -5,7 +5,7 @@ import FooterDashboard from "../../../Component/FooterDashboard";
 export default function Dashboard() {
   return (
     <div className="flex bg-orange-100/50 w-full h-full">
-      <Sidebar />
+      <Sidebar role="admin"/>
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left ">
         <NavbarAdmin url="/dashboard" page="Main Dashboard" />
         <div className="mt-32 px-4 ">

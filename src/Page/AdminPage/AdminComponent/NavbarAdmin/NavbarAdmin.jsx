@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import MenuComponent from "../../../../Component/Menu";
 
 export default function NavbarAdmin({ url, page, setSearch }) {
   const [scroll, setScroll] = useState(false);
@@ -52,18 +53,20 @@ export default function NavbarAdmin({ url, page, setSearch }) {
           style={{ backgroundColor: "#f4f7fe" }}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Button
+        <MenuComponent buttonText={<FontAwesomeIcon icon={faBell} />} />
+        <MenuComponent
+          buttonText={<FontAwesomeIcon icon={faCircleExclamation} />}
+        />
+        {/* <Button
           withoutAnimate
           className="my-auto text-gray-400 bg-transparent p-0 hover:text-orange-400 "
         >
           <FontAwesomeIcon icon={faBell} />
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           withoutAnimate
           className="my-auto text-gray-400 bg-transparent p-0 hover:text-orange-400 "
-        >
-          <FontAwesomeIcon icon={faCircleExclamation} />
-        </Button>
+        ></Button> */}
 
         <Button
           className="rounded-full my-2 bg-orange-500 drop-shadow-md text-sm text-white "

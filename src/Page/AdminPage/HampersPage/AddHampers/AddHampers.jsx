@@ -9,7 +9,7 @@ export default function AddHampers() {
   const [ingredient] = useAtom(allIngredients);
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
-      <Sidebar />
+      <Sidebar role="admin" />
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin url="/dashboard/hampers" page="Hampers" />
         <div className="mt-32 px-4 ">

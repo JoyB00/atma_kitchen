@@ -2,7 +2,7 @@ import useAxios from ".";
 const FetchAllProducts = async () => {
   try {
     const response = await useAxios.get("/product");
-    console.log(response.data.data);
+    console.log(response.data.search);
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);

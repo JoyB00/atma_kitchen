@@ -26,6 +26,7 @@ export default function FormProduct({
   recipes,
   ingredient,
   categories,
+  consignor,
 }) {
   const initialState = productData
     ? {
@@ -35,6 +36,7 @@ export default function FormProduct({
         product_price: productData.product_price,
         description: productData.description,
         category_id: productData.category_id,
+        consignor_id: productData.consignor_id,
         product_picture: productData.product_picture,
         recipe: recipes,
       }
@@ -44,6 +46,7 @@ export default function FormProduct({
         product_price: "",
         description: "",
         category_id: 1,
+        consignor_id: null,
         product_picture: null,
         recipe: [],
       };
@@ -270,6 +273,34 @@ export default function FormProduct({
               </option>
             ))}
           </motion.select>
+
+          {data.category_id == 4 ? (
+            <>
+              <div className="mb-2 mt-4">
+                <label htmlFor="consignor">Consignor</label>
+              </div>
+              <motion.select
+                {...animate}
+                className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                onChange={handleChange}
+                name="consignor_id"
+                id="consignor"
+                defaultValue={productData ? productData.consignor_id : ""}
+              >
+                {consignor.map((consignor) => (
+                  <option
+                    value={consignor.id}
+                    key={consignor.consignor_name}
+                    selected={
+                      productData && consignor.id === productData.consignor_id
+                    }
+                  >
+                    {consignor.consignor_name}
+                  </option>
+                ))}
+              </motion.select>
+            </>
+          ) : undefined}
 
           {/* description */}
           <div className="mb-2 mt-4">

@@ -5,6 +5,7 @@ import { SwiperSlide } from "swiper/react";
 import defaultImage from "../../assets/ProductAsset/lapis leggite.jpg";
 import { RotateLoader } from "react-spinners";
 import { motion } from "framer-motion";
+import { getPicture } from "../../api";
 
 export default function FeaturedProduct({ data, loading }) {
   return (
@@ -46,7 +47,11 @@ export default function FeaturedProduct({ data, loading }) {
               <SwiperSlide className="gap-8 py-3" key={product.id}>
                 <CardProduct
                   // alt={product.alt}
-                  image={defaultImage}
+                  image={
+                    product.product_picture
+                      ? getPicture(product.product_picture, "product")
+                      : defaultImage
+                  }
                   desc={
                     product.description.length < 120
                       ? product.description

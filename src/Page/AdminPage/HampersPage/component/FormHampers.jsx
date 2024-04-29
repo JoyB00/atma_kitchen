@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { counter } from "@fortawesome/fontawesome-svg-core";
 export default function FormHampers({
   hampersData,
   detailHampers,
@@ -78,7 +79,7 @@ export default function FormHampers({
       const addDetail = {
         id: counterDetail,
         category: 1,
-        product_id: null,
+        product_id: products[0].id,
         ingredient_id: ingredients[0].id,
       };
       setCounterDetail((counter) => counter + 1);
@@ -91,13 +92,12 @@ export default function FormHampers({
     event.preventDefault();
     const currentDetail = [...details];
     currentDetail[index][event.target.name] = event.target.value;
-    console.log(currentDetail[index]["category"]);
 
     if (currentDetail[index]["category"] == 1) {
-      currentDetail[index]["ingredient_id"] = event.target.value;
+      currentDetail[index]["ingredient_id"] = ingredients[0].id;
       currentDetail[index]["product_id"] = null;
     } else if (currentDetail[index]["category"] == 2) {
-      currentDetail[index]["product_id"] = event.target.value;
+      currentDetail[index]["product_id"] = products[0].id;
       currentDetail[index]["ingredient_id"] = null;
     }
     setDetails(currentDetail);
@@ -209,7 +209,6 @@ export default function FormHampers({
   };
   return (
     <Form method={hampersData ? "patch" : "post"}>
-      {console.log(categoryDetail)}
       <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -306,9 +305,6 @@ export default function FormHampers({
 
       {/* add Detail Hampers */}
       {details.map((data, index) => {
-        {
-          console.log(data);
-        }
         return (
           <div className="grid grid-cols-5 gap-8 mt-4" key={index}>
             <div className="col-span-2 my-auto">
@@ -335,7 +331,6 @@ export default function FormHampers({
                 </option>
               </motion.select>
             </div>
-            {console.log("category", data.category)}
             <div className="col-span-2  my-auto">
               <label htmlFor="ingredient">
                 {data.category == 1 ? "Ingredient" : "Product"}
@@ -369,7 +364,7 @@ export default function FormHampers({
                     onChange={(event) => handleChangeDetails(event, index)}
                     name="product_id"
                     id="product_id"
-                    defaultValue={products ? products.ingredient_id : ""}
+                    defaultValue={products ? products.product_id : ""}
                   >
                     {products.map((product) => (
                       <option

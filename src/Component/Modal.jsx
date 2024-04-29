@@ -1,12 +1,7 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useState, useRef } from "react";
 
 export default function Modal({ open, setOpen, cancelButtonRef, children }) {
-  // const [open, setOpen] = useState(true);
-
-  // const cancelButtonRef = useRef(null);
-
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog
