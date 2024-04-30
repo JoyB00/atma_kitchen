@@ -83,7 +83,7 @@ export default function FormProduct({
     setRecipe((dataPrev) => {
       const addRecipe = {
         id: counterRecipe,
-        ingredient_id: 1,
+        ingredient_id: ingredient[0].id,
         quantity: "",
       };
       setCounterRecipe(counterRecipe + 1);
@@ -377,9 +377,9 @@ export default function FormProduct({
 
       {/* add recipe */}
       {recipe.map((data, index) => {
-        {
-          console.log(data);
-        }
+        // {
+        //   console.log(data);
+        // }
         return (
           <div className="grid grid-cols-5 gap-8" key={index}>
             <div className="col-span-2 my-auto">

@@ -2,7 +2,7 @@ import { RotateLoader } from "react-spinners";
 export default function LoadingTable({ loading }) {
   return (
     <>
-      <table className="col-span-4 w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className="col-span-6 w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
         <thead className="border-b-2">
           <tr>
             <th className="text-center font-medium px-6">No</th>

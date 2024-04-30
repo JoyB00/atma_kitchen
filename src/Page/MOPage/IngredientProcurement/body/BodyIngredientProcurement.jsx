@@ -1,4 +1,4 @@
-import Button from "../../../Component/Button";
+import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCookie,
@@ -6,16 +6,16 @@ import {
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import IngredientProcurementTable from "../component/IngredientProcurementTable";
-import Drawer from "../../../Component/Drawer";
-import Checkbox from "../../../Component/Checkbox";
+import Drawer from "../../../../Component/Drawer";
+import Checkbox from "../../../../Component/Checkbox";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { allCategories } from "../../../lib/FetchFunctions";
+import { allCategories } from "../../../../lib/FetchFunctions";
 import LoadingTable from "../component/LoadingTable";
-import { FetchAllIngredientProcurement } from "../../../api/IngredientProcurementApi";
+import { FetchAllIngredientProcurement } from "../../../../api/IngredientProcurementApi";
 export default function Body({ search }) {
   const ingredientProcurement = useQuery({
     queryKey: ["ingredientProcurements"],
@@ -39,7 +39,7 @@ export default function Body({ search }) {
           >
             <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
           </Button>
-          <NavLink to="addProduct">
+          <NavLink to="addIngredientProcurement">
             <Button className="bg-orange-500 my-4 text-white">
               <FontAwesomeIcon icon={faSquarePlus} className="me-1" /> Add
               Procurement

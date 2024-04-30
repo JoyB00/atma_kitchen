@@ -40,6 +40,9 @@ import RootMoDashboard from "./Root/MoDashboard/RootMoDashboard";
 // Root Ingredient Procurement
 import RootIngredientProcurement from "./Root/MoDashboard/IngredientProcurement/RootIngredientProcurement";
 import IngredientProcurement from "./Page/MOPage/IngredientProcurement/IngredientProcurement";
+import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIngredientProcurement/AddIngredientProcurement";
+import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
+import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
@@ -164,6 +167,21 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <IngredientProcurement />,
+              },
+              {
+                path: "addIngredientProcurement",
+                element: <AddIngredientProcurement />,
+              },
+              {
+                path: ":ingredientProcurementId",
+                id: "ingredientProcurement-detail",
+                loader: ingredientProcurementLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <EditIngredientProcurement />,
+                  },
+                ],
               },
             ],
           },

@@ -1,6 +1,6 @@
 import Sidebar from "../../AdminPage/AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin";
-import Body from "../body/BodyIngredientProcurement";
+import Body from "./body/BodyIngredientProcurement";
 import FooterDashboard from "../../../Component/FooterDashboard";
 import { useState } from "react";
 export default function IngredientProcurement() {
