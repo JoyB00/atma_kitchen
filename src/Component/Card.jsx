@@ -30,7 +30,7 @@ export default function CardComp({ title, price, desc, image, alt }) {
         </p>
         <div className="grid grid-col-1">
           <Button className="m-1 bg-orange-500 rounded-xl col-span-1 text-white">
-            Add To Chart
+            Add To Cart
           </Button>
         </div>
       </div>
