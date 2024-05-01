@@ -1,4 +1,5 @@
 import Input from "../../../../Component/Input";
+import InputDate from "../../../../Component/InputDate";
 import FileUploader from "../../../../Component/FileUploader";
 import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,6 +28,7 @@ export default function FormProduct({
   ingredient,
   categories,
   consignor,
+  limits,
 }) {
   const initialState = productData
     ? {
@@ -38,7 +40,10 @@ export default function FormProduct({
         category_id: productData.category_id,
         consignor_id: productData.consignor_id,
         product_picture: productData.product_picture,
+        product_status: productData.product_status,
         recipe: recipes,
+        limit_amount: limits ? limits.limit_amount : null,
+        production_date: limits ? limits.production_date : null,
       }
     : {
         product_name: "",
@@ -46,6 +51,9 @@ export default function FormProduct({
         product_price: "",
         description: "",
         category_id: 1,
+        product_status: "Pre-Order",
+        limit_amount: "",
+        production_date: "",
         consignor_id: null,
         product_picture: null,
         recipe: [],
@@ -211,6 +219,7 @@ export default function FormProduct({
 
   return (
     <Form method={productData ? "patch" : "post"}>
+      {console.log(data)}
       <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -233,7 +242,7 @@ export default function FormProduct({
             id="quantity"
             label="Quantity"
             withLabel
-            placeholder="Quantity"
+            placeholder="Quantity of ready stock"
             type="number"
             defaultValue={productData ? productData.quantity : ""}
           />
@@ -249,7 +258,7 @@ export default function FormProduct({
           />
 
           {/* category */}
-          <div className="mb-2 ">
+          <div className="mb-2 mt-3">
             <label htmlFor="category">Category</label>
           </div>
 
@@ -276,7 +285,7 @@ export default function FormProduct({
 
           {data.category_id == 4 ? (
             <>
-              <div className="mb-2 mt-4">
+              <div className="mb-2 mt-6">
                 <label htmlFor="consignor">Consignor</label>
               </div>
               <motion.select
@@ -301,23 +310,8 @@ export default function FormProduct({
               </motion.select>
             </>
           ) : undefined}
-
-          {/* description */}
-          <div className="mb-2 mt-4">
-            <label htmlFor="category">Description</label>
-          </div>
-          <motion.div {...animate} className="mt-2">
-            <textarea
-              onChange={handleChange}
-              id="description"
-              name="description"
-              rows="5"
-              className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="Description"
-              defaultValue={productData ? productData.description : ""}
-            ></textarea>
-          </motion.div>
         </div>
+
         <div className="col-span-2">
           <h1 className="text-xl font-medium">Product Picture</h1>
           <p className="text-gray-400 font-light mb-12">
@@ -326,7 +320,7 @@ export default function FormProduct({
           <motion.div {...animate}>
             {picture || productData?.product_picture ? (
               <div className="mt-2 rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
-                <div className="flex justify-center">
+                <div className="h-44 w-full">
                   <img
                     src={
                       picture || !productData
@@ -334,7 +328,7 @@ export default function FormProduct({
                         : getPicture(productData.product_picture, "product")
                     }
                     alt="product picture"
-                    className=" object-fit-cover "
+                    className="object-cover h-44 mx-auto"
                   />
                 </div>
                 <div className="flex justify-center">
@@ -367,12 +361,101 @@ export default function FormProduct({
               <FileUploader id="product_picture" onChange={handlePicture} />
             </div>
           </motion.div>
+          {/* description */}
+          <div className="mb-2 mt-4">
+            <label htmlFor="category">Description</label>
+          </div>
+          <motion.div {...animate} className="mt-2">
+            <textarea
+              onChange={handleChange}
+              id="description"
+              name="description"
+              rows="5"
+              className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="Description"
+              defaultValue={productData ? productData.description : ""}
+            ></textarea>
+          </motion.div>
         </div>
       </div>
-      <h1 className="text-xl font-medium">Add Recipe</h1>
-      <p className="text-gray-400 font-light mb-6">
-        Please enter the recipe of your product.
-      </p>
+      <div className="w-full bg-blue-50 py-5 rounded-xl mb-2 ps-2">
+        <h1 className="text-xl font-medium">Product Status</h1>
+        <p className="text-gray-400 font-light ">
+          Please enter the status of your product.
+        </p>
+      </div>
+      <hr />
+      <div className="grid grid-cols-2 gap-x-8">
+        <div className="col-span-1">
+          {/* Product Status */}
+          <div className="mb-2 mt-5">
+            <label htmlFor="product_status">Product Status</label>
+          </div>
+
+          <motion.select
+            {...animate}
+            className="block w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+            onChange={handleChange}
+            name="product_status"
+            id="product_status"
+            defaultValue={productData ? productData.product_status : ""}
+          >
+            <option
+              value="Pre-Order"
+              selected={
+                productData && productData.product_status == "Pre-Order"
+              }
+            >
+              Pre-Order
+            </option>
+            <option
+              value="Ready"
+              selected={productData && productData.product_status == "Ready"}
+            >
+              Ready
+            </option>
+          </motion.select>
+        </div>
+      </div>
+      {data.product_status == "Pre-Order" ? (
+        <div className="grid grid-cols-2 gap-x-8">
+          <div className="col-span-1 mt-5">
+            <div className="mb-2">
+              <label htmlFor="production_date">Production Date</label>
+            </div>
+            <InputDate
+              onChange={handleChange}
+              withAnimate
+              id="production_date"
+              name="production_date"
+              label="Production Date"
+              withLabel
+              placeholder="Production Date"
+              type="text"
+              defaultValue={limits ? data.production_date : ""}
+            />
+          </div>
+
+          <div className="col-span-1 mt-2">
+            <Input
+              onChange={handleChange}
+              withAnimate
+              id="limit_amount"
+              label="Daily Stock"
+              withLabel
+              placeholder="Daily Stock"
+              type="number"
+              defaultValue={limits ? data.limit_amount : ""}
+            />
+          </div>
+        </div>
+      ) : undefined}
+      <div className="w-full bg-blue-50 py-5 rounded-xl mb-2 mt-6 ps-2">
+        <h1 className="text-xl font-medium ">Add Recipe</h1>
+        <p className="text-gray-400 font-light ">
+          Please enter the recipe of your product.
+        </p>
+      </div>
       <hr />
 
       {/* add recipe */}
@@ -412,7 +495,7 @@ export default function FormProduct({
                 withLabel
                 placeholder="Quantity"
                 type="number"
-                defaultValue={data ? data.quantity : ""}
+                // defaultValue={data ? data.quantity : ""}
                 value={data.quantity}
               />
             </div>
