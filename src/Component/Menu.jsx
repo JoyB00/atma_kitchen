@@ -6,7 +6,7 @@ export default function MenuComponent({ buttonText, menuItem }) {
     <div className="text-right my-auto">
       <Menu as="div" className="text-left relative inline-block">
         <div>
-          <Menu.Button className="-mx-5 text-sm font-medium text-gray-400 hover:text-orange-400">
+          <Menu.Button className="text-sm font-medium text-gray-400 hover:text-orange-400">
             {buttonText}
           </Menu.Button>
         </div>

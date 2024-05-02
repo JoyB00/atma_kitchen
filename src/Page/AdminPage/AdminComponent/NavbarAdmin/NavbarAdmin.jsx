@@ -54,7 +54,7 @@ export default function NavbarAdmin({ url, page, setSearch }) {
           </h1>
         </div>
       </div>
-      <div className="w-[32%] bg-white rounded-full flex justify-between px-4 drop-shadow-md">
+      <div className="w-2/5 bg-white rounded-full flex flex-row justify-between px-4 drop-shadow-md">
         <Input
           id="search"
           label="Search"
@@ -82,7 +82,7 @@ export default function NavbarAdmin({ url, page, setSearch }) {
           className="rounded-full my-2 bg-orange-500 drop-shadow-md text-sm text-white "
           style={{ backgroundColor: "#f99417" }}
         >
-          AP
+          {user.fullName.substring(0, 2).toUpperCase()}
         </Button>
       </div>
     </div>
