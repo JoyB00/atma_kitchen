@@ -43,6 +43,11 @@ export function EditForm() {
     exit: { opacity: 0, y: -20 },
   };
   const editProfile = () => {};
+  const navigate = useNavigate();
+  const cancel = (event) => {
+    event.preventDefault();
+    navigate("/CustomerDashboard");
+  };
 
   return (
     <Form onSubmit={editProfile} method="post">
@@ -93,6 +98,10 @@ export function EditForm() {
       <div className="flex justofy-start">
         <Button className="bg-orange-500" withoutAnimate type="submit">
           Save changes
+        </Button>
+        <div className="px-1" />
+        <Button className="" withoutAnimate onClick={cancel}>
+          Cancel
         </Button>
       </div>
     </Form>
