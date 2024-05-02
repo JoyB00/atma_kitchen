@@ -197,7 +197,7 @@ export function ProfileMenu() {
         </Button>
         <div className="px-1" />
         <h1 className="text-lg font-semibold text-black my-auto">
-          <EllipsisText text={authUser.fullName} length={"10"} />
+          <EllipsisText text={authUser.fullName} length={10} />
         </h1>
       </div>
       <Menu
