@@ -48,6 +48,7 @@ import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientP
 import RootCustomer from "./Root/Customer/RootCustomer";
 import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
 import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
+import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
@@ -209,6 +210,10 @@ const router = createBrowserRouter([
           {
             path: "EditProfile",
             element: <EditCustomerProfile />,
+          },
+          {
+            path: "ChangePassword",
+            element: <ChangePasswordLoggedIn />,
           },
         ],
       },

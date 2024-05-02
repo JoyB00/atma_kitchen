@@ -33,6 +33,7 @@ export function CustomerProfileContent() {
           <NavButton
             title="Change password"
             subtitle="Ever forget your password?"
+            link={"/CustomerDashboard/ChangePassword"}
           />
           <NavButton
             title="Change address"
