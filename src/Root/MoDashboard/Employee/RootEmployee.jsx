@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-export default function rootingredientprocurement() {
+export default function rootEmployee() {
   return (
     <main classname="w-full">
       <Outlet />

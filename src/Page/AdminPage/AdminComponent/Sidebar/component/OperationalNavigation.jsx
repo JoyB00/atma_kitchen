@@ -57,7 +57,7 @@ export default function OperationalNavigation({
           <Navigation
             label="Employee"
             icon={faUserTie}
-            url={"/dashboard/product"}
+            url={"/MoDashboard/employeeManagement"}
           />
           <Navigation
             label="Consignor"
