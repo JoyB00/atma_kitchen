@@ -11,6 +11,7 @@ import Badge from "./Badge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
+import EllipsisText from "react-ellipsis-text";
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false);
@@ -192,17 +193,8 @@ export function ProfileMenu() {
           </div>
         </Button>
         <div className="px-1" />
-        <h1 className="text-lg font-medium text-black my-auto">
-          <span
-            className="font-semibold text-xl text-black"
-            style={{
-              transitionProperty: " color",
-              transitionDuration: "200ms",
-              transitionTimingFunction: "linear",
-            }}
-          >
-            {authUser.fullName.substring(0, 5)}
-          </span>
+        <h1 className="text-lg font-semibold text-black my-auto">
+          <EllipsisText text={authUser.fullName} length={"10"} />
         </h1>
       </div>
       <Menu
@@ -215,7 +207,11 @@ export function ProfileMenu() {
         }}
       >
         <div className="bg-transparent min-w-64"></div>
-        <div className="p-4 flex flex-col">
+        <div className="px-4 py-2 flex flex-col">
+          <Button className="hover:text-white" onClick={logout}>
+            My profile
+          </Button>
+          <div className="py-1" />
           <Button
             hoverColor={"#de4337"}
             className="hover:text-white"
