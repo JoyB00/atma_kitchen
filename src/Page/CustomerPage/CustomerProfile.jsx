@@ -28,6 +28,7 @@ export function CustomerProfileContent() {
           <NavButton
             title="Edit profile"
             subtitle="Edit and view your information here"
+            link={"/CustomerDashboard/EditProfile"}
           />
           <NavButton
             title="Change password"
