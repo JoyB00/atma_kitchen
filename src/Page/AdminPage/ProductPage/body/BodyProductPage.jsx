@@ -53,16 +53,16 @@ export default function Body({ search }) {
           <LoadingTable loading={products.isFetching} />
         ) : (
           <>
-            <div className="col-span-4">
+            <div className="col-span-6">
               <ProductTable
                 search={search}
                 data={products.data}
                 length={products.data.length}
               />
             </div>
-            <div className="col-span-2">
+            {/* <div className="col-span-2">
               <Top5Selling data={products.data} />
-            </div>
+            </div> */}
           </>
         )}
       </div>

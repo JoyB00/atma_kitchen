@@ -79,7 +79,7 @@ export default function FormHampers({
       const addDetail = {
         id: counterDetail,
         category: 1,
-        product_id: products[0].id,
+        product_id: null,
         ingredient_id: ingredients[0].id,
       };
       setCounterDetail((counter) => counter + 1);
@@ -88,7 +88,7 @@ export default function FormHampers({
     });
   };
 
-  const handleChangeDetails = (event, index) => {
+  const handleChangeCategoryDetails = (event, index) => {
     event.preventDefault();
     const currentDetail = [...details];
     currentDetail[index][event.target.name] = event.target.value;
@@ -100,6 +100,14 @@ export default function FormHampers({
       currentDetail[index]["product_id"] = products[0].id;
       currentDetail[index]["ingredient_id"] = null;
     }
+    setDetails(currentDetail);
+    setData({ ...data, details: currentDetail });
+  };
+
+  const handleChangeDetails = (event, index) => {
+    event.preventDefault();
+    const currentDetail = [...details];
+    currentDetail[index][event.target.name] = event.target.value;
     setDetails(currentDetail);
     setData({ ...data, details: currentDetail });
   };
@@ -209,6 +217,7 @@ export default function FormHampers({
   };
   return (
     <Form method={hampersData ? "patch" : "post"}>
+      {console.log("data details ", data.details)}
       <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -312,7 +321,7 @@ export default function FormHampers({
               <motion.select
                 {...animate}
                 className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
-                onChange={(event) => handleChangeDetails(event, index)}
+                onChange={(event) => handleChangeCategoryDetails(event, index)}
                 name="category"
                 id="category"
                 defaultValue={data.category}

@@ -13,7 +13,11 @@ import {
 import { NavLink } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AddProduct, UpdateProduct } from "../../../../api/ProductApi";
+import {
+  AddProduct,
+  UpdateProduct,
+  GetLimitProductByDate,
+} from "../../../../api/ProductApi";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -34,20 +38,24 @@ export default function FormProduct({
     ? {
         id: productData.id,
         product_name: productData.product_name,
-        quantity: productData.quantity,
+        ready_stock: productData.ready_stock,
+        daily_stock: productData.daily_stock,
         product_price: productData.product_price,
         description: productData.description,
         category_id: productData.category_id,
         consignor_id: productData.consignor_id,
         product_picture: productData.product_picture,
-        product_status: productData.product_status,
+        product_status: productData.product_status
+          ? productData.product_status
+          : "Pre-Order",
         recipe: recipes,
-        limit_amount: limits ? limits.limit_amount : null,
-        production_date: limits ? limits.production_date : null,
+        limit_amount: limits ? limits.limit_amount : "",
+        production_date: limits ? limits.production_date : "",
       }
     : {
         product_name: "",
-        quantity: "",
+        ready_stock: "",
+        daily_stock: "",
         product_price: "",
         description: "",
         category_id: 1,
@@ -99,6 +107,22 @@ export default function FormProduct({
       return [...dataPrev, addRecipe];
     });
   };
+
+  const handleProductionDateInput = async (event, data) => {
+    event.preventDefault();
+    try {
+      console.log("data didalam handle", data.id);
+      const limit = await GetLimitProductByDate(data);
+    } catch (error) {
+      console.log(error);
+      // setData({
+      //   ...data,
+      //   production_date: event.target.value,
+      //   limit_amount: productData.daily_stock,
+      // });
+    }
+  };
+  
 
   const handleChangeRecipe = (event, index) => {
     event.preventDefault();
@@ -219,7 +243,7 @@ export default function FormProduct({
 
   return (
     <Form method={productData ? "patch" : "post"}>
-      {console.log(data)}
+      {console.log("data: ", data)}
       <div className="grid grid-cols-5 my-8">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
@@ -239,12 +263,22 @@ export default function FormProduct({
           <Input
             onChange={handleChange}
             withAnimate
-            id="quantity"
-            label="Quantity"
+            id="daily_stock"
+            label="Default Daily Stock"
             withLabel
-            placeholder="Quantity of ready stock"
+            placeholder="Daily Stock"
             type="number"
-            defaultValue={productData ? productData.quantity : ""}
+            defaultValue={productData ? productData.daily_stock : ""}
+          />
+          <Input
+            onChange={handleChange}
+            withAnimate
+            id="ready_stock"
+            label="Ready Stock "
+            withLabel
+            placeholder="Ready Stock (Required for product outside Atma Kitchen)"
+            type="number"
+            defaultValue={productData ? productData.ready_stock : ""}
           />
           <Input
             onChange={handleChange}
@@ -437,16 +471,31 @@ export default function FormProduct({
           </div>
 
           <div className="col-span-1 mt-2">
-            <Input
+            <motion.div
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="pt-10"
+            >
+              <Button
+                className="bg-orange-500 text-white"
+                onClick={(event) =>
+                  handleProductionDateInput(event, productData)
+                }
+              >
+                Check Limit Product
+              </Button>
+            </motion.div>
+            {/* <Input
               onChange={handleChange}
               withAnimate
               id="limit_amount"
-              label="Daily Stock"
+              label="Daily Stock Limit"
               withLabel
               placeholder="Daily Stock"
               type="number"
               defaultValue={limits ? data.limit_amount : ""}
-            />
+            /> */}
           </div>
         </div>
       ) : undefined}
@@ -524,7 +573,7 @@ export default function FormProduct({
 
       {/* save or discard button */}
 
-      <div className="bg-white sticky bottom-0 -mx-px ">
+      <div className="bg-white -mx-px ">
         <div className="flex justify-start pb-6">
           <NavLink to="/AdminDashboard/product">
             <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">

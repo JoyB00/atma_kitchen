@@ -1,6 +1,6 @@
 import { faGifts, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../../../Component/Button";
-import ModalDetailIngredientProcurement from "../../../AdminPage/ProductPage/Component/ModalDetailIngredientProcurement";
+import ModalDetailIngredientProcurement from "./ModalDetailIngredientProcurement";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

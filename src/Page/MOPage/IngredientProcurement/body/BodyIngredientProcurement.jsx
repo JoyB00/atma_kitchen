@@ -55,8 +55,10 @@ export default function Body({ search }) {
             <div className="col-span-6">
               <IngredientProcurementTable
                 search={search}
-                data={ingredientProcurement.data.ingredientProcurement}
-                length={ingredientProcurement.data.ingredientProcurement.length}
+                data={ingredientProcurement.data?.ingredientProcurement}
+                length={
+                  ingredientProcurement.data?.ingredientProcurement.length
+                }
               />
             </div>
             {/* <div className="col-span-2">
