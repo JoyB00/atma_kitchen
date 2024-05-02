@@ -174,6 +174,9 @@ export function ProfileMenu() {
         });
       });
   };
+  const navigateToProfile = () => {
+    navigate("/CustomerDashboard");
+  };
 
   return (
     <div>
@@ -208,7 +211,7 @@ export function ProfileMenu() {
       >
         <div className="bg-transparent min-w-64"></div>
         <div className="px-4 py-2 flex flex-col">
-          <Button className="hover:text-white" onClick={logout}>
+          <Button className="hover:text-white" onClick={navigateToProfile}>
             My profile
           </Button>
           <div className="py-1" />

@@ -44,6 +44,10 @@ import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIng
 import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 
+// Root Customer
+import RootCustomer from "./Root/Customer/RootCustomer";
+import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
+
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -184,6 +188,22 @@ const router = createBrowserRouter([
                 ],
               },
             ],
+          },
+        ],
+      },
+      {
+        path: "CustomerDashboard",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <Suspense fallback={<LoadingPage />}>
+              <RootCustomer />
+            </Suspense>
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CustomerProfile />,
           },
         ],
       },
