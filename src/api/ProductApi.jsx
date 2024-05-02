@@ -34,6 +34,16 @@ const GetProductById = async (id) => {
   }
 };
 
+const GetLimitProductByDate = async (data) => {
+  try {
+    const response = await useAxios.post(`/limitProduct/${data.id}`, data);
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response.data);
+    throw error.response.data;
+  }
+};
+
 const UpdateProduct = async (data) => {
   try {
     const response = await useAxios.post(`/product/${data.id}`, data, {
@@ -63,5 +73,6 @@ export {
   AddProduct,
   DeleteProduct,
   GetProductById,
+  GetLimitProductByDate,
   UpdateProduct,
 };

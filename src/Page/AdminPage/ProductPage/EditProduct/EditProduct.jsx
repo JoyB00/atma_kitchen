@@ -22,7 +22,7 @@ export default function EditProduct() {
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin url="/dashboard/product" page="Product" />
         <div className="mt-32 px-4 ">
-          <div className=" w-full bg-white rounded-2xl p-8 mb-8 shadow-md">
+          <div className=" w-full bg-white rounded-2xl p-8 mb-8 shadow-md ">
             <h1 className="font-medium text-2xl">Edit Product </h1>
             <FormProduct
               productData={product.product}
@@ -30,6 +30,7 @@ export default function EditProduct() {
               ingredient={ingredient}
               categories={categories}
               consignor={consignor}
+              limits={product.limit}
             />
           </div>
           <FooterDashboard />

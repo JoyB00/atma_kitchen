@@ -2,19 +2,22 @@ import { RotateLoader } from "react-spinners";
 export default function LoadingTable({ loading }) {
   return (
     <>
-      <table className="col-span-4 w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className="col-span-6 w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
         <thead className="border-b-2">
           <tr>
             <th className="text-start font-medium py-8 ps-8">Product Name</th>
+            <th className="text-start font-medium pe-6">Product Status</th>
             <th className="text-start font-medium pe-6">Category</th>
-            <th className="text-start font-medium pe-6 ">Qty</th>
+            <th className="text-center font-medium pe-6 ">Ready Stock</th>
+            <th className="text-center font-medium pe-6 ">Daily Stock</th>
             <th className="text-start font-medium pe-6">Price</th>
+            <th className="text-center font-medium ">Recipes</th>
             <th className="text-center font-medium pe-6">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className="py-12 col-span-5" colSpan={5} align="center">
+            <td className="py-12 col-span-6" colSpan={8} align="center">
               <RotateLoader
                 color="orange"
                 loading={loading}
@@ -31,7 +34,7 @@ export default function LoadingTable({ loading }) {
           </tr>
         </tbody>
       </table>
-      <table className=" h-[50%] mt-4 mb-6 text-gray-500 bg-white rounded-3xl drop-shadow-lg col-span-2">
+      {/* <table className=" h-[50%] mt-4 mb-6 text-gray-500 bg-white rounded-3xl drop-shadow-lg col-span-2">
         <thead className="border-b-2">
           <tr>
             <th className="text-start font-medium py-8 ps-8">Top 5 Selling</th>
@@ -56,7 +59,7 @@ export default function LoadingTable({ loading }) {
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> */}
     </>
   );
 }
