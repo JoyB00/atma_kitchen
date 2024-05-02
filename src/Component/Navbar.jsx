@@ -106,12 +106,12 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-        <div className="flex ">
+        <div className="flex items-center">
           {sessionStorage.getItem("token") != null &&
           sessionStorage.getItem("user") != null ? (
             <>
               <Button
-                className=" rounded-full p-0 hover:border-transparent text-black me-auto"
+                className=" rounded-full p-3 hover:border-transparent text-black me-auto"
                 withoutAnimate
               >
                 <FontAwesomeIcon icon={faBell} size="lg" />
@@ -119,8 +119,9 @@ export default function Navbar() {
                   1
                 </Badge> */}
               </Button>
+              <div className="px-2" />
               <Button
-                className="ms-3 rounded-full p-0 hover:border-transparent text-black me-auto"
+                className="rounded-full p-3 hover:border-transparent text-black me-auto"
                 withoutAnimate
               >
                 <FontAwesomeIcon icon={faCartShopping} size="lg" />
@@ -128,32 +129,36 @@ export default function Navbar() {
                   1
                 </Badge> */}
               </Button>
-              <Button
-                className="ms-3 rounded-full p-0 hover:border-transparent w-16"
-                withoutAnimate
-                type="submit"
-                onClick={logout}
-              >
-                <div className="bg-orang-500 w-16">
-                  <img
-                    src="https://api.dicebear.com/8.x/adventurer/svg?seed=Abby"
-                    alt="avatar"
-                    className="w-20 p-0 my-auto"
-                  />
-                </div>
-              </Button>
-              <h1 className="text-lg font-medium text-black my-auto">
-                <span
-                  className="font-semibold text-xl text-black"
-                  style={{
-                    transitionProperty: " color",
-                    transitionDuration: "200ms",
-                    transitionTimingFunction: "linear",
-                  }}
+              <div className="px-2" />
+              <div className="flex flex-row">
+                <Button
+                  className="rounded-full p-0 hover:border-transparent w-16"
+                  withoutAnimate
+                  type="submit"
+                  onClick={logout}
                 >
-                  {authUser.fullName.substring(0, 5)}
-                </span>
-              </h1>
+                  <div className="bg-orang-500 w-16">
+                    <img
+                      src="https://api.dicebear.com/8.x/adventurer/svg?seed=Abby"
+                      alt="avatar"
+                      className="w-20 p-0 my-auto"
+                    />
+                  </div>
+                </Button>
+                <div className="px-1" />
+                <h1 className="text-lg font-medium text-black my-auto">
+                  <span
+                    className="font-semibold text-xl text-black"
+                    style={{
+                      transitionProperty: " color",
+                      transitionDuration: "200ms",
+                      transitionTimingFunction: "linear",
+                    }}
+                  >
+                    {authUser.fullName.substring(0, 5)}
+                  </span>
+                </h1>
+              </div>
             </>
           ) : (
             <>
