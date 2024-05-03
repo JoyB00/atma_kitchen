@@ -8,6 +8,7 @@ import {
 import Button from "../../../../Component/Button";
 import { NavLink } from "react-router-dom";
 import EmployeeList from "./EmployeeList";
+import ModifyEmployeeForm from "./ModifyEmployeeForm";
 
 export default function BodyEmployeeManagement() {
   return (
@@ -35,12 +36,7 @@ export function Header() {
         >
           <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
         </Button>
-        <NavLink to="addProduct">
-          <Button className="bg-orange-500 my-4 text-white">
-            <FontAwesomeIcon icon={faUserPlus} className="me-1" />
-            Add Employee
-          </Button>
-        </NavLink>
+        <ModifyEmployeeForm mode="add" />
       </div>
     </div>
   );

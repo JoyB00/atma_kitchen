@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 export default function rootingredientprocurement() {
   return (
-    <main classname="w-full">
+    <main className="w-full">
       <Outlet />
     </main>
   );
