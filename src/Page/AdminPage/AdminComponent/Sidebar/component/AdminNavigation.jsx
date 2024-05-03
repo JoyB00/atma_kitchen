@@ -90,12 +90,12 @@ export default function AdminNavigation({
           <Navigation
             label="Customer"
             icon={faUser}
-            url={"/AdminDashboard/temp"}
+            url={"/AdminDashboard/customer"}
           />
           <Navigation
             label="Order History"
             icon={faHistory}
-            url={"/AdminDashboard/temp"}
+            url={"/AdminDashboard/orderHistory"}
           />
         </div>
       ) : undefined}

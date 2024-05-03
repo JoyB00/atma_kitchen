@@ -4,6 +4,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import Login from "./Page/Login";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
@@ -32,8 +33,16 @@ import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
+// Ingredient
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
-import { Suspense } from "react";
+
+// Customer Admin
+import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
+import CustomerPage from "./Page/AdminPage/CustomerPage/CustomerPage";
+
+// Customer Order History
+import RootCustomerOrderHistory from "./Root/AdminDashboard/CustomerOrderHistory/RootCustomerOrderHistory";
+import CustomerOrderHistoryPage from "./Page/AdminPage/CustomerOrderHistory/CustomerOrderHistory";
 
 // Root MO
 import RootMoDashboard from "./Root/MoDashboard/RootMoDashboard";
@@ -154,6 +163,26 @@ const router = createBrowserRouter([
                     element: <EditHampers />,
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "customer",
+            element: <RootAdminCustomer />,
+            children: [
+              {
+                index: true,
+                element: <CustomerPage />,
+              },
+            ],
+          },
+          {
+            path: "orderHistory",
+            element: <RootCustomerOrderHistory />,
+            children: [
+              {
+                index: true,
+                element: <CustomerOrderHistoryPage />,
               },
             ],
           },
