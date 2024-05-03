@@ -62,7 +62,7 @@ export default function OperationalNavigation({
           <Navigation
             label="Consignor"
             icon={faPeopleCarryBox}
-            url={"/dashboard/hampers"}
+            url={"/MoDashboard/consignor"}
           />
         </div>
       ) : undefined}

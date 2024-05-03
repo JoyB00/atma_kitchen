@@ -1,4 +1,9 @@
-import { faCookie, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendar,
+  faCookie,
+  faPencil,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import Button from "../../../../Component/Button";
 import Badge from "../../../../Component/Badge";
 import Swal from "sweetalert2";
@@ -9,7 +14,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
-import { DeleteProduct } from "../../../../api/ProductApi";
+import { DeleteProduct, DisableProduct } from "../../../../api/ProductApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getPicture } from "../../../../api";
@@ -18,6 +23,7 @@ import { useAtom } from "jotai";
 import { loadEdit } from "../../HampersPage/HampersPage";
 import { BeatLoader } from "react-spinners";
 import ModalShowRecipe from "./ModalShowRecipe";
+import ModalShowLimit from "./ModalShowLimit";
 
 export default function ProductTable({ search, data, length }) {
   const [page, setPage] = useState(1);
@@ -27,6 +33,7 @@ export default function ProductTable({ search, data, length }) {
   const [load, setLoad] = useAtom(loadEdit);
   const [idItemLoad, setIdItemLoad] = useState();
   const [openModal, setOpenModal] = useState(false);
+  const [openModalLimit, setOpenModalLimit] = useState(false);
 
   const handleLoadEdit = (id) => {
     setLoad(true);
@@ -34,6 +41,10 @@ export default function ProductTable({ search, data, length }) {
   };
   const handleOpenModal = (id) => {
     setOpenModal(true);
+    setIdItemLoad(id);
+  };
+  const handleOpenModalLimit = (id) => {
+    setOpenModalLimit(true);
     setIdItemLoad(id);
   };
 
@@ -85,7 +96,7 @@ export default function ProductTable({ search, data, length }) {
   const mutation = useMutation({
     mutationFn: async (id) => {
       console.log(id);
-      await DeleteProduct(id);
+      await DisableProduct(id);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["products"]);
@@ -144,24 +155,36 @@ export default function ProductTable({ search, data, length }) {
                       alt=""
                       className="w-16 h-16 rounded-full object-cover"
                     />
-                    <p className="ps-3 text-[1rem]">{item.product_name}</p>
+                    <div>
+                      <p className="ps-3 text-sm">{item.product_name}</p>
+                      <Button
+                        withoutAnimate
+                        className=" text-orange-500 bg-transparent hover:text-orange-600 text-center"
+                        onClick={() => handleOpenModalLimit(item.id)}
+                      >
+                        <p className="text-sm text-start">
+                          <FontAwesomeIcon icon={faCalendar} className="me-2" />
+                          See Limit Daily
+                        </p>
+                      </Button>
+                    </div>
                   </div>
                 </td>
-                <td className="font-medium text-start">
+                <td className="font-medium text-start text-sm">
                   {item.product_status}
                 </td>
-                <td className="font-medium text-start">
+                <td className="font-medium text-start text-sm">
                   {item.categories.category_name}
                 </td>
-                <td className="font-medium text-center ">
+                <td className="font-medium text-center text-sm ">
                   {item.ready_stock} pcs
                 </td>
-                <td className="font-medium text-center">
+                <td className="font-medium text-center text-sm">
                   {item.daily_stock} pcs
                 </td>
                 <td className="text-start font-medium ">
                   <Badge bgColor="bg-green-50" ringColor="ring-green-500">
-                    <p className="p-2">
+                    <p className="p-2 text-sm">
                       {item.product_price <= 999
                         ? item.product_price
                         : (item.product_price / 1000).toFixed(1) + "K"}
@@ -174,7 +197,10 @@ export default function ProductTable({ search, data, length }) {
                     onClick={() => handleOpenModal(item.id)}
                   >
                     <p>
-                      <FontAwesomeIcon icon={faCookie} className="me-2" />
+                      <FontAwesomeIcon
+                        icon={faCookie}
+                        className="me-2 text-sm"
+                      />
                       See Recipes
                     </p>
                   </Button>
@@ -225,6 +251,11 @@ export default function ProductTable({ search, data, length }) {
         id={idItemLoad}
         open={openModal}
         setOpen={setOpenModal}
+      />
+      <ModalShowLimit
+        id={idItemLoad}
+        open={openModalLimit}
+        setOpen={setOpenModalLimit}
       />
     </>
   );

@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import defaultImage from "../../../../assets/ProductAsset/bun susus.jpg";
 import { getPicture } from "../../../../api";
+import { BeatLoader } from "react-spinners";
 
 export default function FormProduct({
   productData,
@@ -72,6 +73,8 @@ export default function FormProduct({
   const [picture, setPicture] = useState(null);
   const [recipe, setRecipe] = useState(recipes ? recipes : []);
   const [counterRecipe, setCounterRecipe] = useState(0);
+  const [checkLimit, setCheckLimit] = useState(null);
+  const [loadingCheckLimit, setLoadingCheckLimit] = useState(false);
 
   let animate = {
     initial: { opacity: 0, y: -100 },
@@ -80,6 +83,9 @@ export default function FormProduct({
   };
 
   const handleChange = (event) => {
+    if (event.target.name == "production_date") {
+      setCheckLimit(null);
+    }
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
@@ -110,19 +116,38 @@ export default function FormProduct({
 
   const handleProductionDateInput = async (event, data) => {
     event.preventDefault();
+    setLoadingCheckLimit(true);
     try {
-      console.log("data didalam handle", data.id);
+      console.log("data didalam handle", data);
       const limit = await GetLimitProductByDate(data);
+      setCheckLimit(limit);
+      setData({ ...data, limit_amount: limit.data.limit_amount });
+      toast.success(limit.message, {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+      setLoadingCheckLimit(false);
     } catch (error) {
       console.log(error);
-      // setData({
-      //   ...data,
-      //   production_date: event.target.value,
-      //   limit_amount: productData.daily_stock,
-      // });
+      setCheckLimit([]);
+      setData({
+        ...data,
+        limit_amount: data.daily_stock,
+      });
+      toast.error(error.message, {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+        icon: "⚠️",
+      });
+      setLoadingCheckLimit(false);
     }
   };
-  
 
   const handleChangeRecipe = (event, index) => {
     event.preventDefault();
@@ -475,27 +500,36 @@ export default function FormProduct({
               initial={{ opacity: 0, y: -100 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="pt-10"
             >
-              <Button
-                className="bg-orange-500 text-white"
-                onClick={(event) =>
-                  handleProductionDateInput(event, productData)
-                }
-              >
-                Check Limit Product
-              </Button>
+              <div className={`pt-10 ${checkLimit ? "hidden" : ""}`}>
+                <Button
+                  className="bg-orange-500 text-white "
+                  onClick={(event) => handleProductionDateInput(event, data)}
+                >
+                  {loadingCheckLimit ? (
+                    <BeatLoader
+                      color="white"
+                      loading={loadingCheckLimit}
+                      size={10}
+                    />
+                  ) : (
+                    "Check Limit Product"
+                  )}
+                </Button>
+              </div>
+              {checkLimit ? (
+                <Input
+                  onChange={handleChange}
+                  withAnimate
+                  id="limit_amount"
+                  label="Daily Stock Limit"
+                  withLabel
+                  placeholder="Daily Stock"
+                  type="number"
+                  defaultValue={data.limit_amount}
+                />
+              ) : undefined}
             </motion.div>
-            {/* <Input
-              onChange={handleChange}
-              withAnimate
-              id="limit_amount"
-              label="Daily Stock Limit"
-              withLabel
-              placeholder="Daily Stock"
-              type="number"
-              defaultValue={limits ? data.limit_amount : ""}
-            /> */}
           </div>
         </div>
       ) : undefined}

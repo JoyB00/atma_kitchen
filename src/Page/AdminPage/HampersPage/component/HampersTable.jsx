@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
-import { DeleteHampers } from "../../../../api/HampersApi";
+import { DeleteHampers, DisableHampers } from "../../../../api/HampersApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getPicture } from "../../../../api";
@@ -43,7 +43,7 @@ export default function HampersTable({ data, search, length }) {
 
   const deleteHampers = useMutation({
     mutationFn: async (id) => {
-      await DeleteHampers(id);
+      await DisableHampers(id);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["hampers"]);

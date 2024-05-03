@@ -7,7 +7,9 @@ import {
   faFileArchive,
   faFilePen,
   faGifts,
+  faHistory,
   faHouse,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -91,13 +93,13 @@ export default function AdminNavigation({
       {expandedOperational ? (
         <div className="ms-8">
           <Navigation
-            label="Ingredient"
-            icon={faEgg}
+            label="Customer"
+            icon={faUser}
             url={"/AdminDashboard/temp"}
           />
           <Navigation
-            label="Product"
-            icon={faBreadSlice}
+            label="Order History"
+            icon={faHistory}
             url={"/AdminDashboard/temp"}
           />
         </div>

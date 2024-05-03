@@ -44,6 +44,13 @@ import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIng
 import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 
+// Root Consignor
+import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
+import ConsignorPage from "./Page/MOPage/Consignor/ConsignorPage";
+import AddConsignor from "./Page/MOPage/Consignor/AddConsignor/AddConsignor";
+import EditConsignor from "./Page/MOPage/Consignor/EditConsignor/EditConsignor";
+import { loader as loaderConsignor } from "./Page/MOPage/Consignor/EditConsignor/EditConsignor";
+
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -159,6 +166,31 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <MainDashboard />,
+          },
+          {
+            path: "consignor",
+            element: <RootConsignor />,
+            children: [
+              {
+                index: true,
+                element: <ConsignorPage />,
+              },
+              {
+                path: "addConsignor",
+                element: <AddConsignor />,
+              },
+              {
+                path: ":consignorId",
+                id: "consignor-detail",
+                loader: loaderConsignor,
+                children: [
+                  {
+                    index: true,
+                    element: <EditConsignor />,
+                  },
+                ],
+              },
+            ],
           },
           {
             path: "ingredientProcurement",

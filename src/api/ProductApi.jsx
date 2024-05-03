@@ -36,8 +36,12 @@ const GetProductById = async (id) => {
 
 const GetLimitProductByDate = async (data) => {
   try {
-    const response = await useAxios.post(`/limitProduct/${data.id}`, data);
-    return response.data.data;
+    const response = await useAxios.post(`/limitProduct/${data.id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
   } catch (error) {
     console.log(error.response.data);
     throw error.response.data;
@@ -67,11 +71,21 @@ const DeleteProduct = async (id) => {
     return err.response.data;
   }
 };
+const DisableProduct = async (id) => {
+  try {
+    const response = await useAxios.put(`/product/${id}`);
+    return response.data.data;
+  } catch (err) {
+    console.log(err.response.data);
+    return err.response.data;
+  }
+};
 
 export {
   FetchAllProducts,
   AddProduct,
   DeleteProduct,
+  DisableProduct,
   GetProductById,
   GetLimitProductByDate,
   UpdateProduct,
