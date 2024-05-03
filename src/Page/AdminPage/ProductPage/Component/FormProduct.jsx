@@ -50,7 +50,7 @@ export default function FormProduct({
           ? productData.product_status
           : "Pre-Order",
         recipe: recipes,
-        limit_amount: limits ? limits.limit_amount : "",
+        limit_amount: "",
         production_date: limits ? limits.production_date : "",
       }
     : {
@@ -85,8 +85,19 @@ export default function FormProduct({
   const handleChange = (event) => {
     if (event.target.name == "production_date") {
       setCheckLimit(null);
+      setData({
+        ...data,
+        [event.target.name]: event.target.value,
+        limit_amount: "",
+      });
+    } else if (
+      event.target.name == "product_status" &&
+      event.target.value == "Ready"
+    ) {
+      setData({ ...data, product_status: "Ready", limit_amount: 0 });
+    } else {
+      setData({ ...data, [event.target.name]: event.target.value });
     }
-    setData({ ...data, [event.target.name]: event.target.value });
   };
 
   const handlePicture = (event) => {

@@ -105,7 +105,7 @@ export default function ModalDetailIngredientProcurement({
                           <td className="text-center">
                             {item.total_price <= 999
                               ? item.total_price
-                              : (item.total_price / 100).toFixed(1) + "K"}
+                              : (item.total_price / 1000).toFixed(1) + "K"}
                           </td>
                         </tr>
                       );

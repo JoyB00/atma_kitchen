@@ -51,6 +51,12 @@ import AddConsignor from "./Page/MOPage/Consignor/AddConsignor/AddConsignor";
 import EditConsignor from "./Page/MOPage/Consignor/EditConsignor/EditConsignor";
 import { loader as loaderConsignor } from "./Page/MOPage/Consignor/EditConsignor/EditConsignor";
 
+// Root Other Procurement
+import RootOtherProcurement from "./Root/MoDashboard/OtherProcurement/RootOtherProcurement";
+import OtherProcurementPage from "./Page/MOPage/OtherProcurement/OtherProcurementPage";
+import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurement/AddOtherProcurement";
+import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
+import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -212,6 +218,31 @@ const router = createBrowserRouter([
                   {
                     index: true,
                     element: <EditIngredientProcurement />,
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            path: "otherProcurements",
+            element: <RootOtherProcurement />,
+            children: [
+              {
+                index: true,
+                element: <OtherProcurementPage />,
+              },
+              {
+                path: "addOtherProcurement",
+                element: <AddOtherProcurement />,
+              },
+              {
+                path: ":otherProcurementId",
+                id: "otherProcurement-detail",
+                loader: loaderOtherProcurement,
+                children: [
+                  {
+                    index: true,
+                    element: <EditOtherProcurement />,
                   },
                 ],
               },

@@ -61,11 +61,6 @@ export default function AdminNavigation({
             icon={faGifts}
             url={"/AdminDashboard/hampers"}
           />
-          <Navigation
-            label="Main Dashbord"
-            icon={faHouse}
-            url={"/AdminDashboard/temp"}
-          />
         </div>
       ) : undefined}
       <motion.button
