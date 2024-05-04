@@ -59,6 +59,23 @@ const fetchAllEmployee = async () => {
 };
 const allEmployee = atom(fetchAllEmployee);
 
+const fetchAllRole = async () => {
+  try {
+    const response = await FetchAllRoles();
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+const allRoles = atom(fetchAllRole);
+
 // const fetchAllIngredientDetails = async ()
 
-export { allIngredients, allCategories, allProducts, allConsignors };
+export {
+  allIngredients,
+  allCategories,
+  allProducts,
+  allConsignors,
+  allEmployee,
+  allRoles,
+};
