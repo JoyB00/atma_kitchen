@@ -7,20 +7,24 @@ import { useState } from "react";
 import { Modal, Box } from "@mui/material";
 import Input from "../../../../Component/Input.jsx";
 import InputDate from "../../../../Component/InputDate.jsx";
+import { GetEmployeeById } from "../../../../api/EmployeeApi.jsx";
 
-export default function ModifyEmployeeForm({ mode, id_employee }) {
+export default function ModifyEmployeeForm({
+  mode,
+  id_employee,
+  employee,
+  roleList,
+}) {
   const [data, setData] = useState({
     id: 0,
     role_id: 0,
     gender: "",
     fullName: "",
     email: "",
-    password: "",
     phoneNumber: "",
     dateOfBirth: "",
   });
   const gender = ["Male", "Female", "Prefer not to say"];
-  const role = ["Owner", "Admin", "MO"];
   let animate = {
     initial: { opacity: 0, y: -100 },
     animate: { opacity: 1, y: 0 },
@@ -36,11 +40,12 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
-  if (mode === "edit") {
-    // Fetch data from API and set it to data
-  }
-
-  const modifyEmployee = () => {};
+  const modifyEmployee = () => {
+    if (mode === "add") {
+    } else {
+      // for edit mode
+    }
+  };
 
   return (
     <>
@@ -68,6 +73,7 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
                   id="fullName"
                   type="text"
                   placeholder="Full Name"
+                  defaultValue={mode === "edit" ? employee.fullName : ""}
                 />
                 <Input
                   onChange={handleChange}
@@ -76,15 +82,21 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
                   id="email"
                   type="text"
                   placeholder="E-mail"
+                  defaultValue={mode === "edit" ? employee.email : ""}
                 />
-                <Input
-                  onChange={handleChange}
-                  withAnimate
-                  label="Password"
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                />
+                {mode === "add" ? (
+                  <Input
+                    onChange={handleChange}
+                    withAnimate
+                    label="Password"
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    defaultValue={data.password}
+                  />
+                ) : (
+                  <div />
+                )}
                 <Input
                   onChange={handleChange}
                   withAnimate
@@ -92,6 +104,7 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
                   id="phoneNumber"
                   type="number"
                   placeholder="Phone Number"
+                  defaultValue={mode === "edit" ? employee.phoneNumber : ""}
                 />
                 <div className="py-1" />
                 <InputDate
@@ -101,6 +114,7 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
                   id="dateOfBirth"
                   type="date"
                   placeholder="Date of Birth"
+                  defaultValue={mode === "edit" ? employee.dateOfBirth : ""}
                 />
                 <div className="py-2" />
                 <motion.select
@@ -109,11 +123,11 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
                   onChange={handleChange}
                   name="role"
                   id="role_id"
-                  defaultValue={"Owner"}
+                  value={mode === "edit" ? employee.role_id : 0}
                 >
-                  {role.map((role) => (
-                    <option value={role} key={role}>
-                      {role}
+                  {roleList.map((role) => (
+                    <option value={role.id} key={role.id}>
+                      {role.role_name}
                     </option>
                   ))}
                 </motion.select>
@@ -122,9 +136,9 @@ export default function ModifyEmployeeForm({ mode, id_employee }) {
                   {...animate}
                   className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
                   onChange={handleChange}
-                  name="category_id"
-                  id="category_id"
-                  defaultValue={"Prefer not to say"}
+                  name="gender"
+                  id="gender"
+                  value={data.gender}
                 >
                   {gender.map((gender) => (
                     <option value={gender} key={gender}>

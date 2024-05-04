@@ -10,17 +10,25 @@ import { NavLink } from "react-router-dom";
 import EmployeeList from "./EmployeeList";
 import ModifyEmployeeForm from "./ModifyEmployeeForm";
 
-export default function BodyEmployeeManagement() {
+export default function BodyEmployeeManagement({
+  employeeList,
+  roleList,
+  search,
+}) {
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header roleList={roleList} />
       <div className="py-2" />
-      <EmployeeList />
+      <EmployeeList
+        employeeList={employeeList}
+        roleList={roleList}
+        search={search}
+      />
     </div>
   );
 }
 
-export function Header() {
+export function Header({ roleList }) {
   return (
     <div className="w-full grid grid-cols-6">
       <motion.div className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2">
@@ -36,7 +44,7 @@ export function Header() {
         >
           <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
         </Button>
-        <ModifyEmployeeForm mode="add" />
+        <ModifyEmployeeForm mode="add" roleList={roleList} />
       </div>
     </div>
   );

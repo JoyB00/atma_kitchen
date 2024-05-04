@@ -4,6 +4,8 @@ import { FetchAllCategories } from "../api/CategoryApi";
 import { FetchAllProducts } from "../api/ProductApi";
 import { GetHampersById } from "../api/HampersApi";
 import { FetchAllConsignors } from "../api/ConsignorApi";
+import { FetchAllEmployees } from "../api/EmployeeApi";
+import { FetchAllRoles } from "../api/RoleApi";
 
 const fetchCategories = async () => {
   try {
@@ -40,7 +42,7 @@ const allProducts = atom(fetchAllProduct);
 const fetchAllConsignors = async () => {
   try {
     const response = await FetchAllConsignors();
-    console.log("penitip di lib", response);
+    // console.log("penitip di lib", response);
     return response;
   } catch (error) {
     return error.message;
@@ -51,7 +53,7 @@ const allConsignors = atom(fetchAllConsignors);
 
 const fetchAllEmployee = async () => {
   try {
-    const response = await FetchAllEmployee();
+    const response = await FetchAllEmployees();
     return response;
   } catch (error) {
     return error.message;

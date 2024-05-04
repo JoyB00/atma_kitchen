@@ -3,10 +3,15 @@ import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin"
 import FooterDashboard from "../../../Component/FooterDashboard";
 import BodyEmployeeManagement from "./body/BodyEmployee";
 import { useState } from "react";
+import { useAtom } from "jotai";
+import { allEmployee, allRoles } from "../../../lib/FetchFunctions";
 
 export default function IngredientProcurement() {
   const [search, setSearch] = useState("");
   const user = JSON.parse(sessionStorage.getItem("user"));
+  const [employees] = useAtom(allEmployee);
+  const [roles] = useAtom(allRoles);
+
   return (
     <div className="flex items-start bg-orange-100/50 w-full h-full min-h-screen min-w-full">
       <Sidebar role={user.role_id} />
@@ -23,7 +28,11 @@ export default function IngredientProcurement() {
           setSearch={setSearch}
         />
         <div className="mt-32 px-4 ">
-          <BodyEmployeeManagement />
+          <BodyEmployeeManagement
+            employeeList={employees}
+            roleList={roles}
+            search={search}
+          />
           <FooterDashboard />
         </div>
       </div>
