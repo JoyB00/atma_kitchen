@@ -49,6 +49,16 @@ const fetchAllConsignors = async () => {
 
 const allConsignors = atom(fetchAllConsignors);
 
+const fetchAllEmployee = async () => {
+  try {
+    const response = await FetchAllEmployee();
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+const allEmployee = atom(fetchAllEmployee);
+
 // const fetchAllIngredientDetails = async ()
 
 export { allIngredients, allCategories, allProducts, allConsignors };
