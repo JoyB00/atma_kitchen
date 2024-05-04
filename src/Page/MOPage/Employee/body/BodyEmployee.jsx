@@ -19,11 +19,7 @@ export default function BodyEmployeeManagement({
     <div className="flex flex-col">
       <Header roleList={roleList} />
       <div className="py-2" />
-      <EmployeeList
-        employeeList={employeeList}
-        roleList={roleList}
-        search={search}
-      />
+      <EmployeeList roleList={roleList} search={search} />
     </div>
   );
 }
