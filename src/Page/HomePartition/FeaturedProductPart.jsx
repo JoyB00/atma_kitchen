@@ -31,7 +31,7 @@ export default function FeaturedProduct({ data, loading }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-gradient-to-tl to-orange-50 via-current from-transparent py-24"
+          className="bg-gradient-to-tl to-orange-50 via-transparent from-transparent py-24"
         >
           <div className=" text-center px-52 ">
             <h1 className="text-black font-semibold">Our Featured Product</h1>

@@ -14,7 +14,7 @@ export default function CardComp({ title, price, desc, image, alt }) {
       exit={{ opacity: 1, scale: 1 }}
       transition={{ type: "spring" }}
     >
-      <div className="drop-shadow-md rounded-xl bg-white text-black my-auto p-3 w-[21.5rem] ">
+      <div className="drop-shadow-md rounded-xl bg-white text-black my-auto p-3 ">
         <LazyLoadImage
           effect="blur"
           src={image}
@@ -30,7 +30,7 @@ export default function CardComp({ title, price, desc, image, alt }) {
         </p>
         <div className="grid grid-col-1">
           <Button className="m-1 bg-orange-500 rounded-xl col-span-1 text-white">
-            Add To Chart
+            Add To Cart
           </Button>
         </div>
       </div>

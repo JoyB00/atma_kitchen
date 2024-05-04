@@ -1,9 +1,17 @@
 import { motion } from "framer-motion";
-export default function Button({ children, withoutAnimate, ...props }) {
+export default function Button({
+  children,
+  withoutAnimate,
+  hoverColor,
+  ...props
+}) {
   let setting = {};
   if (!withoutAnimate) {
     setting = {
-      whileHover: { scale: 1.05, backgroundColor: "#f99417" },
+      whileHover: {
+        scale: 1.05,
+        backgroundColor: hoverColor == null ? "#f99417" : hoverColor,
+      },
       transition: { type: "tween", stiffness: 500 },
     };
   }

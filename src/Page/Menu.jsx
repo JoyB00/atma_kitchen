@@ -64,7 +64,7 @@ export default function Menu() {
             </NavLink>
           </div>
         </div>
-        <div className=" grid grid-cols-5 gap-y-6 gap-x-3 ms-12">
+        <div className=" grid grid-cols-5 gap-y-6 gap-x-3 px-12">
           <div className=" h-fit col-span-1 border-2 border-gray-100 rounded-xl text-black text-left ">
             <h2 className="font-semibold pt-4 px-4">Sorted By</h2>
             <ul className="text-black px-8 pt-3 pb-6 border-b-2">
@@ -126,7 +126,7 @@ export default function Menu() {
                   variants={card}
                   initial="hidden"
                   animate="visible"
-                  className="  rounded-xl grid grid-cols-3 ms-8 me-6 gap-12"
+                  className="rounded-xl grid grid-cols-3 gap-4"
                 >
                   {data.slice(startIndex, endIndex).map((product) => (
                     <motion.li

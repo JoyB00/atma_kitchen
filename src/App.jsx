@@ -33,15 +33,20 @@ import EditProduct, {
   loader as productDetailLoader,
 } from "./Page/AdminPage/ProductPage/EditProduct/EditProduct";
 
+//Root Ingredient
+import RootIngredient from "./Root/AdminDashboard/Ingredient/RootIngredient";
+import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
+import AddIngredient from "./Page/AdminPage/IngredientPage/AddIngredient/AddIngredient";
+import EditIngredient, {
+  loader as ingredientDetailLoader,
+} from "./Page/AdminPage/IngredientPage/EditIngredient/EditIngredient";
+
 // Root Hampers
 import RootHampers from "./Root/AdminDashboard/Hampers/RootHampers";
 import HampersPage from "./Page/AdminPage/HampersPage/HampersPage";
 import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
-
-// Ingredient
-import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -59,8 +64,18 @@ import IngredientProcurement from "./Page/MOPage/IngredientProcurement/Ingredien
 import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIngredientProcurement/AddIngredientProcurement";
 import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
+// Root Employee
+import RootEmployee from "./Root/MoDashboard/Employee/RootEmployee";
+import EmployeePage from "./Page/MOPage/Employee/EmployeePage";
+
+// Root Customer
+import RootCustomer from "./Root/Customer/RootCustomer";
+import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
+import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
+import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 
 // Root Consignor
+
 import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
 import ConsignorPage from "./Page/MOPage/Consignor/ConsignorPage";
 import AddConsignor from "./Page/MOPage/Consignor/AddConsignor/AddConsignor";
@@ -164,7 +179,28 @@ const router = createBrowserRouter([
           },
           {
             path: "ingredient",
-            element: <IngredientPage />,
+            element: <RootIngredient />,
+            children: [
+              {
+                index: true,
+                element: <IngredientPage />,
+              },
+              {
+                path: "addIngredient",
+                element: <AddIngredient />,
+              },
+              {
+                path: ":ingredientId",
+                id: "ingredient-detail",
+                loader: ingredientDetailLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <EditIngredient />,
+                  },
+                ],
+              },
+            ],
           },
           {
             path: "hampers",
@@ -278,29 +314,38 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "otherProcurements",
-            element: <RootOtherProcurement />,
+            path: "employeeManagement",
+            element: <RootEmployee />,
             children: [
               {
                 index: true,
-                element: <OtherProcurementPage />,
-              },
-              {
-                path: "addOtherProcurement",
-                element: <AddOtherProcurement />,
-              },
-              {
-                path: ":otherProcurementId",
-                id: "otherProcurement-detail",
-                loader: loaderOtherProcurement,
-                children: [
-                  {
-                    index: true,
-                    element: <EditOtherProcurement />,
-                  },
-                ],
+                element: <EmployeePage />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: "CustomerDashboard",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <Suspense fallback={<LoadingPage />}>
+              <RootCustomer />
+            </Suspense>
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CustomerProfile />,
+          },
+          {
+            path: "EditProfile",
+            element: <EditCustomerProfile />,
+          },
+          {
+            path: "ChangePassword",
+            element: <ChangePasswordLoggedIn />,
           },
         ],
       },

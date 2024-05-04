@@ -10,14 +10,7 @@ import toast from "react-hot-toast";
 export default function FormRegister() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState({
-    nama: "",
-    email: "",
-    password: "",
-    confirmPass: "",
-    no_telp: "",
-    tgl_lahir: "",
-  });
+  const [data, setData] = useState({});
   const [disabled, setDisabled] = useState(true);
 
   const handleChange = (event) => {
