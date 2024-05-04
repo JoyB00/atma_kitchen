@@ -7,7 +7,10 @@ import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { DeleteIngredient } from "../../../../api/IngredientApi";
+import {
+  DeleteIngredient,
+  DisableIngredient,
+} from "../../../../api/IngredientApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useAtom } from "jotai";
@@ -28,7 +31,7 @@ export default function IngredientTable({ search, data, length }) {
 
   const deleteIngredient = useMutation({
     mutationFn: async (id) => {
-      await DeleteIngredient(id);
+      await DisableIngredient(id);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["ingredients"]);
