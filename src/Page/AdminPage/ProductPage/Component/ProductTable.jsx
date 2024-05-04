@@ -95,8 +95,7 @@ export default function ProductTable({ search, data, length }) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (id) => {
-      console.log(id);
-      await DisableProduct(id);
+      await DeleteProduct(id);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["products"]);
