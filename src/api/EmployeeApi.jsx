@@ -36,7 +36,7 @@ const GetEmployeeById = async (id) => {
 
 const UpdateEmployee = async (data) => {
   try {
-    const response = await useAxios.post(`/employee/${data.id}`, data, {
+    const response = await useAxios.put(`/employee/${data.id}`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
