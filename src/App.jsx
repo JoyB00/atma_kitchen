@@ -41,9 +41,6 @@ import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
-// Ingredient
-import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
-
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
 import CustomerPage from "./Page/AdminPage/CustomerPage/CustomerPage";
