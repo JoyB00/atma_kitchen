@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Modal, Box } from "@mui/material";
 import Input from "../../../../Component/Input.jsx";
 import InputDate from "../../../../Component/InputDate.jsx";
-import { GetEmployeeById } from "../../../../api/EmployeeApi.jsx";
+import { AddEmployee, UpdateEmployee } from "../../../../api/EmployeeApi.jsx";
 
 export default function ModifyEmployeeForm({
   mode,
@@ -16,13 +16,13 @@ export default function ModifyEmployeeForm({
   roleList,
 }) {
   const [data, setData] = useState({
-    id: 0,
-    role_id: 0,
-    gender: "",
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    dateOfBirth: "",
+    id: mode === "edit" ? employee.id : 0,
+    role_id: mode === "edit" ? employee.role_id : 0,
+    gender: mode === "edit" ? employee.gender : "",
+    fullName: mode === "edit" ? employee.fullName : "",
+    email: mode === "edit" ? employee.email : "",
+    phoneNumber: mode === "edit" ? employee.phoneNumber : "",
+    dateOfBirth: mode === "edit" ? employee.dateOfBirth : "",
   });
   const gender = ["Male", "Female", "Prefer not to say"];
   let animate = {
@@ -36,14 +36,25 @@ export default function ModifyEmployeeForm({
     setIsOpen(false);
   };
   const handleChange = (event) => {
-    // console.log(`${event.target.name} : ${event.target.value}`);
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
   const modifyEmployee = () => {
     if (mode === "add") {
+      console.log("Creating employee");
+      console.log(data);
+      // for add mode
+      AddEmployee(data).then((res) => {
+        console.log(res);
+      });
     } else {
       // for edit mode
+      console.log("Updating employee");
+      console.log(data);
+      UpdateEmployee(data).then((res) => {
+        console.log(res);
+      });
+      setIsOpen(false);
     }
   };
 
@@ -61,11 +72,7 @@ export default function ModifyEmployeeForm({
               {mode === "add" ? "Add Employee" : "Edit Employee"}
             </span>
             <div className="flex flex-col">
-              <Form
-                onSubmit={modifyEmployee}
-                method="post"
-                className="max-h-[50vh] overflow-y-auto"
-              >
+              <Form className="max-h-[50vh] overflow-y-auto">
                 <Input
                   onChange={handleChange}
                   withAnimate
@@ -73,7 +80,7 @@ export default function ModifyEmployeeForm({
                   id="fullName"
                   type="text"
                   placeholder="Full Name"
-                  defaultValue={mode === "edit" ? employee.fullName : ""}
+                  defaultValue={data.fullName}
                 />
                 <Input
                   onChange={handleChange}
@@ -82,7 +89,7 @@ export default function ModifyEmployeeForm({
                   id="email"
                   type="text"
                   placeholder="E-mail"
-                  defaultValue={mode === "edit" ? employee.email : ""}
+                  defaultValue={data.email}
                 />
                 {mode === "add" ? (
                   <Input
@@ -104,7 +111,7 @@ export default function ModifyEmployeeForm({
                   id="phoneNumber"
                   type="number"
                   placeholder="Phone Number"
-                  defaultValue={mode === "edit" ? employee.phoneNumber : ""}
+                  defaultValue={data.phoneNumber}
                 />
                 <div className="py-1" />
                 <InputDate
@@ -112,18 +119,19 @@ export default function ModifyEmployeeForm({
                   withAnimate
                   label="Date of Birth"
                   id="dateOfBirth"
+                  name="dateOfBirth"
                   type="date"
                   placeholder="Date of Birth"
-                  defaultValue={mode === "edit" ? employee.dateOfBirth : ""}
+                  defaultValue={data.dateOfBirth}
                 />
                 <div className="py-2" />
                 <motion.select
                   {...animate}
                   className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
                   onChange={handleChange}
-                  name="role"
+                  name="role_id"
                   id="role_id"
-                  value={mode === "edit" ? employee.role_id : 0}
+                  defaultValue={data.role_id}
                 >
                   {roleList.map((role) => (
                     <option value={role.id} key={role.id}>
@@ -138,7 +146,7 @@ export default function ModifyEmployeeForm({
                   onChange={handleChange}
                   name="gender"
                   id="gender"
-                  value={data.gender}
+                  defaultValue={data.gender}
                 >
                   {gender.map((gender) => (
                     <option value={gender} key={gender}>
@@ -149,7 +157,11 @@ export default function ModifyEmployeeForm({
               </Form>
               <div className="py-2" />
               <div className="flex justify-start">
-                <Button className="bg-orange-500" withoutAnimate type="submit">
+                <Button
+                  className="bg-orange-500"
+                  withoutAnimate
+                  onClick={modifyEmployee}
+                >
                   Save changes
                 </Button>
                 <div className="px-1" />

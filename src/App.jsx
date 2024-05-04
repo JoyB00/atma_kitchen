@@ -314,6 +314,31 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "otherProcurements",
+            element: <RootOtherProcurement />,
+            children: [
+              {
+                index: true,
+                element: <OtherProcurementPage />,
+              },
+              {
+                path: "addOtherProcurement",
+                element: <AddOtherProcurement />,
+              },
+              {
+                path: ":otherProcurementId",
+                id: "otherProcurement-detail",
+                loader: loaderOtherProcurement,
+                children: [
+                  {
+                    index: true,
+                    element: <EditOtherProcurement />,
+                  },
+                ],
+              },
+            ],
+          },
+          {
             path: "employeeManagement",
             element: <RootEmployee />,
             children: [

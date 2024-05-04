@@ -3,10 +3,33 @@ import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import ModifyEmployeeForm from "./ModifyEmployeeForm";
+import { useQuery } from "@tanstack/react-query";
+import { RotateLoader } from "react-spinners";
+import { GetAllEmployees } from "../../../../api/EmployeeApi";
 
-export default function EmployeeList({ employeeList, roleList, search }) {
+export default function EmployeeList({ roleList, search }) {
+  const employeeList = useQuery({
+    queryKey: ["employee"],
+    queryFn: GetAllEmployees,
+  });
+
   return (
     <div className="grid xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+      employeeList.isFetching ? (
+      <div className="flex justify-center py-20">
+        <RotateLoader
+          color="orange"
+          loading={consignors.isFetching}
+          cssOverride={{
+            justifyContent: "center",
+            borderColor: "red",
+          }}
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+      </div>
+      ) : (
       {employeeList
         .filter((employee) =>
           employee.users.fullName.toLowerCase().includes(search.toLowerCase())
@@ -14,6 +37,7 @@ export default function EmployeeList({ employeeList, roleList, search }) {
         .map((employee) => (
           <EmployeeCard employee={employee} role={roleList} key={employee.id} />
         ))}
+      )
     </div>
   );
 }
