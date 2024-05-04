@@ -25,14 +25,20 @@ import EditProduct, {
   loader as productDetailLoader,
 } from "./Page/AdminPage/ProductPage/EditProduct/EditProduct";
 
+//Root Ingredient
+import RootIngredient from "./Root/AdminDashboard/Ingredient/RootIngredient";
+import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
+import AddIngredient from "./Page/AdminPage/IngredientPage/AddIngredient/AddIngredient";
+import EditIngredient, {
+  loader as ingredientDetailLoader,
+} from "./Page/AdminPage/IngredientPage/EditIngredient/EditIngredient";
+
 // Root Hampers
 import RootHampers from "./Root/AdminDashboard/Hampers/RootHampers";
 import HampersPage from "./Page/AdminPage/HampersPage/HampersPage";
 import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
-
-import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
 import { Suspense } from "react";
 
 // Root MO
@@ -114,7 +120,28 @@ const router = createBrowserRouter([
           },
           {
             path: "ingredient",
-            element: <IngredientPage />,
+            element: <RootIngredient />,
+            children: [
+              {
+                index: true,
+                element: <IngredientPage />,
+              },
+              {
+                path: "addIngredient",
+                element: <AddIngredient />,
+              },
+              {
+                path: ":ingredientId",
+                id: "ingredient-detail",
+                loader: ingredientDetailLoader,
+                children: [
+                  {
+                    index: true,
+                    element: <EditIngredient />,
+                  },
+                ],
+              },
+            ],
           },
           {
             path: "hampers",

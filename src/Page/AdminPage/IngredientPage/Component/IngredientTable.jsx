@@ -7,21 +7,17 @@ import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import defaultImage from "../../../../assets/ProductAsset/lapis leggite.jpg";
-import { DeleteProduct } from "../../../../api/ProductApi";
+import { DeleteIngredient } from "../../../../api/IngredientApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { getPicture } from "../../../../api";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useAtom } from "jotai";
 import { loadEdit } from "../../HampersPage/HampersPage";
 import { BeatLoader } from "react-spinners";
-
-export default function ProductTable({ search, data, length }) {
+export default function IngredientTable({ search, data }) {
   const [page, setPage] = useState(1);
-  const productPerPage = 8;
-  const startIndex = (page - 1) * productPerPage;
-  const endIndex = page * productPerPage;
+  const ingredientPerPage = 8;
+  const startIndex = (page - 1) * ingredientPerPage;
+  const endIndex = page * ingredientPerPage;
   const [load, setLoad] = useAtom(loadEdit);
   const [idItemLoad, setIdItemLoad] = useState();
 
@@ -30,10 +26,19 @@ export default function ProductTable({ search, data, length }) {
     setIdItemLoad(id);
   };
 
-  const swallDelete = (data) => {
+  const deleteIngredient = useMutation({
+    mutationFn: async (id) => {
+      await DeleteIngredient(id);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["ingredients"]);
+    },
+  });
+
+  const swalDelete = (data) => {
     withReactContent(Swal)
       .fire({
-        title: `Are you sure to delete ${data.product_name} ?  `,
+        title: `Are you sure to delete ${data.ingredient_name} ?  `,
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
@@ -44,7 +49,7 @@ export default function ProductTable({ search, data, length }) {
       .then((result) => {
         if (result.isConfirmed) {
           toast.promise(
-            mutation.mutateAsync(data.id),
+            deleteIngredient.mutateAsync(data.id),
             {
               loading: "Loading",
               success: "Your file has been Deleted",
@@ -66,7 +71,7 @@ export default function ProductTable({ search, data, length }) {
     setPage(p);
   };
 
-  const productItem = {
+  const ingredientItem = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
@@ -75,78 +80,50 @@ export default function ProductTable({ search, data, length }) {
   };
 
   const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: async (id) => {
-      await DeleteProduct(id);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries(["products"]);
-    },
-    onError: (err) => {
-      console.log(err);
-    },
-  });
-
   useEffect(() => {
     setLoad(false);
   }, []);
+
   return (
+    <>
+    
+    
     <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      
       <thead className="border-b-2">
         <tr>
-          <th className="text-start font-medium py-8 ps-8">Product Name</th>
-          <th className="text-start font-medium pe-6">Category</th>
+          <th className="text-start font-medium py-8 ps-8">Ingredient Name</th>
           <th className="text-start font-medium pe-6 ">Qty</th>
-          <th className="text-start font-medium pe-6">Price</th>
-          <th className="text-center font-medium pe-6">Action</th>
+          <th className="text-start font-medium pe-6">Unit</th>
+          <th className="text-center font-medium pe-6">Action
+          </th>
         </tr>
       </thead>
       <motion.tbody
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
       >
         {data
           .filter((item) => {
             return search.toLowerCase() === ""
               ? item
-              : item.product_name.toLowerCase().includes(search) ||
-                  item.product_name.includes(search);
+              : item.ingredient_name.toLowerCase().includes(search) ||
+                  item.ingredient_name.includes(search);
           })
           .slice(startIndex, endIndex)
           .map((item) => (
             <motion.tr
-              variants={productItem}
+              variants={ingredientItem}
               className="border-t-2 border-gray-100  text-black"
               key={item.id}
             >
-              <td className="font-medium py-6 ps-6 ">
-                <div className="flex items-center ">
-                  <LazyLoadImage
-                    effect="blur"
-                    src={
-                      item.product_picture
-                        ? getPicture(item.product_picture, "product")
-                        : defaultImage
-                    }
-                    alt=""
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <p className="ps-3 text-[1rem]">{item.product_name}</p>
-                </div>
-              </td>
-              <td className="font-medium text-start">
-                {item.categories.category_name}
-              </td>
+               <td className="ps-3 text-[1rem]">{item.ingredient_name}</td>
               <td className="font-medium text-start">{item.quantity}</td>
-              <td className="text-start font-medium ">
-                {item.product_price <= 999
-                  ? item.product_price
-                  : (item.product_price / 1000).toFixed(1) + "K"}
-              </td>
+              <td className="font-medium text-start">{item.unit}</td>
               <td className="font-medium ">
-                <div className="flex justify-center me-2">
-                  <NavLink to={`/AdminDashboard/product/${item.id}`}>
+              <div className="flex justify-center me-2">
+                  <NavLink to={`/AdminDashboard/ingredient/${item.id}`}>
                     <Button
                       className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
                       onClick={() => handleLoadEdit(item.id)}
@@ -163,7 +140,7 @@ export default function ProductTable({ search, data, length }) {
                   </NavLink>
                   <Button
                     className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-[0.9rem]"
-                    onClick={() => swallDelete(item)}
+                    onClick={() => swalDelete(item)}
                   >
                     <FontAwesomeIcon icon={faTrash} className="me-2" />
                     Delete
@@ -177,7 +154,7 @@ export default function ProductTable({ search, data, length }) {
         <tr>
           <td colSpan={5}>
             <Pagination
-              count={Math.ceil(length / productPerPage)}
+              count={Math.ceil(20 / ingredientPerPage)}
               size="small"
               className="flex justify-center mb-4"
               onChange={handleChange}
@@ -185,6 +162,7 @@ export default function ProductTable({ search, data, length }) {
           </td>
         </tr>
       </tfoot>
-    </table>
+      </table>
+    </>
   );
 }
