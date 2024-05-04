@@ -6,6 +6,7 @@ import { GetHampersById } from "../api/HampersApi";
 import { FetchAllConsignors } from "../api/ConsignorApi";
 import { FetchAllEmployees } from "../api/EmployeeApi";
 import { FetchAllRoles } from "../api/RoleApi";
+import { FetchAllCustomers } from "../api/CustomerApi";
 
 const fetchCategories = async () => {
   try {
@@ -48,18 +49,7 @@ const fetchAllConsignors = async () => {
     return error.message;
   }
 };
-
 const allConsignors = atom(fetchAllConsignors);
-
-const fetchAllEmployee = async () => {
-  try {
-    const response = await FetchAllEmployees();
-    return response;
-  } catch (error) {
-    return error.message;
-  }
-};
-const allEmployee = atom(fetchAllEmployee);
 
 const fetchAllRole = async () => {
   try {
@@ -71,6 +61,27 @@ const fetchAllRole = async () => {
 };
 const allRoles = atom(fetchAllRole);
 
+const fetchAllEmployee = async () => {
+  try {
+    const response = await FetchAllEmployees();
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+const allEmployee = atom(fetchAllEmployee);
+
+const fetchAllCustomers = async () => {
+  try {
+    const response = await FetchAllCustomers();
+    console.log("customer", response);
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+const allCustomers = atom(fetchAllCustomers);
 // const fetchAllIngredientDetails = async ()
 
 export {
@@ -80,4 +91,5 @@ export {
   allConsignors,
   allEmployee,
   allRoles,
+  allCustomers,
 };

@@ -4,6 +4,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import Login from "./Page/Login";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
@@ -32,8 +33,16 @@ import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
+// Ingredient
 import IngredientPage from "./Page/AdminPage/IngredientPage/IngredientPage";
-import { Suspense } from "react";
+
+// Customer Admin
+import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
+import CustomerPage from "./Page/AdminPage/CustomerPage/CustomerPage";
+
+// Customer Order History
+import RootCustomerOrderHistory from "./Root/AdminDashboard/CustomerOrderHistory/RootCustomerOrderHistory";
+import CustomerOrderHistoryPage from "./Page/AdminPage/CustomerOrderHistory/CustomerOrderHistory";
 
 // Root MO
 import RootMoDashboard from "./Root/MoDashboard/RootMoDashboard";
@@ -53,6 +62,20 @@ import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
 import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 
+// Root Consignor
+
+import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
+import ConsignorPage from "./Page/MOPage/Consignor/ConsignorPage";
+import AddConsignor from "./Page/MOPage/Consignor/AddConsignor/AddConsignor";
+import EditConsignor from "./Page/MOPage/Consignor/EditConsignor/EditConsignor";
+import { loader as loaderConsignor } from "./Page/MOPage/Consignor/EditConsignor/EditConsignor";
+
+// Root Other Procurement
+import RootOtherProcurement from "./Root/MoDashboard/OtherProcurement/RootOtherProcurement";
+import OtherProcurementPage from "./Page/MOPage/OtherProcurement/OtherProcurementPage";
+import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurement/AddOtherProcurement";
+import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
+import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -153,6 +176,26 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "customer",
+            element: <RootAdminCustomer />,
+            children: [
+              {
+                index: true,
+                element: <CustomerPage />,
+              },
+            ],
+          },
+          {
+            path: "orderHistory",
+            element: <RootCustomerOrderHistory />,
+            children: [
+              {
+                index: true,
+                element: <CustomerOrderHistoryPage />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -168,6 +211,31 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <MainDashboard />,
+          },
+          {
+            path: "consignor",
+            element: <RootConsignor />,
+            children: [
+              {
+                index: true,
+                element: <ConsignorPage />,
+              },
+              {
+                path: "addConsignor",
+                element: <AddConsignor />,
+              },
+              {
+                path: ":consignorId",
+                id: "consignor-detail",
+                loader: loaderConsignor,
+                children: [
+                  {
+                    index: true,
+                    element: <EditConsignor />,
+                  },
+                ],
+              },
+            ],
           },
           {
             path: "ingredientProcurement",

@@ -50,6 +50,14 @@ const DeleteHampers = async (id) => {
     return error.response.data;
   }
 };
+const DisableHampers = async (id) => {
+  try {
+    const response = await useAxios.put(`/hampers/${id}`);
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
 
 export {
   FetchAllHampers,
@@ -57,4 +65,5 @@ export {
   GetHampersById,
   UpdateHampers,
   DeleteHampers,
+  DisableHampers,
 };

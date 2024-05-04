@@ -263,7 +263,7 @@ export default function FormHampers({
           <motion.div {...animate}>
             {picture || hampersData?.hampers_picture ? (
               <div className="mt-2  rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
-                <div className="flex justify-center ">
+                <div className="flex justify-center h-36 ">
                   <img
                     src={
                       picture || !hampersData
@@ -271,7 +271,7 @@ export default function FormHampers({
                         : getPicture(hampersData.hampers_picture, "hampers")
                     }
                     alt="hampers picture"
-                    className="object-cover"
+                    className="object-cover h-36"
                   />
                 </div>
                 <div className="flex justify-center">

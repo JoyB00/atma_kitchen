@@ -1,9 +1,9 @@
-import Sidebar from "../../AdminPage/AdminComponent/Sidebar/Sidebar";
-import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin";
-import Body from "./body/BodyIngredientProcurement";
+import Sidebar from "../AdminComponent/Sidebar/Sidebar";
+import NavbarAdmin from "../AdminComponent/NavbarAdmin/NavbarAdmin";
+import Body from "./body/BodyCustomerOrderHistory";
 import FooterDashboard from "../../../Component/FooterDashboard";
 import { useState } from "react";
-export default function IngredientProcurement() {
+export default function CustomerOrderHistoryPage() {
   const [search, setSearch] = useState("");
   const user = JSON.parse(sessionStorage.getItem("user"));
   return (
@@ -11,14 +11,8 @@ export default function IngredientProcurement() {
       <Sidebar role={user.role_id} />
       <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
         <NavbarAdmin
-          url={
-            user.role_id == 2
-              ? "/AdminDashboard/"
-              : user.role_id == 3
-              ? "/MoDashboard/ingredientProcurement"
-              : ""
-          }
-          page="Ingredient Procurement"
+          url={"/AdminDashboard/orderHistory"}
+          page="Customer Order History"
           setSearch={setSearch}
         />
         <div className="mt-32 px-4 ">

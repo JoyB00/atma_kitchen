@@ -1,6 +1,6 @@
 import Modal from "../../../../Component/Modal";
 import { useEffect, useRef, useState } from "react";
-import { GetIngredientProcurement } from "../../../../api/IngredientProcurementApi";
+import { GetConsignor } from "../../../../api/ConsignorApi";
 import { BeatLoader } from "react-spinners";
 import { motion } from "framer-motion";
 import imageProcurement from "../../../../assets/9659497.jpg";
@@ -10,25 +10,23 @@ import Badge from "../../../../Component/Badge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCartArrowDown,
+  faCookie,
   faDollar,
   faEgg,
   faGifts,
+  faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-export default function ModalDetailIngredientProcurement({
-  open,
-  setOpen,
-  id,
-}) {
+export default function ModalProductConsignor({ open, setOpen, id }) {
   const [load, setLoad] = useState(true);
-  const [ingredientProcurement, setIngredientProcurement] = useState([]);
+  const [consignor, setConsignor] = useState([]);
   const cancelButtonRef = useRef(null);
 
   useEffect(() => {
     setLoad(true);
     if (open) {
       const hampersDetail = async () => {
-        const data = await GetIngredientProcurement(id);
-        setIngredientProcurement(data);
+        const data = await GetConsignor(id);
+        setConsignor(data);
         setTimeout(() => {
           setLoad(false);
         }, 100);
@@ -52,7 +50,7 @@ export default function ModalDetailIngredientProcurement({
           <div className="bg-orange-500 w-full p-4">
             <h1 className="text-3xl text-white font-semibold">
               <FontAwesomeIcon icon={faCartArrowDown} className=" me-2" />
-              Ingredient Procurement Details
+              Consignor Products
             </h1>
           </div>
           <div className="grid grid-cols-5 gap-6 px-6 mt-6">
@@ -69,15 +67,12 @@ export default function ModalDetailIngredientProcurement({
             <div className="col-span-3">
               <div className="w-screen">
                 <h1 className="text-black font-semibold text-3xl mb-2">
-                  Ingredient Procurement
+                  {consignor.consignor.consignor_name}
                 </h1>
                 <Badge bgColor="bg-orange-500" ringColor="ring-transparent">
                   <p className=" text-white text-lg">
-                    Date :{" "}
-                    {
-                      ingredientProcurement.ingredient_procurement
-                        .procurement_date
-                    }
+                    <FontAwesomeIcon icon={faPhone} className="me-2" />
+                    {consignor.consignor.phone_number}
                   </p>
                 </Badge>
               </div>
@@ -85,27 +80,29 @@ export default function ModalDetailIngredientProcurement({
                 <table className=" text-black w-full">
                   <thead>
                     <tr>
-                      <th className="ps-4 py-4">Ingredient</th>
-                      <th className="pe-2 text-center">Quantity</th>
-                      <th className="text-center">Total</th>
+                      <th className="ps-4 py-4">Product</th>
+                      <th className="pe-2 text-center">Ready Stock</th>
+                      <th className="pe-2 text-center">Price</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {ingredientProcurement.details.map((item) => {
+                    {consignor.product.map((item) => {
                       return (
                         <tr key={item.id}>
-                          <td className="py-2 ps-2 ">
+                          <td className="text-sm py-2 ps-2 ">
                             <FontAwesomeIcon
-                              icon={faEgg}
+                              icon={faCookie}
                               className="text-orange-500 me-2"
                             />
-                            {item.ingredients.ingredient_name}
+                            {item.product_name}
                           </td>
-                          <td className="text-center">{item.quantity}</td>
-                          <td className="text-center">
-                            {item.total_price <= 999
-                              ? item.total_price
-                              : (item.total_price / 1000).toFixed(1) + "K"}
+                          <td className="text-sm text-center">
+                            {item.ready_stock} pcs
+                          </td>
+                          <td className="text-sm text-center pe-2">
+                            {item.product_price <= 999
+                              ? item.product_price
+                              : (item.product_price / 1000).toFixed(1) + "K"}
                           </td>
                         </tr>
                       );
@@ -113,17 +110,6 @@ export default function ModalDetailIngredientProcurement({
                   </tbody>
                 </table>
               </div>
-              <h1 className="mt-4 text-end text-2xl font-semibold text-orange-500">
-                {" "}
-                <FontAwesomeIcon icon={faDollar} className="me-1" /> Total Price
-                :{" "}
-                {ingredientProcurement.ingredient_procurement.total_price <= 999
-                  ? ingredientProcurement.ingredient_procurement.total_price
-                  : (
-                      ingredientProcurement.ingredient_procurement.total_price /
-                      1000
-                    ).toFixed(1) + "K"}
-              </h1>
             </div>
           </div>
         </motion.div>

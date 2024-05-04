@@ -1,6 +1,6 @@
 import Modal from "../../../../Component/Modal";
 import { useEffect, useRef, useState } from "react";
-import { GetIngredientProcurement } from "../../../../api/IngredientProcurementApi";
+import { GetProductById } from "../../../../api/ProductApi";
 import { BeatLoader } from "react-spinners";
 import { motion } from "framer-motion";
 import imageProcurement from "../../../../assets/9659497.jpg";
@@ -14,21 +14,17 @@ import {
   faEgg,
   faGifts,
 } from "@fortawesome/free-solid-svg-icons";
-export default function ModalDetailIngredientProcurement({
-  open,
-  setOpen,
-  id,
-}) {
+export default function ModalShowLimit({ open, setOpen, id }) {
   const [load, setLoad] = useState(true);
-  const [ingredientProcurement, setIngredientProcurement] = useState([]);
+  const [data, setData] = useState([]);
   const cancelButtonRef = useRef(null);
 
   useEffect(() => {
     setLoad(true);
     if (open) {
       const hampersDetail = async () => {
-        const data = await GetIngredientProcurement(id);
-        setIngredientProcurement(data);
+        const data = await GetProductById(id);
+        setData(data);
         setTimeout(() => {
           setLoad(false);
         }, 100);
@@ -52,46 +48,47 @@ export default function ModalDetailIngredientProcurement({
           <div className="bg-orange-500 w-full p-4">
             <h1 className="text-3xl text-white font-semibold">
               <FontAwesomeIcon icon={faCartArrowDown} className=" me-2" />
-              Ingredient Procurement Details
+              Daily Stock Limit
             </h1>
           </div>
           <div className="grid grid-cols-5 gap-6 px-6 mt-6">
-            <div className="col-span-2">
+            {/* <div className="col-span-2">
               <div className=" h-[25rem]  rounded-lg border border-dashed border-gray-900/25 ">
                 <LazyLoadImage
                   effect="blur"
                   alt="Ingredient Procurement Picture"
-                  src={imageProcurement}
-                  className="object-cover h-[25rem]  w-full "
+                  src={
+                    data.product.product_picture
+                      ? getPicture(data.product.product_picture, "product")
+                      : imageProcurement
+                  }
+                  className="object-cover h-[25rem] w-full "
                 />
               </div>
-            </div>
-            <div className="col-span-3">
+            </div> */}
+            <div className="col-span-5">
               <div className="w-screen">
                 <h1 className="text-black font-semibold text-3xl mb-2">
-                  Ingredient Procurement
+                  {data.product.product_name.length < 30
+                    ? data.product.product_name
+                    : `${data.product.product_name.substring(0, 30)}...`}
                 </h1>
                 <Badge bgColor="bg-orange-500" ringColor="ring-transparent">
                   <p className=" text-white text-lg">
-                    Date :{" "}
-                    {
-                      ingredientProcurement.ingredient_procurement
-                        .procurement_date
-                    }
+                    {data.product.categories.category_name}
                   </p>
                 </Badge>
               </div>
-              <div className="border-2 my-8 rounded-xl pb-4 ">
+              <div className="border-2 my-6 rounded-xl pb-4 ">
                 <table className=" text-black w-full">
                   <thead>
                     <tr>
-                      <th className="ps-4 py-4">Ingredient</th>
-                      <th className="pe-2 text-center">Quantity</th>
-                      <th className="text-center">Total</th>
+                      <th className="ps-4 py-4">Date</th>
+                      <th className="pe-2 text-center">Current Limit</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {ingredientProcurement.details.map((item) => {
+                    {data.allLimit.map((item) => {
                       return (
                         <tr key={item.id}>
                           <td className="py-2 ps-2 ">
@@ -99,21 +96,16 @@ export default function ModalDetailIngredientProcurement({
                               icon={faEgg}
                               className="text-orange-500 me-2"
                             />
-                            {item.ingredients.ingredient_name}
+                            {item.production_date}
                           </td>
-                          <td className="text-center">{item.quantity}</td>
-                          <td className="text-center">
-                            {item.total_price <= 999
-                              ? item.total_price
-                              : (item.total_price / 1000).toFixed(1) + "K"}
-                          </td>
+                          <td className="text-center">{item.limit_amount}</td>
                         </tr>
                       );
                     })}
                   </tbody>
                 </table>
               </div>
-              <h1 className="mt-4 text-end text-2xl font-semibold text-orange-500">
+              {/* <h1 className="mt-4 text-end text-2xl font-semibold text-orange-500">
                 {" "}
                 <FontAwesomeIcon icon={faDollar} className="me-1" /> Total Price
                 :{" "}
@@ -123,7 +115,7 @@ export default function ModalDetailIngredientProcurement({
                       ingredientProcurement.ingredient_procurement.total_price /
                       1000
                     ).toFixed(1) + "K"}
-              </h1>
+              </h1> */}
             </div>
           </div>
         </motion.div>

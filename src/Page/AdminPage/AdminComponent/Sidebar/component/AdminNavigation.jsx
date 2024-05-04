@@ -7,7 +7,9 @@ import {
   faFileArchive,
   faFilePen,
   faGifts,
+  faHistory,
   faHouse,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -59,11 +61,6 @@ export default function AdminNavigation({
             icon={faGifts}
             url={"/AdminDashboard/hampers"}
           />
-          <Navigation
-            label="Main Dashbord"
-            icon={faHouse}
-            url={"/AdminDashboard/temp"}
-          />
         </div>
       ) : undefined}
       <motion.button
@@ -91,14 +88,14 @@ export default function AdminNavigation({
       {expandedOperational ? (
         <div className="ms-8">
           <Navigation
-            label="Ingredient"
-            icon={faEgg}
-            url={"/AdminDashboard/temp"}
+            label="Customer"
+            icon={faUser}
+            url={"/AdminDashboard/customer"}
           />
           <Navigation
-            label="Product"
-            icon={faBreadSlice}
-            url={"/AdminDashboard/temp"}
+            label="Order History"
+            icon={faHistory}
+            url={"/AdminDashboard/orderHistory"}
           />
         </div>
       ) : undefined}
