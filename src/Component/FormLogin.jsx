@@ -78,7 +78,7 @@ export default function FormLogin() {
       <div className="flex justify-start mb-5">
         <NavLink
           className="mx-2 bg-transparent my-auto text-orange-500 lg:text-base md:text-sm"
-          to=""
+          to="/forgotPassword"
         >
           Forgot Password?
         </NavLink>

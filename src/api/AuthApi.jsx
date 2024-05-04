@@ -1,4 +1,4 @@
-  import useAxios from "./index";
+import useAxios from "./index";
 const SignUp = async (data) => {
   try {
     const response = await useAxios.post("/register", data);
@@ -11,6 +11,36 @@ const SignUp = async (data) => {
 const SignIn = async (data) => {
   try {
     const response = await useAxios.post("/login", data);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const VerifyEmail = async (data) => {
+  try {
+    const response = await useAxios.post("/verifyEmail", data);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+const VerifyCode = async (data) => {
+  try {
+    const response = await useAxios.post("/verifyCode", data);
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+const ChangePassword = async (data) => {
+  try {
+    const response = await useAxios.post("/changePassword", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw error.response.data;
@@ -35,4 +65,4 @@ const LogOut = async () => {
   }
 };
 
-export { SignUp, SignIn, LogOut };
+export { SignUp, SignIn, LogOut, VerifyEmail, VerifyCode, ChangePassword };

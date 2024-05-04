@@ -14,6 +14,13 @@ import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
 import Menu from "./Page/Menu";
+
+// root Forgot Password
+import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
+import ForgotPassword from "./Page/ChangePasswordCustomer/ForgotPassword";
+import VerificationCode from "./Page/ChangePasswordCustomer/VerificationCode";
+import ChangePassword from "./Page/ChangePasswordCustomer/ChangePassword";
+
 // root Admin Dashboard
 import RootAdminDashboard from "./Root/AdminDashboard/RootAdminDashboard";
 import MainDashboard from "./Page/AdminPage/MainDashboard/MainDashboard";
@@ -85,6 +92,24 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "forgotPassword",
+        element: <RootForgotPassword />,
+        children: [
+          {
+            index: true,
+            element: <ForgotPassword />,
+          },
+          {
+            path: "verifyCode",
+            element: <VerificationCode />,
+          },
+          {
+            path: ":token",
+            element: <ChangePassword />,
+          },
+        ],
       },
       {
         path: "register",
