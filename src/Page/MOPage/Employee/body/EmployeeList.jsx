@@ -15,29 +15,37 @@ export default function EmployeeList({ roleList, search }) {
 
   return (
     <div className="grid xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-      employeeList.isFetching ? (
-      <div className="flex justify-center py-20">
-        <RotateLoader
-          color="orange"
-          loading={consignors.isFetching}
-          cssOverride={{
-            justifyContent: "center",
-            borderColor: "red",
-          }}
-          size={50}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-      </div>
+      {employeeList.isFetching ? (
+        <div className="flex justify-center py-20">
+          <RotateLoader
+            color="orange"
+            loading={employeeList.isFetching}
+            cssOverride={{
+              justifyContent: "center",
+              borderColor: "red",
+            }}
+            size={50}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
       ) : (
-      {employeeList
-        .filter((employee) =>
-          employee.users.fullName.toLowerCase().includes(search.toLowerCase())
-        )
-        .map((employee) => (
-          <EmployeeCard employee={employee} role={roleList} key={employee.id} />
-        ))}
-      )
+        <>
+          {employeeList.data
+            .filter((employee) =>
+              employee.users.fullName
+                .toLowerCase()
+                .includes(search.toLowerCase())
+            )
+            .map((employee) => (
+              <EmployeeCard
+                employee={employee}
+                role={roleList}
+                key={employee.id}
+              />
+            ))}
+        </>
+      )}
     </div>
   );
 }
