@@ -9,6 +9,16 @@ const FetchAllEmployees = async () => {
     return err.response.data;
   }
 };
+const FetchAllEmployeesForSalary = async () => {
+  try {
+    const response = await useAxios.get("/employeeForSalary");
+    console.log(response.data.search);
+    return response.data.data;
+  } catch (err) {
+    console.log(err.response.data);
+    return err.response.data;
+  }
+};
 
 const AddEmployee = async (data) => {
   try {
@@ -60,6 +70,7 @@ const DeleteEmployee = async (id) => {
 
 export {
   FetchAllEmployees,
+  FetchAllEmployeesForSalary,
   AddEmployee,
   GetEmployeeById,
   UpdateEmployee,

@@ -10,16 +10,6 @@ const GetAllIngredients = async () => {
   }
 };
 
-const AddIngredient = async (data) => {
-  try {
-    const response = await useAxios.post("/ingredient", data);
-    return response.data.data;
-  } catch (error) {
-    console.log(error.response.data);
-    throw error.response.data;
-  }
-};
-
 const GetIngredientById = async (id) => {
   try {
     const response = await useAxios.get(`/ingredient/${id}`);
@@ -28,6 +18,16 @@ const GetIngredientById = async (id) => {
   } catch (error) {
     console.log(error.response.data);
     return error.response.data;
+  }
+};
+
+const AddIngredient = async (data) => {
+  try {
+    const response = await useAxios.post("/ingredient", data);
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response.data);
+    throw error.response.data;
   }
 };
 

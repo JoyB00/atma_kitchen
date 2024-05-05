@@ -29,6 +29,8 @@ export default function FormLogin() {
           navigate("/AdminDashboard");
         } else if (res.user.role_id === 3) {
           navigate("/MoDashboard");
+        } else if (res.user.role_id === 1) {
+          navigate("/OwnerDashboard");
         } else {
           navigate("/");
         }

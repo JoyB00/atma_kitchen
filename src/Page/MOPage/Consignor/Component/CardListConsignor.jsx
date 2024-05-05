@@ -108,12 +108,20 @@ export default function CardListConsignor({ search, data, length }) {
           .map((consignor) => {
             return (
               <div className="col-span-1">
-                <Card sx={{ display: "flex", borderRadius: "20px" }}>
-                  <img
-                    src="https://api.dicebear.com/8.x/adventurer/svg?seed=Jasper"
-                    alt="avatar"
-                    className="w-28"
-                  />
+                <Card
+                  sx={{
+                    display: "flex",
+                    borderRadius: "20px",
+                    paddingX: "5px",
+                  }}
+                >
+                  <div className="my-auto bg-orange-100 rounded-full flex justify-center h-2/3">
+                    <img
+                      src="https://api.dicebear.com/8.x/adventurer/svg?seed=Jasper"
+                      alt="avatar"
+                      className="w-28"
+                    />
+                  </div>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <CardContent sx={{ flex: "1 0 auto" }}>
                       <Typography component="div" variant="h5">

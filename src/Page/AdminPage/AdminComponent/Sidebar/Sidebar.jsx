@@ -12,6 +12,7 @@ import { useAtom } from "jotai";
 import { expandOperational, expandMaster } from "../../../../lib/AtomVar";
 import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
+import OwnerNavigation from "./component/OwnerNavigation";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar({ role }) {
@@ -43,7 +44,15 @@ export default function Sidebar({ role }) {
                 ? "py-4 mt-2 grid-cols-3 grid rounded-full text-orange-400 bg-orange-100 "
                 : "py-2 mt-2 grid-cols-3 grid text-gray-400 bg-white "
             }
-            to={role == 2 ? "/AdminDashboard" : role == 3 ? "/MoDashboard" : ""}
+            to={
+              role == 2
+                ? "/AdminDashboard"
+                : role == 3
+                ? "/MoDashboard"
+                : role == 1
+                ? "/OwnerDashboard"
+                : ""
+            }
             onClick={toggleExpanded}
             end
           >
@@ -68,8 +77,13 @@ export default function Sidebar({ role }) {
             expandedOperational={expandedOperational}
             setExpandedOperational={setExpandedOperational}
           />
-        ) : role == "dmin" ? (
-          <></>
+        ) : role == 1 ? (
+          <OwnerNavigation
+            expandedMaster={expandedMaster}
+            setExpandedMaster={setExpandedMaster}
+            expandedOperational={expandedOperational}
+            setExpandedOperational={setExpandedOperational}
+          />
         ) : undefined}
       </ul>
     </div>
