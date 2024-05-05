@@ -5,13 +5,14 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import ModifyEmployeeForm from "./ModifyEmployeeForm";
 import { useQuery } from "@tanstack/react-query";
 import { RotateLoader } from "react-spinners";
-import { GetAllEmployees } from "../../../../api/EmployeeApi";
+import { FetchAllEmployees } from "../../../../api/EmployeeApi";
 
 export default function EmployeeList({ roleList, search }) {
   const employeeList = useQuery({
     queryKey: ["employee"],
-    queryFn: GetAllEmployees,
+    queryFn: FetchAllEmployees,
   });
+  console.log(employeeList);
 
   return (
     <div className="grid xl:grid-cols-2 2xl:grid-cols-3 gap-4">
@@ -19,7 +20,7 @@ export default function EmployeeList({ roleList, search }) {
       <div className="flex justify-center py-20">
         <RotateLoader
           color="orange"
-          loading={consignors.isFetching}
+          loading={employeeList.isFetching}
           cssOverride={{
             justifyContent: "center",
             borderColor: "red",
