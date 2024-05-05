@@ -5,7 +5,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import ModifyEmployeeForm from "./ModifyEmployeeForm";
 import { useQuery } from "@tanstack/react-query";
 import { RotateLoader } from "react-spinners";
-import { GetAllEmployees } from "../../../../api/EmployeeApi";
+import { FetchAllEmployees } from "../../../../api/EmployeeApi";
 
 export default function EmployeeList({ roleList, search }) {
   const employeeList = useQuery({
