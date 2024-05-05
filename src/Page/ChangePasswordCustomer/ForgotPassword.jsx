@@ -10,6 +10,8 @@ import { VerifyEmail } from "../../api/AuthApi.jsx";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 export default function ForgotPassword() {
   const [data, setData] = useState({ email: "" });
   const navigate = useNavigate();
@@ -55,7 +57,12 @@ export default function ForgotPassword() {
           <div className="col-span-6 bg-gradient-to-t from-orange-600 to-orange-300 rounded-3xl">
             <Lottie animationData={chef} />
           </div>
-          <div className="col-span-6 text-lg text-orange-500 text-start pe-8 pt-24 px-6 ">
+          <div className="col-span-6 text-lg text-orange-500 text-start pe-8 py-12 px-6 ">
+            <NavLink to="/login" className="text-orange-500">
+              <FontAwesomeIcon icon={faArrowLeft} />
+              {"  "}
+              Back
+            </NavLink>
             <h1 className="font-semibold">Forgot Password?</h1>
             <p className="text-black">
               Enter the email address associated with your account

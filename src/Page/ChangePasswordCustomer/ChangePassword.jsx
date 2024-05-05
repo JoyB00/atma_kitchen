@@ -73,7 +73,7 @@ export default function ChangePassword() {
           <div className="col-span-6 bg-gradient-to-t from-orange-600 to-orange-300 rounded-3xl">
             <Lottie animationData={chef} />
           </div>
-          <div className="col-span-6 text-lg text-orange-500 text-start pe-8 pt-16 px-7 ">
+          <div className="col-span-6 text-lg text-orange-500 text-start pe-8 py-8 px-7 ">
             <h1 className="font-semibold">Change Password</h1>
             <p className="text-black">
               Please change your password to new password
