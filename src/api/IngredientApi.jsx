@@ -10,6 +10,17 @@ const GetAllIngredients = async () => {
   }
 };
 
+const GetIngredientById = async (id) => {
+  try {
+    const response = await useAxios.get(`/ingredient/${id}`);
+    console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response.data);
+    return error.response.data;
+  }
+};
+
 const AddIngredient = async (data) => {
   try {
     const response = await useAxios.post("/ingredient", data);
@@ -17,17 +28,6 @@ const AddIngredient = async (data) => {
   } catch (error) {
     console.log(error.response.data);
     throw error.response.data;
-  }
-};
-
-const GetIngredientById = async (id) => {
-  try {
-    const response = await useAxios.get(`/ingredient/${id}`);
-    console.log(response.data.data)
-    return response.data.data;
-  } catch (error) {
-    console.log(error.response.data);
-    return error.response.data;
   }
 };
 
@@ -55,10 +55,21 @@ const DeleteIngredient = async (id) => {
   }
 };
 
+const DisableIngredient = async (id) => {
+  try {
+    const response = await useAxios.delete(`/ingredient/${id}`);
+    return response.data.data;
+  } catch (err) {
+    console.log(err.response.data);
+    return err.response.data;
+  }
+};
+
 export {
   GetAllIngredients,
   AddIngredient,
   DeleteIngredient,
   GetIngredientById,
   UpdateIngredient,
+  DisableIngredient,
 };

@@ -29,6 +29,8 @@ export default function FormLogin() {
           navigate("/AdminDashboard");
         } else if (res.user.role_id === 3) {
           navigate("/MoDashboard");
+        } else if (res.user.role_id === 1) {
+          navigate("/OwnerDashboard");
         } else {
           navigate("/");
         }
@@ -78,7 +80,7 @@ export default function FormLogin() {
       <div className="flex justify-start mb-5">
         <NavLink
           className="mx-2 bg-transparent my-auto text-orange-500 lg:text-base md:text-sm"
-          to=""
+          to="/forgotPassword"
         >
           Forgot Password?
         </NavLink>
