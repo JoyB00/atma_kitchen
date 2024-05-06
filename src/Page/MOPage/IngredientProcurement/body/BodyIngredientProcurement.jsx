@@ -1,6 +1,7 @@
 import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCartArrowDown,
   faCookie,
   faFilter,
   faSquarePlus,
@@ -28,7 +29,7 @@ export default function Body({ search }) {
       <div className="w-full grid grid-cols-6">
         <motion.div className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2">
           <h1 className="ps-3 pt-8 col-span-2 font-semibold text-white text-4xl">
-            <FontAwesomeIcon icon={faCookie} /> Ingredient Procurement{" "}
+            <FontAwesomeIcon icon={faCartArrowDown} /> Ingredient Procurement{" "}
           </h1>
           <div className="ms-12 col-span-1 bg-orange-600 rounded-tl-full" />
         </motion.div>

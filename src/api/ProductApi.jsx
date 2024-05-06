@@ -91,7 +91,7 @@ const DeleteProduct = async (id) => {
 };
 const DisableProduct = async (id) => {
   try {
-    const response = await useAxios.put(`/product/${id}`, {
+    const response = await useAxios.put(`/product/${id}`, id, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
