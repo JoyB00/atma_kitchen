@@ -1,7 +1,12 @@
 import useAxios from ".";
 const FetchAllSalary = async () => {
   try {
-    const response = await useAxios.get(`/employeeSalary`);
+    const response = await useAxios.get(`/employeeSalary`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data.message);
@@ -10,7 +15,12 @@ const FetchAllSalary = async () => {
 };
 const GetSalary = async (id) => {
   try {
-    const response = await useAxios.get(`/salary/${id}`);
+    const response = await useAxios.get(`/salary/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data.message);
@@ -19,7 +29,12 @@ const GetSalary = async (id) => {
 };
 const GetDetailSalary = async (id) => {
   try {
-    const response = await useAxios.get(`/employeeSalary/${id}`);
+    const response = await useAxios.get(`/employeeSalary/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data.message);
@@ -29,7 +44,12 @@ const GetDetailSalary = async (id) => {
 
 const AddEmployeeSalary = async (data) => {
   try {
-    const response = await useAxios.post("/employeeSalary", data);
+    const response = await useAxios.post("/employeeSalary", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -39,7 +59,12 @@ const AddEmployeeSalary = async (data) => {
 
 const UpdateEmployeeSalary = async (data) => {
   try {
-    const response = await useAxios.put(`/employeeSalary/${data.id}`, data);
+    const response = await useAxios.put(`/employeeSalary/${data.id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -49,7 +74,12 @@ const UpdateEmployeeSalary = async (data) => {
 
 const DeleteEmployeeSalary = async (id) => {
   try {
-    const response = await useAxios.delete(`/employeeSalary/${id}`);
+    const response = await useAxios.delete(`/employeeSalary/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);

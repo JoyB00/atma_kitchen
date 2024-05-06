@@ -5,12 +5,22 @@ export default function LoadingTable({ loading }) {
       <table className="col-span-6 w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
         <thead className="border-b-2">
           <tr>
-            <th className="text-start font-medium py-8 ps-8">Full Name</th>
-            <th className="text-start font-medium pe-6 ">Email</th>
-            <th className="text-start font-medium pe-6 ">Phone Number</th>
-            <th className="text-start font-medium pe-6">Date Of Birth</th>
-            <th className="text-center font-medium pe-6">Point</th>
-            <th className="text-center font-medium pe">Nominal Balance</th>
+            <tr>
+              <th className="text-start font-medium text-sm py-8 ps-8">
+                Full Name
+              </th>
+              <th className="text-start font-medium text-sm pe-6 ">Email</th>
+              <th className="text-start font-medium text-sm pe-6 ">
+                Phone Number
+              </th>
+              <th className="text-start font-medium text-sm pe-6">
+                Date Of Birth
+              </th>
+              <th className="text-center font-medium text-sm pe-6">Point</th>
+              <th className="text-center font-medium text-sm pe">
+                Nominal Balance
+              </th>
+            </tr> 
           </tr>
         </thead>
         <tbody>

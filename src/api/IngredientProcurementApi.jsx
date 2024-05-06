@@ -1,7 +1,12 @@
 import useAxios from ".";
 const FetchAllIngredientProcurement = async () => {
   try {
-    const response = await useAxios.get("/ingredientProcurement");
+    const response = await useAxios.get("/ingredientProcurement", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
 
     return response.data.data;
   } catch (error) {
@@ -26,7 +31,12 @@ const AddIngredientProcurement = async (data) => {
 
 const GetIngredientProcurement = async (id) => {
   try {
-    const response = await useAxios.get(`/ingredientProcurement/${id}`);
+    const response = await useAxios.get(`/ingredientProcurement/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     console.log(response.data);
     return response.data.data;
   } catch (error) {
@@ -39,7 +49,13 @@ const UpdateIngredientProcurement = async (data) => {
   try {
     const response = await useAxios.put(
       `/ingredientProcurement/${data.id}`,
-      data
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      }
     );
     console.log(response.data);
     return response.data.data;
@@ -51,7 +67,12 @@ const UpdateIngredientProcurement = async (data) => {
 
 const DeleteIngredientProcurement = async (id) => {
   try {
-    const response = await useAxios.delete(`/ingredientProcurement/${id}`);
+    const response = await useAxios.delete(`/ingredientProcurement/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;
