@@ -14,6 +14,13 @@ import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
 import Menu from "./Page/Menu";
+
+// root Forgot Password
+import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
+import ForgotPassword from "./Page/ChangePasswordCustomer/ForgotPassword";
+import VerificationCode from "./Page/ChangePasswordCustomer/VerificationCode";
+import ChangePassword from "./Page/ChangePasswordCustomer/ChangePassword";
+
 // root Admin Dashboard
 import RootAdminDashboard from "./Root/AdminDashboard/RootAdminDashboard";
 import MainDashboard from "./Page/AdminPage/MainDashboard/MainDashboard";
@@ -57,6 +64,7 @@ import IngredientProcurement from "./Page/MOPage/IngredientProcurement/Ingredien
 import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIngredientProcurement/AddIngredientProcurement";
 import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
+
 // Root Employee
 import RootEmployee from "./Root/MoDashboard/Employee/RootEmployee";
 import EmployeePage from "./Page/MOPage/Employee/EmployeePage";
@@ -81,6 +89,17 @@ import OtherProcurementPage from "./Page/MOPage/OtherProcurement/OtherProcuremen
 import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurement/AddOtherProcurement";
 import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
+
+// Root Owner
+import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
+
+// Employee Salary
+import RootEmployeeSalary from "./Root/OwnerRoot/RootEmployeeSalary/RootEmployeeSalary";
+import EmployeeSalaryPage from "./Page/OwnerPage/EmployeeSalaryPage/EmployeeSalaryPage";
+import AddEmployeeSalary from "./Page/OwnerPage/EmployeeSalaryPage/AddEmployeeSalary/AddEmployeeSalary";
+import { loader as loadEmployee } from "./Page/OwnerPage/EmployeeSalaryPage/AddEmployeeSalary/AddEmployeeSalary";
+import EditEmployeeSalary from "./Page/OwnerPage/EmployeeSalaryPage/EditEmployeeSalary/EditEmployeeSalary";
+import { loader as loadSalary } from "./Page/OwnerPage/EmployeeSalaryPage/EditEmployeeSalary/EditEmployeeSalary";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -100,6 +119,24 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "forgotPassword",
+        element: <RootForgotPassword />,
+        children: [
+          {
+            index: true,
+            element: <ForgotPassword />,
+          },
+          {
+            path: "verifyCode",
+            element: <VerificationCode />,
+          },
+          {
+            path: ":token",
+            element: <ChangePassword />,
+          },
+        ],
       },
       {
         path: "register",
@@ -320,6 +357,54 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <EmployeePage />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "OwnerDashboard",
+        element: (
+          <ProtectedRoot role_id={1}>
+            <Suspense fallback={<LoadingPage />}>
+              <RootOwnerDashboard />
+            </Suspense>
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <MainDashboard />,
+          },
+          {
+            path: "employeeSalary",
+            element: <RootEmployeeSalary />,
+            children: [
+              {
+                index: true,
+                element: <EmployeeSalaryPage />,
+              },
+              {
+                path: "addEmployeeSalary/:employeeId",
+                id: "employee-detail",
+                loader: loadEmployee,
+                children: [
+                  {
+                    index: true,
+                    element: <AddEmployeeSalary />,
+                  },
+                ],
+              },
+              {
+                path: ":salaryId",
+                id: "salary-detail",
+                loader: loadSalary,
+                children: [
+                  {
+                    index: true,
+                    element: <EditEmployeeSalary />,
+                  },
+                ],
               },
             ],
           },

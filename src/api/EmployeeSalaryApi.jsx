@@ -1,38 +1,7 @@
 import useAxios from ".";
-const FetchAllEmployees = async () => {
+const FetchAllSalary = async () => {
   try {
-    const response = await useAxios.get("/employee", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-    });
-    console.log(response.data.search);
-    return response.data.data;
-  } catch (err) {
-    console.log(err.response.data);
-    return err.response.data;
-  }
-};
-const FetchAllEmployeesForSalary = async () => {
-  try {
-    const response = await useAxios.get("/employeeForSalary", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-    });
-    console.log(response.data.search);
-    return response.data.data;
-  } catch (err) {
-    console.log(err.response.data);
-    return err.response.data;
-  }
-};
-
-const AddEmployee = async (data) => {
-  try {
-    const response = await useAxios.post("/employee", data, {
+    const response = await useAxios.get(`/employeeSalary`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -40,14 +9,13 @@ const AddEmployee = async (data) => {
     });
     return response.data.data;
   } catch (error) {
-    console.log(error.response.data);
-    throw error.response.data;
+    console.log(error.response.data.message);
+    return error.response.data;
   }
 };
-
-const GetEmployeeById = async (id) => {
+const GetSalary = async (id) => {
   try {
-    const response = await useAxios.get(`/employee/${id}`, {
+    const response = await useAxios.get(`/salary/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -55,14 +23,28 @@ const GetEmployeeById = async (id) => {
     });
     return response.data.data;
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error.response.data.message);
+    return error.response.data;
+  }
+};
+const GetDetailSalary = async (id) => {
+  try {
+    const response = await useAxios.get(`/employeeSalary/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response.data.message);
     return error.response.data;
   }
 };
 
-const UpdateEmployee = async (data) => {
+const AddEmployeeSalary = async (data) => {
   try {
-    const response = await useAxios.put(`/employee/${data.id}`, data, {
+    const response = await useAxios.post("/employeeSalary", data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -75,9 +57,9 @@ const UpdateEmployee = async (data) => {
   }
 };
 
-const DeleteEmployee = async (id) => {
+const UpdateEmployeeSalary = async (data) => {
   try {
-    const response = await useAxios.delete(`/employee/${id}`, {
+    const response = await useAxios.put(`/employeeSalary/${data.id}`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -87,14 +69,29 @@ const DeleteEmployee = async (id) => {
   } catch (error) {
     console.log(error.response.data);
     throw error.response.data;
+  }
+};
+
+const DeleteEmployeeSalary = async (id) => {
+  try {
+    const response = await useAxios.delete(`/employeeSalary/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (err) {
+    console.log(err.response.data);
+    return err.response.data;
   }
 };
 
 export {
-  FetchAllEmployees,
-  FetchAllEmployeesForSalary,
-  AddEmployee,
-  GetEmployeeById,
-  UpdateEmployee,
-  DeleteEmployee,
+  FetchAllSalary,
+  GetSalary,
+  GetDetailSalary,
+  AddEmployeeSalary,
+  UpdateEmployeeSalary,
+  DeleteEmployeeSalary,
 };

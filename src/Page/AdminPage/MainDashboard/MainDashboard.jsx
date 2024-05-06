@@ -14,6 +14,8 @@ export default function Dashboard() {
               ? "/AdminDashboard"
               : user.role_id == 3
               ? "/MoDashboard"
+              : user.role_id == 1
+              ? "OwnerDashboard"
               : ""
           }
           page="Main Dashboard"
