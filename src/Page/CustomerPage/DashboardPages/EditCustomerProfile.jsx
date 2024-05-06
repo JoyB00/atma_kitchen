@@ -50,6 +50,7 @@ export function EditForm() {
   };
 
   return (
+    
     <Form onSubmit={editProfile} method="post">
       <Input
         onChange={handleChange}
