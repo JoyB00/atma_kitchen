@@ -7,7 +7,7 @@ const FetchAllEmployees = async () => {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
-    console.log(response.data.search);
+    console.log(response.data.data);
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);
