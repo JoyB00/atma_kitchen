@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { RotateLoader } from "react-spinners";
 import { FetchAllEmployees } from "../../../../api/EmployeeApi";
 import { useEffect, useState } from "react";
+import { DeleteEmployee } from "../../../../api/EmployeeApi";
 
 export default function EmployeeList({
   roleList,
@@ -62,6 +63,13 @@ export default function EmployeeList({
 }
 
 export function EmployeeCard({ employee, role, setInvalidator }) {
+  const deactivateEmployee = () => {
+    DeleteEmployee(employee.id).then((res) => {
+      console.log(res);
+    });
+    setInvalidator((prev) => !prev);
+  };
+
   return (
     <div className="flex flex-row px-4 py-3 items-center overflow-clip rounded-lg bg-white shadow-md">
       <Badge
@@ -94,7 +102,11 @@ export function EmployeeCard({ employee, role, setInvalidator }) {
             setInvalidator={setInvalidator}
           />
           <div className="px-1" />
-          <Button hoverColor={"#ef4444"} className="bg-white">
+          <Button
+            hoverColor={"#ef4444"}
+            className="bg-white"
+            onClick={deactivateEmployee}
+          >
             <div className="flex flex-row items-center text-red-500 hover:text-white">
               <FontAwesomeIcon icon={faTrashAlt} />
               <div className="px-2">Delete</div>
