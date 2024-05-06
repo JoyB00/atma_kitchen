@@ -2,7 +2,12 @@ import useAxios from ".";
 
 const FetchAllHampers = async () => {
   try {
-    const response = await useAxios.get("/hampers");
+    const response = await useAxios.get("/hampers", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -13,7 +18,10 @@ const FetchAllHampers = async () => {
 const AddHampers = async (data) => {
   try {
     const response = await useAxios.post("/hampers", data, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
     });
     return response.data.data;
   } catch (error) {
@@ -23,7 +31,12 @@ const AddHampers = async (data) => {
 
 const GetHampersById = async (id) => {
   try {
-    const response = await useAxios.get(`/hampers/${id}`);
+    const response = await useAxios.get(`/hampers/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;
@@ -33,7 +46,10 @@ const GetHampersById = async (id) => {
 const UpdateHampers = async (data) => {
   try {
     const response = await useAxios.post(`/hampers/${data.id}`, data, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
     });
     return response.data.data;
   } catch (error) {
@@ -44,7 +60,12 @@ const UpdateHampers = async (data) => {
 
 const DeleteHampers = async (id) => {
   try {
-    const response = await useAxios.delete(`/hampers/${id}`);
+    const response = await useAxios.delete(`/hampers/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;
@@ -52,7 +73,12 @@ const DeleteHampers = async (id) => {
 };
 const DisableHampers = async (id) => {
   try {
-    const response = await useAxios.put(`/hampers/${id}`);
+    const response = await useAxios.put(`/hampers/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;

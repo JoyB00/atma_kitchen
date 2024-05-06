@@ -1,7 +1,12 @@
 import useAxios from ".";
 const FetchAllEmployees = async () => {
   try {
-    const response = await useAxios.get("/employee");
+    const response = await useAxios.get("/employee", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     console.log(response.data.search);
     return response.data.data;
   } catch (err) {
@@ -11,7 +16,12 @@ const FetchAllEmployees = async () => {
 };
 const FetchAllEmployeesForSalary = async () => {
   try {
-    const response = await useAxios.get("/employeeForSalary");
+    const response = await useAxios.get("/employeeForSalary", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     console.log(response.data.search);
     return response.data.data;
   } catch (err) {
@@ -24,7 +34,8 @@ const AddEmployee = async (data) => {
   try {
     const response = await useAxios.post("/employee", data, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
     return response.data.data;
@@ -36,7 +47,12 @@ const AddEmployee = async (data) => {
 
 const GetEmployeeById = async (id) => {
   try {
-    const response = await useAxios.get(`/employee/${id}`);
+    const response = await useAxios.get(`/employee/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -48,7 +64,8 @@ const UpdateEmployee = async (data) => {
   try {
     const response = await useAxios.put(`/employee/${data.id}`, data, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
     return response.data.data;
@@ -60,7 +77,12 @@ const UpdateEmployee = async (data) => {
 
 const DeleteEmployee = async (id) => {
   try {
-    const response = await useAxios.delete(`/employee/${id}`);
+    const response = await useAxios.delete(`/employee/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);

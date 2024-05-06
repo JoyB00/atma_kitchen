@@ -22,12 +22,20 @@ export default function CustomerTable({ data, search, length }) {
       <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
         <thead className="border-b-2">
           <tr>
-            <th className="text-start font-medium py-8 ps-8">Full Name</th>
-            <th className="text-start font-medium pe-6 ">Email</th>
-            <th className="text-start font-medium pe-6 ">Phone Number</th>
-            <th className="text-start font-medium pe-6">Date Of Birth</th>
-            <th className="text-center font-medium pe-6">Point</th>
-            <th className="text-center font-medium pe">Nominal Balance</th>
+            <th className="text-start font-medium text-sm py-8 ps-8">
+              Full Name
+            </th>
+            <th className="text-start font-medium text-sm pe-6 ">Email</th>
+            <th className="text-start font-medium text-sm pe-6 ">
+              Phone Number
+            </th>
+            <th className="text-start font-medium text-sm pe-6">
+              Date Of Birth
+            </th>
+            <th className="text-center font-medium text-sm pe-6">Point</th>
+            <th className="text-center font-medium text-sm pe">
+              Nominal Balance
+            </th>
           </tr>
         </thead>
         <motion.tbody
@@ -46,10 +54,10 @@ export default function CustomerTable({ data, search, length }) {
             .map((item) => (
               <motion.tr
                 //   variants={productItem}
-                className="border-t-2 border-gray-100  text-black"
+                className="border-t-2 border-gray-100  text-black text-sm"
                 key={item.id}
               >
-                <td className="font-medium py-6 ps-6 ">
+                <td className="font-medium py-6 ps-6 text-sm">
                   <div className="flex items-center ">
                     <LazyLoadImage
                       effect="blur"
@@ -61,20 +69,22 @@ export default function CustomerTable({ data, search, length }) {
                       alt="profile customer"
                       className="w-16 h-16 rounded-full object-cover"
                     />
-                    <p className="ps-3 text-lg">{item.users.fullName}</p>
+                    <p className="ps-3 ">{item.users.fullName}</p>
                   </div>
                 </td>
-                <td className="font-medium text-start">
-                  <p className="ps-3 text-lg">{item.users.email}</p>
+                <td className="font-medium text-start text-sm">
+                  <p className="ps-3 ">{item.users.email}</p>
                 </td>
-                <td className="font-medium text-start">
+                <td className="font-medium text-start text-sm">
                   {item.users.phoneNumber}
                 </td>
-                <td className="text-center font-medium ">
+                <td className="text-center font-medium text-sm">
                   {item.users.dateOfBirth}
                 </td>
-                <td className="font-medium text-center">{item.point}</td>
-                <td className="font-medium text-center">
+                <td className="font-medium text-center text-sm">
+                  {item.point}
+                </td>
+                <td className="font-medium text-center text-sm">
                   {item.nominal_balance}
                 </td>
               </motion.tr>

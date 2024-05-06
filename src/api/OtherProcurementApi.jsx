@@ -2,7 +2,12 @@ import useAxios from ".";
 
 const FetchAllOtherProcurements = async () => {
   try {
-    const response = await useAxios.get("/otherProcurement");
+    const response = await useAxios.get("/otherProcurement", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;
@@ -10,7 +15,12 @@ const FetchAllOtherProcurements = async () => {
 };
 const GetOtherProcurement = async (id) => {
   try {
-    const response = await useAxios.get(`/otherProcurement/${id}`);
+    const response = await useAxios.get(`/otherProcurement/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;
@@ -46,7 +56,12 @@ const UpdateOtherProcurement = async (data) => {
 
 const DeleteOtherProcurement = async (id) => {
   try {
-    const response = await useAxios.delete(`/otherProcurement/${id}`);
+    const response = await useAxios.delete(`/otherProcurement/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     return error.response.data;

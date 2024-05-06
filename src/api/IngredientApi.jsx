@@ -2,7 +2,12 @@ import { ClimbingBoxLoader } from "react-spinners";
 import useAxios from ".";
 const GetAllIngredients = async () => {
   try {
-    const response = await useAxios.get("/ingredient");
+    const response = await useAxios.get("/ingredient", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);
@@ -12,7 +17,12 @@ const GetAllIngredients = async () => {
 
 const GetIngredientById = async (id) => {
   try {
-    const response = await useAxios.get(`/ingredient/${id}`);
+    const response = await useAxios.get(`/ingredient/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     console.log(response.data.data);
     return response.data.data;
   } catch (error) {
@@ -23,7 +33,12 @@ const GetIngredientById = async (id) => {
 
 const AddIngredient = async (data) => {
   try {
-    const response = await useAxios.post("/ingredient", data);
+    const response = await useAxios.post("/ingredient", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (error) {
     console.log(error.response.data);
@@ -35,7 +50,8 @@ const UpdateIngredient = async (data) => {
   try {
     const response = await useAxios.post(`/ingredient/${data.id}`, data, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
     return response.data.data;
@@ -47,7 +63,12 @@ const UpdateIngredient = async (data) => {
 
 const DeleteIngredient = async (id) => {
   try {
-    const response = await useAxios.delete(`/ingredient/${id}`);
+    const response = await useAxios.delete(`/ingredient/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);
@@ -57,7 +78,12 @@ const DeleteIngredient = async (id) => {
 
 const DisableIngredient = async (id) => {
   try {
-    const response = await useAxios.delete(`/ingredient/${id}`);
+    const response = await useAxios.delete(`/ingredient/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);
