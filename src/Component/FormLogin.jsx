@@ -24,7 +24,7 @@ export default function FormLogin() {
     setLoading(true);
     SignIn(data)
       .then((res) => {
-        console.log(res.user.role_id);
+        console.log(res.user);
         if (res.user.role_id === 2) {
           navigate("/AdminDashboard");
         } else if (res.user.role_id === 3) {

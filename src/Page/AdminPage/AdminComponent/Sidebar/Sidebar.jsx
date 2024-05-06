@@ -5,6 +5,7 @@ import {
   faEgg,
   faGifts,
   faHouse,
+  faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -14,8 +15,9 @@ import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
 import OwnerNavigation from "./component/OwnerNavigation";
 import { NavLink } from "react-router-dom";
+import Button from "../../../../Component/Button";
 
-export default function Sidebar({ role }) {
+export default function Sidebar({ role, fullName }) {
   const [expandedMaster, setExpandedMaster] = useAtom(expandMaster);
   const [expandedOperational, setExpandedOperational] =
     useAtom(expandOperational);
@@ -86,7 +88,6 @@ export default function Sidebar({ role }) {
           />
         ) : undefined}
       </ul>
-      
     </div>
   );
 }
