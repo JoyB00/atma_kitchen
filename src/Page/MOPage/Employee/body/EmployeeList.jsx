@@ -6,12 +6,23 @@ import ModifyEmployeeForm from "./ModifyEmployeeForm";
 import { useQuery } from "@tanstack/react-query";
 import { RotateLoader } from "react-spinners";
 import { FetchAllEmployees } from "../../../../api/EmployeeApi";
+import { useEffect, useState } from "react";
+import { DeleteEmployee } from "../../../../api/EmployeeApi";
 
-export default function EmployeeList({ roleList, search }) {
+export default function EmployeeList({
+  roleList,
+  search,
+  invalidator,
+  setInvalidator,
+}) {
   const employeeList = useQuery({
     queryKey: ["employee"],
     queryFn: FetchAllEmployees,
   });
+
+  useEffect(() => {
+    employeeList.refetch();
+  }, [invalidator]);
 
   return (
     <div className="grid xl:grid-cols-2 2xl:grid-cols-3 gap-4">
@@ -41,6 +52,7 @@ export default function EmployeeList({ roleList, search }) {
               <EmployeeCard
                 employee={employee}
                 role={roleList}
+                setInvalidator={setInvalidator}
                 key={employee.id}
               />
             ))}
@@ -50,7 +62,14 @@ export default function EmployeeList({ roleList, search }) {
   );
 }
 
-export function EmployeeCard({ employee, role }) {
+export function EmployeeCard({ employee, role, setInvalidator }) {
+  const deactivateEmployee = () => {
+    DeleteEmployee(employee.id).then((res) => {
+      console.log(res);
+    });
+    setInvalidator((prev) => !prev);
+  };
+
   return (
     <div className="flex flex-row px-4 py-3 items-center overflow-clip rounded-lg bg-white shadow-md">
       <Badge
@@ -78,11 +97,16 @@ export function EmployeeCard({ employee, role }) {
           <ModifyEmployeeForm
             mode="edit"
             id_employee={employee.id}
-            employee={employee.users}
+            employee={employee}
             roleList={role}
+            setInvalidator={setInvalidator}
           />
           <div className="px-1" />
-          <Button hoverColor={"#ef4444"} className="bg-white">
+          <Button
+            hoverColor={"#ef4444"}
+            className="bg-white"
+            onClick={deactivateEmployee}
+          >
             <div className="flex flex-row items-center text-red-500 hover:text-white">
               <FontAwesomeIcon icon={faTrashAlt} />
               <div className="px-2">Delete</div>

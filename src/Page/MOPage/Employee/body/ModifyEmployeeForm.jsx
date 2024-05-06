@@ -14,15 +14,16 @@ export default function ModifyEmployeeForm({
   id_employee,
   employee,
   roleList,
+  setInvalidator,
 }) {
   const [data, setData] = useState({
     id: mode === "edit" ? employee.id : 0,
-    role_id: mode === "edit" ? employee.role_id : 0,
-    gender: mode === "edit" ? employee.gender : "",
-    fullName: mode === "edit" ? employee.fullName : "",
-    email: mode === "edit" ? employee.email : "",
-    phoneNumber: mode === "edit" ? employee.phoneNumber : "",
-    dateOfBirth: mode === "edit" ? employee.dateOfBirth : "",
+    role_id: mode === "edit" ? employee.users.role_id : 0,
+    gender: mode === "edit" ? employee.users.gender : "Male",
+    fullName: mode === "edit" ? employee.users.fullName : "",
+    email: mode === "edit" ? employee.users.email : "",
+    phoneNumber: mode === "edit" ? employee.users.phoneNumber : "",
+    dateOfBirth: mode === "edit" ? employee.users.dateOfBirth : "",
   });
   const gender = ["Male", "Female", "Prefer not to say"];
   let animate = {
@@ -56,6 +57,7 @@ export default function ModifyEmployeeForm({
       });
       setIsOpen(false);
     }
+    setInvalidator((prev) => !prev);
   };
 
   return (
@@ -82,25 +84,27 @@ export default function ModifyEmployeeForm({
                   placeholder="Full Name"
                   defaultValue={data.fullName}
                 />
-                <Input
-                  onChange={handleChange}
-                  withAnimate
-                  label="E-mail"
-                  id="email"
-                  type="text"
-                  placeholder="E-mail"
-                  defaultValue={data.email}
-                />
                 {mode === "add" ? (
-                  <Input
-                    onChange={handleChange}
-                    withAnimate
-                    label="Password"
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    defaultValue={data.password}
-                  />
+                  <>
+                    <Input
+                      onChange={handleChange}
+                      withAnimate
+                      label="E-mail"
+                      id="email"
+                      type="text"
+                      placeholder="E-mail"
+                      defaultValue={data.email}
+                    />
+                    <Input
+                      onChange={handleChange}
+                      withAnimate
+                      label="Password"
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      defaultValue={data.password}
+                    />
+                  </>
                 ) : (
                   <div />
                 )}
