@@ -16,6 +16,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import Button from "../../../../../Component/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function OperationalNavigation({
   expandedMaster,
@@ -23,6 +25,11 @@ export default function OperationalNavigation({
   expandedOperational,
   setExpandedOperational,
 }) {
+  const navigate = useNavigate();
+  const forgotPassword = () => {
+    navigate("/ForgotPasswordEmployee");
+  };
+
   return (
     <>
       <motion.button
@@ -102,6 +109,9 @@ export default function OperationalNavigation({
           />
         </div>
       ) : undefined}
+      <Button className="text-md" onClick={forgotPassword}>
+        Forgot password?
+      </Button>
     </>
   );
 }
