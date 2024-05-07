@@ -65,7 +65,7 @@ export default function ForgotPasswordEmployeePage() {
             type="password"
             placeholder="Confirm New Password"
           />
-          <Button className="bg-orange-500">
+          <Button className="bg-orange-500" onClick={changePassword}>
             <span>Change Password</span>
           </Button>
         </Form>

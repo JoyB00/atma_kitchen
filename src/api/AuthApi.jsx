@@ -50,6 +50,7 @@ const ChangePassword = async (data) => {
 
 const ChangePasswordEmployee = async (data) => {
   try {
+    console.log("changing password");
     const response = await useAxios.post("/changePasswordEmployee", data, {
       headers: {
         "Content-Type": "application/json",
