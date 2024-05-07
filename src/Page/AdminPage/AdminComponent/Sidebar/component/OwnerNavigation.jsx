@@ -19,7 +19,7 @@ export default function OwnerNavigation({
 }) {
   const navigate = useNavigate();
   const forgotPassword = () => {
-    navigate("/ForgotPasswordEmployee");
+    navigate("/ForgotPasswordEmployee/1");
   };
   return (
     <>

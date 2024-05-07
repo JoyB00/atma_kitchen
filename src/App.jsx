@@ -100,7 +100,10 @@ import AddEmployeeSalary from "./Page/OwnerPage/EmployeeSalaryPage/AddEmployeeSa
 import { loader as loadEmployee } from "./Page/OwnerPage/EmployeeSalaryPage/AddEmployeeSalary/AddEmployeeSalary";
 import EditEmployeeSalary from "./Page/OwnerPage/EmployeeSalaryPage/EditEmployeeSalary/EditEmployeeSalary";
 import { loader as loadSalary } from "./Page/OwnerPage/EmployeeSalaryPage/EditEmployeeSalary/EditEmployeeSalary";
+
+//
 import ForgotPasswordEmployeePage from "./Page/EmployeePage/ForgotPassword";
+import { loader as loadId } from "./Page/EmployeePage/ForgotPassword";
 import { Root } from "postcss";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
@@ -417,8 +420,15 @@ const router = createBrowserRouter([
         element: <RootEmployee />,
         children: [
           {
-            index: true,
-            element: <ForgotPasswordEmployeePage />,
+            path: ":roleId",
+            id: "load-id",
+            loader: loadId,
+            children: [
+              {
+                index: true,
+                element: <ForgotPasswordEmployeePage />,
+              },
+            ],
           },
         ],
       },

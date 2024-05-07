@@ -27,7 +27,7 @@ export default function OperationalNavigation({
 }) {
   const navigate = useNavigate();
   const forgotPassword = () => {
-    navigate("/ForgotPasswordEmployee");
+    navigate("/ForgotPasswordEmployee/3");
   };
 
   return (

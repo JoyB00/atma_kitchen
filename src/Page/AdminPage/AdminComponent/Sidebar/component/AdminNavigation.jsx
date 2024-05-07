@@ -24,7 +24,7 @@ export default function AdminNavigation({
 }) {
   const navigate = useNavigate();
   const forgotPassword = () => {
-    navigate("/ForgotPasswordEmployee");
+    navigate("/ForgotPasswordEmployee/2");
   };
   return (
     <>

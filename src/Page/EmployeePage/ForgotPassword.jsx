@@ -1,13 +1,16 @@
 import Navbar from "../../Component/Navbar";
 import Footer from "../../Component/Footer";
-import { Form } from "react-router-dom";
+import { Form, useNavigate, useRouteLoaderData } from "react-router-dom";
 import Input from "../../Component/Input";
 import { useState } from "react";
 import Button from "../../Component/Button";
 import toast from "react-hot-toast";
 import { ChangePasswordEmployee } from "../../api/AuthApi";
+import { useParams } from "react-router-dom";
+import { faChessKing } from "@fortawesome/free-solid-svg-icons";
 
 export default function ForgotPasswordEmployeePage() {
+  const id = useRouteLoaderData("load-id");
   const handleChange = (event) => {
     // console.log(`${event.target.name} : ${event.target.value}`);
     setData({ ...data, [event.target.name]: event.target.value });
@@ -23,6 +26,7 @@ export default function ForgotPasswordEmployeePage() {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
   const changePassword = () => {
     if (data.newPassword !== data.confirmPassword) {
       toast.error("New password and confirm password do not match");
@@ -30,6 +34,13 @@ export default function ForgotPasswordEmployeePage() {
     }
     ChangePasswordEmployee(data).then((res) => {
       toast.success(res.message);
+      if (id == 1) {
+        navigate("/OwnerDashboard");
+      } else if (id == 2) {
+        navigate("/AdminDashboard");
+      } else if (id == 3) {
+        navigate("/MoDashboard");
+      }
     });
   };
 
@@ -73,4 +84,10 @@ export default function ForgotPasswordEmployeePage() {
       <Footer />
     </div>
   );
+}
+
+export function loader({ params }) {
+  const id = params.roleId;
+  console.log(id);
+  return id;
 }
