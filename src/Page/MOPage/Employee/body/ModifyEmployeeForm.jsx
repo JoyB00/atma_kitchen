@@ -48,6 +48,7 @@ export default function ModifyEmployeeForm({
       AddEmployee(data).then((res) => {
         console.log(res);
       });
+      setIsOpen(false);
     } else {
       // for edit mode
       console.log("Updating employee");

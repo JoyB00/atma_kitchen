@@ -117,9 +117,12 @@ export default function CardListConsignor({ search, data, length }) {
                 >
                   <div className="my-auto bg-orange-100 rounded-full flex justify-center h-2/3">
                     <img
-                      src="https://api.dicebear.com/8.x/adventurer/svg?seed=Jasper"
+                      src={
+                        "https://api.dicebear.com/8.x/adventurer/svg?seed=" +
+                        consignor.consignor_name
+                      }
                       alt="avatar"
-                      className="w-28"
+                      className="w-24"
                     />
                   </div>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>

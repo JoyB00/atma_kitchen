@@ -140,6 +140,9 @@ export default function Navbar() {
 export function ProfileMenu() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [authUser, setAuthUser] = React.useState(
+    JSON.parse(sessionStorage.getItem("user"))
+  );
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -148,13 +151,13 @@ export function ProfileMenu() {
     setAnchorEl(null);
   };
 
-  const authUser = JSON.parse(sessionStorage.getItem("user"));
   const logout = () => {
     LogOut()
       .then((res) => {
         navigate("/login");
         sessionStorage.removeItem("user");
         sessionStorage.removeItem("token");
+        setAuthUser(null);
         toast.success(res.message, {
           style: {
             backgroundColor: "#000000",
@@ -181,6 +184,7 @@ export function ProfileMenu() {
   return (
     <div>
       <div className="flex flex-row">
+        
         <Button
           className="rounded-full p-0 hover:border-transparent w-16"
           withoutAnimate
@@ -197,7 +201,7 @@ export function ProfileMenu() {
         </Button>
         <div className="px-1" />
         <h1 className="text-lg font-semibold text-black my-auto">
-          <EllipsisText text={authUser.fullName} length={10} />
+          <EllipsisText text={authUser ? authUser.fullName : ""} length={10} />
         </h1>
       </div>
       <Menu

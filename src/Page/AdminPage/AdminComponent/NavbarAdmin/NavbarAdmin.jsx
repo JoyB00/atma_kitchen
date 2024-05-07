@@ -1,10 +1,17 @@
 import Input from "../../../../Component/Input";
 import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBell,
+  faCircleExclamation,
+  faPowerOff,
+} from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import MenuComponent from "../../../../Component/Menu";
+import { LogOut } from "../../../../api/AuthApi";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 export default function NavbarAdmin({ url, page, setSearch }) {
   const [scroll, setScroll] = useState(false);
@@ -16,6 +23,32 @@ export default function NavbarAdmin({ url, page, setSearch }) {
     } else {
       setScroll(false);
     }
+  };
+  const navigate = useNavigate();
+  const logout = () => {
+    LogOut()
+      .then((res) => {
+        navigate("/login");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("token");
+        toast.success(res.message, {
+          style: {
+            backgroundColor: "#000000",
+            color: "#ffffff",
+          },
+          position: "bottom-right",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.message, {
+          style: {
+            backgroundColor: "#000000",
+            color: "#ffffff",
+          },
+          position: "bottom-right",
+        });
+      });
   };
 
   useEffect(() => {
@@ -67,6 +100,14 @@ export default function NavbarAdmin({ url, page, setSearch }) {
         <MenuComponent
           buttonText={<FontAwesomeIcon icon={faCircleExclamation} />}
         />
+        <Button
+          withoutAnimate
+          onClick={logout}
+          className="text-gray-400 hover:border-transparent hover:text-orange-400"
+        >
+          {" "}
+          <FontAwesomeIcon icon={faPowerOff} />
+        </Button>
         {/* <Button
           withoutAnimate
           className="my-auto text-gray-400 bg-transparent p-0 hover:text-orange-400 "

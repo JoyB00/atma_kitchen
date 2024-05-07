@@ -60,9 +60,6 @@ export default function Body({ search }) {
                 length={products.data.length}
               />
             </div>
-            {/* <div className="col-span-2">
-              <Top5Selling data={products.data} />
-            </div> */}
           </>
         )}
       </div>
