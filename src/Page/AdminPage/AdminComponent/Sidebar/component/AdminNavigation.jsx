@@ -9,6 +9,7 @@ import {
   faGifts,
   faHistory,
   faHouse,
+  faLock,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -105,9 +106,14 @@ export default function AdminNavigation({
           />
         </div>
       ) : undefined}
-      <Button className="text-md" onClick={forgotPassword}>
+      <Navigation
+        label="Forgot password?"
+        icon={faLock}
+        url={"/ForgotPasswordEmployee/2"}
+      />
+      {/* <Button className="text-md" onClick={forgotPassword}>
         Forgot password?
-      </Button>
+      </Button> */}
     </>
   );
 }
