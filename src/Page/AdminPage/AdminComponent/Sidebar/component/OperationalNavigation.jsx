@@ -13,6 +13,7 @@ import {
   faPeopleCarryBox,
   faTruck,
   faUserTie,
+  faLock,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -109,9 +110,11 @@ export default function OperationalNavigation({
           />
         </div>
       ) : undefined}
-      <Button className="text-md" onClick={forgotPassword}>
-        Forgot password?
-      </Button>
+      <Navigation
+        label="Forgot password?"
+        icon={faLock}
+        url={"/ForgotPasswordEmployee/3"}
+      />
     </>
   );
 }
