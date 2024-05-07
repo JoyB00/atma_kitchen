@@ -12,6 +12,7 @@ export default function AddProduct() {
   const [categories] = useAtom(allCategories);
   const [ingredient] = useAtom(allIngredients);
   const [consignor] = useAtom(allConsignors);
+  console.log(ingredient);
   const user = JSON.parse(sessionStorage.getItem("user"));
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">

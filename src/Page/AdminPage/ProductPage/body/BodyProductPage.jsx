@@ -15,7 +15,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FetchAllProducts } from "../../../../api/ProductApi";
 import { useAtom } from "jotai";
-import { allCategories } from "../../../../lib/FetchFunctions";
+import { allCategories, allIngredients } from "../../../../lib/FetchFunctions";
 import LoadingTable from "../Component/LoadingTable";
 export default function Body({ search }) {
   const products = useQuery({
@@ -24,6 +24,7 @@ export default function Body({ search }) {
   });
   const [categories] = useAtom(allCategories);
   const [isOpen, setIsOpen] = useState(false);
+  const [ingredient] = useAtom(allIngredients);
   return (
     <div>
       <div className="w-full grid grid-cols-6">

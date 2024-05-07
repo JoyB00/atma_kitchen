@@ -57,7 +57,7 @@ const UpdateConsignor = async (data) => {
 };
 const DeleteConsignor = async (id) => {
   try {
-    const response = await useAxios.delete(`/consignor/${id}`, {
+    const response = await useAxios.put(`/disableConsignor/${id}`, id, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,

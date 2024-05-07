@@ -5,6 +5,7 @@ import {
   faBell,
   faCircleExclamation,
   faPowerOff,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -106,7 +107,7 @@ export default function NavbarAdmin({ url, page, setSearch }) {
           className="text-gray-400 hover:border-transparent hover:text-orange-400"
         >
           {" "}
-          <FontAwesomeIcon icon={faPowerOff} />
+          <FontAwesomeIcon icon={faRightFromBracket} />
         </Button>
         {/* <Button
           withoutAnimate

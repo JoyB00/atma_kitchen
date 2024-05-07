@@ -10,10 +10,12 @@ import IngredientTable from "../Component/IngredientTable";
 // import Checkbox from "../../../../Component/Checkbox";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { GetAllIngredients } from "../../../../api/IngredientApi";
 import LoadingTable from "../Component/LoadingTable";
+import { allIngredients } from "../../../../lib/FetchFunctions";
 export default function BodyIngredient({ search }) {
   const ingredient = useQuery({
     queryKey: ["ingredient"],

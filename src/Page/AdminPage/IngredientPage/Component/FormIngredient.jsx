@@ -23,7 +23,7 @@ export default function FormIngredient({ ingredientData }) {
       }
     : {
         ingredient_name: "",
-        quantity: "",
+        quantity: 0,
         unit: "gr",
       };
 

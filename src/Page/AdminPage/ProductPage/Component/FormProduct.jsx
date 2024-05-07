@@ -76,6 +76,8 @@ export default function FormProduct({
   const [checkLimit, setCheckLimit] = useState(null);
   const [loadingCheckLimit, setLoadingCheckLimit] = useState(false);
 
+  console.log("ingredient", ingredient);
+
   let animate = {
     initial: { opacity: 0, y: -100 },
     animate: { opacity: 1, y: 0 },
