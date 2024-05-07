@@ -8,6 +8,9 @@ import { Modal, Box } from "@mui/material";
 import Input from "../../../../Component/Input.jsx";
 import InputDate from "../../../../Component/InputDate.jsx";
 import { AddEmployee, UpdateEmployee } from "../../../../api/EmployeeApi.jsx";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function ModifyEmployeeForm({
   mode,
@@ -40,15 +43,44 @@ export default function ModifyEmployeeForm({
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
+  const swallUpdate = () => {
+    setIsOpen(false);
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to save this employee ?  `,
+        text: `You won't be able to revert this!`,
+        icon: `warning`,
+        showCancelButton: true,
+        confirmButtonColor: `#3085d6`,
+        cancelButtonColor: `#d33`,
+        confirmButtonText: `Yes, update it!`,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          modifyEmployee();
+        }
+      });
+  };
+
   const modifyEmployee = () => {
     if (mode === "add") {
       console.log("Creating employee");
       console.log(data);
+
+      //show confirmation dialog
+
       // for add mode
       AddEmployee(data).then((res) => {
         console.log(res);
       });
-      setIsOpen(false);
+
+      toast.success("Employee has been added", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
     } else {
       // for edit mode
       console.log("Updating employee");
@@ -56,7 +88,14 @@ export default function ModifyEmployeeForm({
       UpdateEmployee(data).then((res) => {
         console.log(res);
       });
-      setIsOpen(false);
+
+      toast.success("Employee has been updated", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
     }
     setInvalidator((prev) => !prev);
   };
@@ -165,7 +204,7 @@ export default function ModifyEmployeeForm({
                 <Button
                   className="bg-orange-500"
                   withoutAnimate
-                  onClick={modifyEmployee}
+                  onClick={swallUpdate}
                 >
                   Save changes
                 </Button>

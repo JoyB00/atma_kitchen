@@ -8,6 +8,9 @@ import { RotateLoader } from "react-spinners";
 import { FetchAllEmployees } from "../../../../api/EmployeeApi";
 import { useEffect, useState } from "react";
 import { DeleteEmployee } from "../../../../api/EmployeeApi";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function EmployeeList({
   roleList,
@@ -63,6 +66,23 @@ export default function EmployeeList({
 }
 
 export function EmployeeCard({ employee, role, setInvalidator }) {
+  const swallUpdate = () => {
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to delete this employee ?  `,
+        text: `You won't be able to revert this!`,
+        icon: `warning`,
+        showCancelButton: true,
+        confirmButtonColor: `#3085d6`,
+        cancelButtonColor: `#d33`,
+        confirmButtonText: `Yes, update it!`,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deactivateEmployee();
+        }
+      });
+  };
   const deactivateEmployee = () => {
     DeleteEmployee(employee.id).then((res) => {
       console.log(res);
@@ -105,7 +125,7 @@ export function EmployeeCard({ employee, role, setInvalidator }) {
           <Button
             hoverColor={"#ef4444"}
             className="bg-white"
-            onClick={deactivateEmployee}
+            onClick={swallUpdate}
           >
             <div className="flex flex-row items-center text-red-500 hover:text-white">
               <FontAwesomeIcon icon={faTrashAlt} />
