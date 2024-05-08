@@ -30,6 +30,20 @@ const GetLoggedInCustomer = async () => {
   }
 };
 
+const EditCustomer = async (data) => {
+  try {
+    const response = await useAxios.put(`/customer/${data.id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 const FetchOrderHistory = async (id) => {
   try {
     const response = await useAxios.get(`/orderHistory/${id}`, {
@@ -44,4 +58,9 @@ const FetchOrderHistory = async (id) => {
   }
 };
 
-export { FetchAllCustomers, FetchOrderHistory, GetLoggedInCustomer };
+export {
+  FetchAllCustomers,
+  FetchOrderHistory,
+  GetLoggedInCustomer,
+  EditCustomer,
+};
