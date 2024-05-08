@@ -7,11 +7,15 @@ import { FetchAllConsignors } from "../api/ConsignorApi";
 import { FetchAllEmployees } from "../api/EmployeeApi";
 import { FetchAllRoles } from "../api/RoleApi";
 import { FetchAllCustomers, GetLoggedInCustomer } from "../api/CustomerApi";
+import {
+  GetCustomerTransactions,
+  GetDetailTransaction,
+} from "../api/TransactionApi";
 
 const fetchCategories = async () => {
   try {
     const response = await FetchAllCategories();
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error(error.message);
@@ -74,7 +78,7 @@ const allEmployee = atom(fetchAllEmployee);
 const fetchAllCustomers = async () => {
   try {
     const response = await FetchAllCustomers();
-    console.log("customer", response);
+    // console.log("customer", response);
     return response;
   } catch (error) {
     return error.message;
@@ -92,6 +96,24 @@ const fetchLoggedInCustomers = async () => {
 };
 const loggedInCustomer = atom(fetchLoggedInCustomers);
 
+const fetchCustomerOrderHistory = async () => {
+  try {
+    const allCustomerTransaction = await GetCustomerTransactions(
+      JSON.parse(sessionStorage.getItem("user")).id
+    );
+    const allTransactionDetails = await Promise.all(
+      allCustomerTransaction.map((transaction) =>
+        GetDetailTransaction(transaction.id)
+      )
+    );
+    console.log(allTransactionDetails); // return detail (cart->produk/hampers), dan transaksi
+    return allTransactionDetails;
+  } catch (error) {
+    return error.message;
+  }
+};
+const customerOrderHistory = atom(fetchCustomerOrderHistory);
+
 export {
   allIngredients,
   allCategories,
@@ -100,4 +122,6 @@ export {
   allEmployee,
   allRoles,
   allCustomers,
+  loggedInCustomer,
+  customerOrderHistory,
 };
