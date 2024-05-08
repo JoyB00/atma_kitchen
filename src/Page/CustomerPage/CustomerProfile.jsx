@@ -38,11 +38,11 @@ export function CustomerProfileContent() {
             subtitle="Edit and view your information here"
             link={"/CustomerDashboard/EditProfile"}
           />
-          <NavButton
+          {/* <NavButton
             title="Change password"
             subtitle="Ever forget your password?"
             link={"/CustomerDashboard/ChangePassword"}
-          />
+          /> */}
           <NavButton
             title="Change address"
             subtitle="Delivery to any location"
