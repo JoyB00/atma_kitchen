@@ -30,8 +30,8 @@ export function CustomerProfileContent() {
         <div className="grid grid-flow-col auto-cols-max gap-3">
           <NavButton
             title="See order history"
-            subtitle="Ever forget your password?"
-            link={"/CustomerDashboard/ChangePassword"}
+            subtitle="Want to see what you have ordered?"
+            link={"/CustomerDashboard/OrderHistory"}
           />
           <NavButton
             title="Edit profile"
