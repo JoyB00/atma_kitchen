@@ -17,10 +17,10 @@ export default function EmployeeSalaryPage() {
             user.role_id == 2
               ? "/AdminDashboard"
               : user.role_id == 3
-              ? "/MoDashboard"
-              : user.role_id == 1
-              ? "OwnerDashboard/EmployeeSalary"
-              : ""
+                ? "/MoDashboard"
+                : user.role_id == 1
+                  ? "OwnerDashboard/EmployeeSalary"
+                  : ""
           }
           page="Employee Salary"
           setSearch={setSearch}

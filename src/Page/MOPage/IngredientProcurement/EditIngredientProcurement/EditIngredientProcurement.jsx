@@ -8,7 +8,7 @@ import { GetIngredientProcurement } from "../../../../api/IngredientProcurementA
 import { useRouteLoaderData } from "react-router-dom";
 export default function EditIngredientProcurement() {
   const ingredientProcurement = useRouteLoaderData(
-    "ingredientProcurement-detail"
+    "ingredientProcurement-detail",
   );
   const [ingredients] = useAtom(allIngredients);
   const user = JSON.parse(sessionStorage.getItem("user"));

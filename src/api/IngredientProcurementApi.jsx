@@ -55,7 +55,7 @@ const UpdateIngredientProcurement = async (data) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      }
+      },
     );
     console.log(response.data);
     return response.data.data;

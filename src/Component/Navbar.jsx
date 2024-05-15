@@ -141,7 +141,7 @@ export function ProfileMenu() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [authUser, setAuthUser] = React.useState(
-    JSON.parse(sessionStorage.getItem("user"))
+    JSON.parse(sessionStorage.getItem("user")),
   );
   const open = Boolean(anchorEl);
   const handleOpen = (event) => {
@@ -184,7 +184,6 @@ export function ProfileMenu() {
   return (
     <div>
       <div className="flex flex-row">
-        
         <Button
           className="rounded-full p-0 hover:border-transparent w-16"
           withoutAnimate

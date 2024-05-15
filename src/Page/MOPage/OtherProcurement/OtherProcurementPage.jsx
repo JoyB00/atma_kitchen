@@ -15,8 +15,8 @@ export default function OtherProcurementPage() {
             user.role_id == 2
               ? "/AdminDashboard/"
               : user.role_id == 3
-              ? "/MoDashboard/otherProcurements"
-              : ""
+                ? "/MoDashboard/otherProcurements"
+                : ""
           }
           page="Other Procurement"
           setSearch={setSearch}

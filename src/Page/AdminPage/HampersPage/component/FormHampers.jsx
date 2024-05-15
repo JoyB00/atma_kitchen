@@ -178,7 +178,7 @@ export default function FormHampers({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -210,7 +210,7 @@ export default function FormHampers({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

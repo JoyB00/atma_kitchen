@@ -72,7 +72,7 @@ export default function ModalDetailSalary({ open, setOpen, id }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

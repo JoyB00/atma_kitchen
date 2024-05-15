@@ -13,10 +13,10 @@ export default function Dashboard() {
             user.role_id == 2
               ? "/AdminDashboard"
               : user.role_id == 3
-              ? "/MoDashboard"
-              : user.role_id == 1
-              ? "OwnerDashboard"
-              : ""
+                ? "/MoDashboard"
+                : user.role_id == 1
+                  ? "OwnerDashboard"
+                  : ""
           }
           page="Main Dashboard"
         />

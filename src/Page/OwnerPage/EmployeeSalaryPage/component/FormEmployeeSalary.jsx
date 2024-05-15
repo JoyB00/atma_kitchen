@@ -109,7 +109,7 @@ export default function FormEmployeeSalary({ dataEdit, id }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -141,7 +141,7 @@ export default function FormEmployeeSalary({ dataEdit, id }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

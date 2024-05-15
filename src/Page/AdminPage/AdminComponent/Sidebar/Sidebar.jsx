@@ -58,10 +58,10 @@ export default function Sidebar({ role, fullName }) {
               role == 2
                 ? "/AdminDashboard"
                 : role == 3
-                ? "/MoDashboard"
-                : role == 1
-                ? "/OwnerDashboard"
-                : ""
+                  ? "/MoDashboard"
+                  : role == 1
+                    ? "/OwnerDashboard"
+                    : ""
             }
             onClick={collapseMenu}
             end

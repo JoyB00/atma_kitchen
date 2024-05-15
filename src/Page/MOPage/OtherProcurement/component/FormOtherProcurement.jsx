@@ -78,7 +78,7 @@ export default function FormOtherProcurement({ dataEdit }) {
     onSuccess: () => {
       queryClient.setQueryData(
         ["otherProcurements", { id: dataEdit.id }],
-        data
+        data,
       );
       navigate("/MoDashboard/otherProcurements");
     },
@@ -112,7 +112,7 @@ export default function FormOtherProcurement({ dataEdit }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -144,7 +144,7 @@ export default function FormOtherProcurement({ dataEdit }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

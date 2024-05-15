@@ -71,8 +71,8 @@ export default function NavbarAdmin({ url, page, setSearch }) {
               user.role_id == 2
                 ? "/AdminDashboard"
                 : user.role_id == 3
-                ? "/MoDashboard"
-                : ""
+                  ? "/MoDashboard"
+                  : ""
             }
           >
             Page

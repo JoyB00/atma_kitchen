@@ -64,7 +64,7 @@ export default function IngredientTable({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

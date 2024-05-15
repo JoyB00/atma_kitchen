@@ -1,7 +1,7 @@
 import Sidebar from "../../AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminComponent/NavbarAdmin/NavbarAdmin";
 import FormIngredient from "../Component/FormIngredient";
-import FooterDashboard from "../../../../Component/FooterDashboard";  
+import FooterDashboard from "../../../../Component/FooterDashboard";
 export default function AddHampers() {
   const user = JSON.parse(sessionStorage.getItem("user"));
   return (

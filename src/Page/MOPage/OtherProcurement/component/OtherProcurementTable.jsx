@@ -67,7 +67,7 @@ export default function OtherProcurementTable({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

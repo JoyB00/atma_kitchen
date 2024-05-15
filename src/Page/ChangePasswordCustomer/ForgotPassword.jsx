@@ -34,7 +34,7 @@ export default function ForgotPassword() {
           color: "#ffffff",
         },
         position: "bottom-right",
-      }
+      },
     );
   };
   const verifYEmail = useMutation({

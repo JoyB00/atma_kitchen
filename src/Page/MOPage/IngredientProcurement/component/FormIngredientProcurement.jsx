@@ -112,7 +112,7 @@ export default function FormIngredientProcurement({
     onSuccess: () => {
       queryClient.setQueryData(
         ["ingredientProcurements", { id: dataEdit.id }],
-        data
+        data,
       );
       navigate("/MoDashboard/ingredientProcurement");
     },
@@ -146,7 +146,7 @@ export default function FormIngredientProcurement({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -178,7 +178,7 @@ export default function FormIngredientProcurement({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

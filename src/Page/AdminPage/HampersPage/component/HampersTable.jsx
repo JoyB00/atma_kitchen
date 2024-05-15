@@ -76,7 +76,7 @@ export default function HampersTable({ data, search, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

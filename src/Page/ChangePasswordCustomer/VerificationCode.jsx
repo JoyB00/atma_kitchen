@@ -31,7 +31,7 @@ export default function VerificationCode() {
           color: "#ffffff",
         },
         position: "bottom-right",
-      }
+      },
     );
   };
   const verifYEmail = useMutation({

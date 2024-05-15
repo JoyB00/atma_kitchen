@@ -242,7 +242,7 @@ export default function FormProduct({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -273,7 +273,7 @@ export default function FormProduct({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

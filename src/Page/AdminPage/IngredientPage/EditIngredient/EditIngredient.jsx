@@ -8,7 +8,7 @@ import { useRouteLoaderData } from "react-router-dom";
 export default function EditIngredient() {
   const ingredient = useRouteLoaderData("ingredient-detail");
   const user = JSON.parse(sessionStorage.getItem("user"));
-  
+
   return (
     <div className="h-full w-full flex bg-orange-100/50 ">
       <Sidebar role={user.role_id} />
@@ -17,9 +17,7 @@ export default function EditIngredient() {
         <div className="mt-32 px-4 ">
           <div className=" w-full bg-white rounded-2xl p-8 mb-8 shadow-md">
             <h1 className="font-medium text-2xl">Edit Ingredient</h1>
-            <FormIngredient
-              ingredientData={ingredient.ingredient}
-            />
+            <FormIngredient ingredientData={ingredient.ingredient} />
           </div>
           <FooterDashboard />
         </div>

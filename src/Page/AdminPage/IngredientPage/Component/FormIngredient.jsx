@@ -68,7 +68,7 @@ export default function FormIngredient({ ingredientData }) {
     onSuccess: () => {
       queryClient.setQueryData(
         ["ingredients", { id: ingredientData.id }],
-        data
+        data,
       );
       navigate("/AdminDashboard/ingredient");
     },
@@ -103,7 +103,7 @@ export default function FormIngredient({ ingredientData }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -135,7 +135,7 @@ export default function FormIngredient({ ingredientData }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

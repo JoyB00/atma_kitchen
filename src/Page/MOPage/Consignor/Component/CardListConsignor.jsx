@@ -81,7 +81,7 @@ export default function CardListConsignor({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

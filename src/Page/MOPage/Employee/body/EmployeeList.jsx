@@ -49,7 +49,7 @@ export default function EmployeeList({
             .filter((employee) =>
               employee.users.fullName
                 .toLowerCase()
-                .includes(search.toLowerCase())
+                .includes(search.toLowerCase()),
             )
             .map((employee) => (
               <EmployeeCard

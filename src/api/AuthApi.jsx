@@ -73,7 +73,7 @@ const LogOut = async () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {

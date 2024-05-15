@@ -74,7 +74,7 @@ export default function ProductTable({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

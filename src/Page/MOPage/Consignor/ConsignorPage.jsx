@@ -17,8 +17,8 @@ export default function ConsignorPage() {
             user.role_id == 2
               ? "/AdminDashboard/"
               : user.role_id == 3
-              ? "/MoDashboard/consignor"
-              : ""
+                ? "/MoDashboard/consignor"
+                : ""
           }
           page="Consignor"
           setSearch={setSearch}

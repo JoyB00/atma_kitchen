@@ -100,7 +100,7 @@ export default function FormConsignor({ dataEdit }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -132,7 +132,7 @@ export default function FormConsignor({ dataEdit }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });

@@ -20,7 +20,7 @@ export default function LoadingTable({ loading }) {
               <th className="text-center font-medium text-sm pe">
                 Nominal Balance
               </th>
-            </tr> 
+            </tr>
           </tr>
         </thead>
         <tbody>

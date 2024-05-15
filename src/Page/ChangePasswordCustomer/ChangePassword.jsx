@@ -48,7 +48,7 @@ export default function ChangePassword() {
             color: "#ffffff",
           },
           position: "bottom-right",
-        }
+        },
       );
     }
   };

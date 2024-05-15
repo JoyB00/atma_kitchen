@@ -21,8 +21,8 @@ export default function IngredientProcurement() {
             user.role_id == 2
               ? "/AdminDashboard/ingredientProcurement"
               : user.role_id == 3
-              ? "/MoDashboard"
-              : ""
+                ? "/MoDashboard"
+                : ""
           }
           page="Employee Management"
           setSearch={setSearch}
