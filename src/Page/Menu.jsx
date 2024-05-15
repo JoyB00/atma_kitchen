@@ -9,7 +9,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FetchAllProducts } from "../api/ProductApi";
 import { RotateLoader } from "react-spinners";
-import { useQuery } from "@tanstack/react-query";
 import { getPicture } from "../api";
 export default function Menu() {
   const [page, setPage] = useState(1);
@@ -44,6 +43,7 @@ export default function Menu() {
   };
 
   const handleSortByCategory = (event) => {
+    setPage(1);
     setFilterSelected(event.target.id);
     setSortSelected("default");
     const filteredItem = products.filter(
@@ -56,6 +56,7 @@ export default function Menu() {
   };
 
   const handleSortByAscDsc = (event) => {
+    setPage(1);
     setSortSelected(event.target.value);
     if (event.target.value === "ascending") {
       const ascSort = [...filteredProduct].sort((a, b) =>
@@ -269,6 +270,7 @@ export default function Menu() {
                           transition={{ type: "spring" }}
                         >
                           <CardProduct
+                            id={product.id}
                             alt={product.product_name}
                             image={
                               product.product_picture
@@ -302,7 +304,7 @@ export default function Menu() {
             )}
           </div>
         </div>
-        <div className="from-cyan-100 via-transparent md:pt-12">
+        <div className="from-cyan-100 via-transparent md:pt-12 ">
           <Footer />
         </div>
       </div>

@@ -1,24 +1,21 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 import Button from "../Component/Button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Skeleton } from "@mui/material";
-import defaultImage from "../assets/ProductAsset/lapis leggite.jpg";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { BeatLoader } from "react-spinners";
 
-export default function CardComp({ title, price, desc, image, alt }) {
+export default function CardComp({ id, title, price, desc, image, alt }) {
+  const [idItemLoad, setIdItemLoad] = useState();
+  const [load, setLoad] = useState(false);
+
+  const handleLoadDetail = () => {
+    setIdItemLoad(id);
+    setLoad(true);
+  };
   return (
-    <motion.div
-      className="w-full"
-      initial="hidden"
-      animate="visible"
-      variants={{
-        hidden: { opacity: 0, scale: 0.5 },
-        visible: { opacity: 1, scale: [0.8, 1.3, 1] },
-      }}
-      exit={{ opacity: 1, scale: 1 }}
-      transition={{ type: "spring" }}
-    >
+    <div className="w-full">
       <div className="drop-shadow-md rounded-xl bg-white text-black p-3 h-[29rem] flex flex-col">
         <LazyLoadImage
           effect="blur"
@@ -33,12 +30,21 @@ export default function CardComp({ title, price, desc, image, alt }) {
         <p className="text-gray-500 font-normal text-sm px-2 text-left py-4 flex-grow">
           {desc}
         </p>
-        <div className="mt-auto">
-          <Button className="bg-orange-500 rounded-xl w-full text-white">
-            See Detail
-          </Button>
+        <div className="mt-auto px-1">
+          <NavLink to={`/menu/${id}`}>
+            <Button
+              className="bg-orange-500 rounded-xl w-full text-white "
+              onClick={handleLoadDetail}
+            >
+              {load && idItemLoad == id ? (
+                <BeatLoader color="white" loading={load} size={10} />
+              ) : (
+                <>See Detail</>
+              )}
+            </Button>
+          </NavLink>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
