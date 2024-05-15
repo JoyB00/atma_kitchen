@@ -134,7 +134,7 @@ export default function AdminNavigation({
       {expandedTransaction ? (
         <div className="ms-8">
           <Navigation
-            label="Delivery Range"
+            label="Delivery"
             icon={faTruck}
             url={"/AdminDashboard/"}
           />
