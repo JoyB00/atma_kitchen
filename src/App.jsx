@@ -8,6 +8,7 @@ import { Suspense } from "react";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
+import ProtectedRootForgotPass from "./Root/ProtectedRoot/ProtectedRootForgotPass";
 import LoadingPage from "./Component/LoadingPage";
 //
 import Register from "./Page/Register";
@@ -139,7 +140,11 @@ const router = createBrowserRouter([
           },
           {
             path: ":token",
-            element: <ChangePassword />,
+            element: (
+              <ProtectedRootForgotPass>
+                <ChangePassword />
+              </ProtectedRootForgotPass>
+            ),
           },
         ],
       },

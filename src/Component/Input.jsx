@@ -11,7 +11,7 @@ export default function Input({ label, id, withLabel, withAnimate, ...props }) {
   return (
     <div className="items-center py-3">
       {withLabel ? (
-        <div className="mb-2">
+        <div className="mb-2 text-black">
           <label htmlFor={id}>{label}</label>
         </div>
       ) : (
