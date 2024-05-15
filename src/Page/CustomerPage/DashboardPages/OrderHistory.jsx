@@ -7,7 +7,7 @@ export default function OrderHistory() {
   return (
     <>
       <Navbar />
-      <div className="flex flex-col min-h-screen justify-center px-24">
+      <div className="flex min-h-screen flex-col justify-center px-24">
         <Header />
         <div className="py-2" />
         <TransactionList />
@@ -20,7 +20,7 @@ export default function OrderHistory() {
 export function Header() {
   return (
     <div className="flex flex-col text-start">
-      <span className="font-bold text-orange-500 text-3xl">Order History</span>
+      <span className="text-3xl font-bold text-orange-500">Order History</span>
       <span className="text-xl">Did you miss our cake?</span>
     </div>
   );
@@ -29,7 +29,7 @@ export function Header() {
 export function TransactionList() {
   const [orderHistory] = useAtom(customerOrderHistory);
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
       {orderHistory.map((transaction) => (
         <TransactionTile
           detailedTransaction={transaction}
@@ -54,7 +54,7 @@ export function TransactionTile({ detailedTransaction }) {
           {detail.product.product_name} (x{detail.quantity})
         </span>
         <div className="w-full" />
-        <span className=" text-sm text-end">
+        <span className=" text-end text-sm">
           Rp. {detail.product.product_price}
         </span>
       </div>
@@ -62,8 +62,8 @@ export function TransactionTile({ detailedTransaction }) {
   };
 
   return (
-    <div className="bg-gray-100 h-80 rounded-lg shadow-lg flex flex-col items-stretch overflow-clip border border-orange-300">
-      <div className="flex flex-col items-start p-4 bg-orange-500">
+    <div className="flex h-80 flex-col items-stretch overflow-clip rounded-lg border border-orange-300 bg-gray-100 shadow-lg">
+      <div className="flex flex-col items-start bg-orange-500 p-4">
         <span>Ordered on</span>
         <span className="text-xl font-bold">
           {detailedTransaction.transaction.order_date}

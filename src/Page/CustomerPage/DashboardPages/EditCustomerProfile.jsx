@@ -17,7 +17,7 @@ export default function EditCustomerProfile() {
   return (
     <>
       <NavBar />
-      <div className="flex flex-col min-h-screen justify-center">
+      <div className="flex min-h-screen flex-col justify-center">
         <EditCustomerProfileContent />
       </div>
       <Footer />
@@ -28,7 +28,7 @@ export default function EditCustomerProfile() {
 export function EditCustomerProfileContent() {
   return (
     <>
-      <div className="flex flex-col px-20 w-1/2">
+      <div className="flex w-1/2 flex-col px-20">
         <Header />
         <div className="py-2" />
         <EditForm />
@@ -130,7 +130,7 @@ export function EditForm() {
             <div className="col-span-1">
               <motion.select
                 {...animate}
-                className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
+                className="block w-full rounded-2xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 onChange={handleChange}
                 name="gender"
                 id="gender"
@@ -154,7 +154,7 @@ export function EditForm() {
             </div>
           </div>
           <div className="py-2" />
-          <div className="flex justofy-start">
+          <div className="justofy-start flex">
             <Button
               className="bg-orange-500"
               withoutAnimate
@@ -177,7 +177,7 @@ export function Header() {
   return (
     <>
       <div className="flex flex-col items-start">
-        <span className="font-bold text-orange-500 text-3xl">Edit profile</span>
+        <span className="text-3xl font-bold text-orange-500">Edit profile</span>
         <span className="text-xl">Undo your mistake here</span>
       </div>
     </>

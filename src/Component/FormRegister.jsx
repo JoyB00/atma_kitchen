@@ -125,14 +125,14 @@ export default function FormRegister() {
         label="I accept the Terms of Use & Privacy Policy"
         onChange={handleCheck}
       />
-      <div className="grid  grid-cols-1 my-5 ">
+      <div className="my-5  grid grid-cols-1 ">
         <Button
           withoutAnimate
           disabled={disabled}
           type="submit"
           className={`mx-2 ${
             !disabled ? "bg-orange-500 hover:bg-orange-400" : "bg-orange-200"
-          }  drop-shadow-md rounded-3xl col-span-1 py-3  `}
+          }  col-span-1 rounded-3xl py-3 drop-shadow-md  `}
         >
           {isLoading ? (
             <RiseLoader
@@ -153,9 +153,9 @@ export default function FormRegister() {
         </Button>
       </div>
       <div className="flex justify-center">
-        <p className="text-black text-end my-auto">Already have an account?</p>
+        <p className="my-auto text-end text-black">Already have an account?</p>
         <NavLink
-          className="mx-2 bg-transparent my-auto text-orange-500"
+          className="mx-2 my-auto bg-transparent text-orange-500"
           to="/login"
         >
           Login here

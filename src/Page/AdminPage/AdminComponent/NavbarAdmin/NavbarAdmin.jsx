@@ -59,9 +59,9 @@ export default function NavbarAdmin({ url, page, setSearch }) {
 
   return (
     <div
-      className={`w-[77%] rounded-2xl z-10 ${
+      className={`z-10 w-[77%] rounded-2xl ${
         scroll ? "bg-white/60 " : "bg-transparent "
-      } backdrop-blur-xl flex justify-between mt-6 fixed p-4 `}
+      } fixed mt-6 flex justify-between p-4 backdrop-blur-xl `}
     >
       <div>
         <div className="flex gap-x-1">
@@ -71,8 +71,8 @@ export default function NavbarAdmin({ url, page, setSearch }) {
               user.role_id == 2
                 ? "/AdminDashboard"
                 : user.role_id == 3
-                ? "/MoDashboard"
-                : ""
+                  ? "/MoDashboard"
+                  : ""
             }
           >
             Page
@@ -83,12 +83,12 @@ export default function NavbarAdmin({ url, page, setSearch }) {
           </NavLink>
         </div>
         <div>
-          <h1 className="font-semibold text-4xl text-black" to={url}>
+          <h1 className="text-4xl font-semibold text-black" to={url}>
             {page}
           </h1>
         </div>
       </div>
-      <div className="w-2/5 bg-white rounded-full flex flex-row justify-between px-4 drop-shadow-md">
+      <div className="flex w-2/5 flex-row justify-between rounded-full bg-white px-4 drop-shadow-md">
         <Input
           id="search"
           label="Search"
@@ -121,7 +121,7 @@ export default function NavbarAdmin({ url, page, setSearch }) {
         ></Button> */}
 
         <Button
-          className="rounded-full my-2 bg-orange-500 drop-shadow-md text-sm text-white "
+          className="my-2 rounded-full bg-orange-500 text-sm text-white drop-shadow-md "
           style={{ backgroundColor: "#f99417" }}
         >
           {user.fullName.substring(0, 2).toUpperCase()}

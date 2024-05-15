@@ -1,7 +1,7 @@
 export default function FooterDashboard() {
   return (
     <div className="mb-6">
-      <p className="text-gray-400 font-normal ">
+      <p className="font-normal text-gray-400 ">
         &copy; Copyright AtmaKitchen . All Rights Reserved
       </p>
     </div>

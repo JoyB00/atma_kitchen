@@ -64,7 +64,7 @@ export default function CardListEmployee({ search, data, length }) {
                     paddingX: "5px",
                   }}
                 >
-                  <div className="my-auto bg-orange-100 rounded-full flex justify-center h-2/3">
+                  <div className="my-auto flex h-2/3 justify-center rounded-full bg-orange-100">
                     <img
                       src="https://api.dicebear.com/8.x/adventurer/svg?seed=Jasper"
                       alt="avatar"
@@ -110,7 +110,7 @@ export default function CardListEmployee({ search, data, length }) {
                         )}
                       </Typography>
                       <Button
-                        className="bg-orange-500 text-white me-2 px-4 text-sm mt-2"
+                        className="me-2 mt-2 bg-orange-500 px-4 text-sm text-white"
                         onClick={() => handleOpenModal(employee.id)}
                       >
                         <FontAwesomeIcon icon={faPencil} className="me-2" />
@@ -131,11 +131,11 @@ export default function CardListEmployee({ search, data, length }) {
             );
           })}
       </motion.div>
-      <div className="w-full flex justify-center pt-6">
+      <div className="flex w-full justify-center pt-6">
         <Pagination
           count={Math.ceil(length / productPerPage)}
           size="small"
-          className="flex justify-center mb-4"
+          className="mb-4 flex justify-center"
           onChange={handleChange}
         />
       </div>

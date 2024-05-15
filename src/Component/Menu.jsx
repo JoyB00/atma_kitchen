@@ -3,8 +3,8 @@ import { Fragment, useEffect, useRef, useState } from "react";
 
 export default function MenuComponent({ buttonText, menuItem }) {
   return (
-    <div className="text-right my-auto">
-      <Menu as="div" className="text-left relative inline-block">
+    <div className="my-auto text-right">
+      <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button className="text-sm font-medium text-gray-400 hover:text-orange-400">
             {buttonText}

@@ -34,7 +34,7 @@ export default function ForgotPassword() {
           color: "#ffffff",
         },
         position: "bottom-right",
-      }
+      },
     );
   };
   const verifYEmail = useMutation({
@@ -52,12 +52,12 @@ export default function ForgotPassword() {
   return (
     <div className="w-full bg-gradient-to-r from-cyan-100 via-transparent ">
       <Navbar />
-      <div className="min-h-screen flex justify-center items-center">
-        <div className="  grid grid-cols-12 gap-x-5 w-4/6 rounded-3xl bg-orange-50">
-          <div className="col-span-6 bg-gradient-to-t from-orange-600 to-orange-300 rounded-3xl">
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="  grid w-4/6 grid-cols-12 gap-x-5 rounded-3xl bg-orange-50">
+          <div className="col-span-6 rounded-3xl bg-gradient-to-t from-orange-600 to-orange-300">
             <Lottie animationData={chef} />
           </div>
-          <div className="col-span-6 text-lg text-orange-500 text-start pe-8 py-12 px-6 ">
+          <div className="col-span-6 px-6 py-12 pe-8 text-start text-lg text-orange-500 ">
             <NavLink to="/login" className="text-orange-500">
               <FontAwesomeIcon icon={faArrowLeft} />
               {"  "}
@@ -77,7 +77,7 @@ export default function ForgotPassword() {
             />
             <div className="grid grid-cols-1 pt-2">
               <Button
-                className=" bg-orange-500 text-white drop-shadow-md rounded-3xl col-span-1"
+                className=" col-span-1 rounded-3xl bg-orange-500 text-white drop-shadow-md"
                 type="button"
                 onClick={(event) => handleClick(event, data)}
               >

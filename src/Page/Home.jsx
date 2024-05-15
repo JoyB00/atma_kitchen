@@ -18,7 +18,7 @@ export default function Home() {
   });
   if (isPending)
     return (
-      <div className="w-full h-screen bg-gradient-to-tl to-orange-50 via-transparent from-transparent">
+      <div className="h-screen w-full bg-gradient-to-tl from-transparent via-transparent to-orange-50">
         <RotateLoader
           color="orange"
           loading={isPending}

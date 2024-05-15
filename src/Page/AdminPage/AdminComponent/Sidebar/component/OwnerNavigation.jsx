@@ -5,7 +5,7 @@ import {
   faDollar,
   faUserTie,
   faFileArchive,
-  faLock
+  faLock,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../../../../Component/Button";
@@ -31,16 +31,16 @@ export default function OwnerNavigation({
         transition={{ type: "just" }}
         className={`${
           expandedMaster
-            ? "text-white bg-gradient-to-b from-orange-400  to-orange-500 text-start rounded-3xl hover:text-white "
-            : " text-gray-400 text-start hover:text-orange-400"
-        }py-4 mt-2 grid-cols-4 grid w-full`}
+            ? "rounded-3xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-white "
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-4 mt-2 grid w-full grid-cols-4`}
         onClick={() => setExpandedMaster(!expandedMaster)}
       >
-        <div className="ms-3 text-start col-span-1">
+        <div className="col-span-1 ms-3 text-start">
           <FontAwesomeIcon icon={faUserTie} />
         </div>
-        <p className="font-normal text-start col-span-2">Employee Salary</p>
-        <div className="flex justify-end my-auto text-start col-span-1">
+        <p className="col-span-2 text-start font-normal">Employee Salary</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
             icon={expandedMaster ? faChevronDown : faChevronRight}
           />
@@ -62,16 +62,16 @@ export default function OwnerNavigation({
         transition={{ type: "just" }}
         className={`${
           expandedOperational
-            ? "text-white bg-gradient-to-b from-orange-400  to-orange-500 text-start rounded-2xl hover:text-orange-400"
-            : " text-gray-400 text-start hover:text-orange-400"
-        }py-2 mt-2 grid-cols-4 grid w-full`}
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-2 mt-2 grid w-full grid-cols-4`}
         onClick={() => setExpandedOperational(!expandedOperational)}
       >
-        <div className="ms-3  text-start col-span-1">
+        <div className="col-span-1  ms-3 text-start">
           <FontAwesomeIcon icon={faFileArchive} />
         </div>
-        <p className="font-normal text-start col-span-2 ">Operational Data</p>
-        <div className="flex justify-end my-auto text-start col-span-1">
+        <p className="col-span-2 text-start font-normal ">Operational Data</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
             icon={expandedOperational ? faChevronDown : faChevronRight}
           />

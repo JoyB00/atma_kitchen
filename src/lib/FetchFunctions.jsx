@@ -99,12 +99,12 @@ const loggedInCustomer = atom(fetchLoggedInCustomers);
 const fetchCustomerOrderHistory = async () => {
   try {
     const allCustomerTransaction = await GetCustomerTransactions(
-      JSON.parse(sessionStorage.getItem("user")).id
+      JSON.parse(sessionStorage.getItem("user")).id,
     );
     const allTransactionDetails = await Promise.all(
       allCustomerTransaction.map((transaction) =>
-        GetDetailTransaction(transaction.id)
-      )
+        GetDetailTransaction(transaction.id),
+      ),
     );
     console.log(allTransactionDetails); // return detail (cart->produk/hampers), dan transaksi
     return allTransactionDetails;

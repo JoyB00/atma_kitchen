@@ -12,16 +12,16 @@ export default function Navigation({ label, icon, url, ...props }) {
       <NavLink
         className={({ isActive }) =>
           isActive
-            ? "py-4 mt-2 grid-cols-3 grid rounded-xl text-orange-400 bg-orange-100"
-            : "py-2 mt-2 grid-cols-3 grid text-gray-400 "
+            ? "mt-2 grid grid-cols-3 rounded-xl bg-orange-100 py-4 text-orange-400"
+            : "mt-2 grid grid-cols-3 py-2 text-gray-400 "
         }
         to={url}
         {...props}
       >
-        <div className="text-center col-span-1">
+        <div className="col-span-1 text-center">
           <FontAwesomeIcon icon={icon} />
         </div>
-        <p className="font-normal col-span-2">{label}</p>
+        <p className="col-span-2 font-normal">{label}</p>
       </NavLink>
     </motion.div>
   );

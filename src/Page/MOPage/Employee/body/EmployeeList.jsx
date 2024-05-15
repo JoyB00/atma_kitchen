@@ -28,7 +28,7 @@ export default function EmployeeList({
   }, [invalidator]);
 
   return (
-    <div className="grid xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+    <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
       {employeeList.isFetching ? (
         <div className="flex justify-center py-20">
           <RotateLoader
@@ -49,7 +49,7 @@ export default function EmployeeList({
             .filter((employee) =>
               employee.users.fullName
                 .toLowerCase()
-                .includes(search.toLowerCase())
+                .includes(search.toLowerCase()),
             )
             .map((employee) => (
               <EmployeeCard
@@ -91,7 +91,7 @@ export function EmployeeCard({ employee, role, setInvalidator }) {
   };
 
   return (
-    <div className="flex flex-row px-4 py-3 items-center overflow-clip rounded-lg bg-white shadow-md">
+    <div className="flex flex-row items-center overflow-clip rounded-lg bg-white px-4 py-3 shadow-md">
       <Badge
         color="warning"
         badgeContent={
@@ -108,7 +108,7 @@ export function EmployeeCard({ employee, role, setInvalidator }) {
       </Badge>
       <div className="px-3" />
       <div className="flex flex-col items-start">
-        <span className="font-semibold text-lg">{employee.users.fullName}</span>
+        <span className="text-lg font-semibold">{employee.users.fullName}</span>
         <span className="text-sm font-semibold">{employee.users.email}</span>
         <div className="py-1" />
         <span className="text-sm">{employee.users.phoneNumber}</span>

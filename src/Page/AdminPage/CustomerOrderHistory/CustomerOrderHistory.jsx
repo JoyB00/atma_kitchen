@@ -7,9 +7,9 @@ export default function CustomerOrderHistoryPage() {
   const [search, setSearch] = useState("");
   const user = JSON.parse(sessionStorage.getItem("user"));
   return (
-    <div className="flex items-start bg-orange-100/50 w-full h-full min-h-screen min-w-full">
+    <div className="flex h-full min-h-screen w-full min-w-full items-start bg-orange-100/50">
       <Sidebar role={user.role_id} />
-      <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
+      <div className=" w-[99vw] pe-[1rem] ps-[20.5rem] text-left text-black">
         <NavbarAdmin
           url={"/AdminDashboard/orderHistory"}
           page="Customer Order History"

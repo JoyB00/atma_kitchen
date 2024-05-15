@@ -111,7 +111,7 @@ export default function Menu() {
   }, []);
   return (
     <AnimatePresence>
-      <div className="w-full h-screen bg-transparent">
+      <div className="h-screen w-full bg-transparent">
         <Navbar />
         <div className="text-orange-500 pt-36 ps-6 ">
           <div className="flex ps-6 text-xl ">
@@ -231,7 +231,7 @@ export default function Menu() {
           </div>
           <div className="col-span-4">
             {isPending ? (
-              <div className="w-full h-screen bg-transparent">
+              <div className="h-screen w-full bg-transparent">
                 <RotateLoader
                   color="orange"
                   loading={isPending}
@@ -253,7 +253,7 @@ export default function Menu() {
                   variants={card}
                   initial="hidden"
                   animate="visible"
-                  className="rounded-xl grid grid-cols-3 gap-4"
+                  className="grid grid-cols-3 gap-4 rounded-xl"
                 >
                   {filteredProduct.length === 0 ? (
                     <div className="bg-orange-50 col-span-3 h-screen flex justify-center items-center ">
@@ -297,7 +297,7 @@ export default function Menu() {
                 <Pagination
                   count={Math.ceil(filteredProduct.length / productPerPage)}
                   size="small"
-                  className="flex justify-center mt-6"
+                  className="mt-6 flex justify-center"
                   onChange={handleChange}
                 />
               </>

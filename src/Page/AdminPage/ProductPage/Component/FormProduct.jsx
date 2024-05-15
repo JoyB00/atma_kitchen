@@ -242,7 +242,7 @@ export default function FormProduct({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -273,7 +273,7 @@ export default function FormProduct({
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -282,10 +282,10 @@ export default function FormProduct({
   return (
     <Form method={productData ? "patch" : "post"}>
       {console.log("data: ", data)}
-      <div className="grid grid-cols-5 my-8">
+      <div className="my-8 grid grid-cols-5">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
-          <p className="text-gray-400 font-light mb-6">
+          <p className="mb-6 font-light text-gray-400">
             Please enter the basic information of your product.
           </p>
           <Input
@@ -336,7 +336,7 @@ export default function FormProduct({
 
           <motion.select
             {...animate}
-            className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+            className="block w-full rounded-xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             onChange={handleChange}
             name="category_id"
             id="category_id"
@@ -362,7 +362,7 @@ export default function FormProduct({
               </div>
               <motion.select
                 {...animate}
-                className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                className="block w-full rounded-xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 onChange={handleChange}
                 name="consignor_id"
                 id="consignor"
@@ -386,7 +386,7 @@ export default function FormProduct({
 
         <div className="col-span-2">
           <h1 className="text-xl font-medium">Product Picture</h1>
-          <p className="text-gray-400 font-light mb-12">
+          <p className="mb-12 font-light text-gray-400">
             Please add or change your image product.
           </p>
           <motion.div {...animate}>
@@ -400,12 +400,12 @@ export default function FormProduct({
                         : getPicture(productData.product_picture, "product")
                     }
                     alt="product picture"
-                    className="object-cover h-44 mx-auto"
+                    className="mx-auto h-44 object-cover"
                   />
                 </div>
                 <div className="flex justify-center">
                   <Button
-                    className="mt-4 text-orange-500 me-2 bg-transparent hover:text-white "
+                    className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
                     type="button"
                     onClick={() =>
                       document.getElementById("product_picture").click()
@@ -414,7 +414,7 @@ export default function FormProduct({
                     <FontAwesomeIcon icon={faPencil} className="me-1" /> Change
                   </Button>
                   <Button
-                    className="mt-4 text-orange-500 me-2 bg-transparent hover:text-white "
+                    className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
                     type="button"
                     onClick={removePicture}
                   >
@@ -443,16 +443,16 @@ export default function FormProduct({
               id="description"
               name="description"
               rows="5"
-              className="block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="block w-full rounded-md border-0 px-3 py-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Description"
               defaultValue={productData ? productData.description : ""}
             ></textarea>
           </motion.div>
         </div>
       </div>
-      <div className="w-full bg-blue-50 py-5 rounded-xl mb-2 ps-2">
+      <div className="mb-2 w-full rounded-xl bg-blue-50 py-5 ps-2">
         <h1 className="text-xl font-medium">Product Status</h1>
-        <p className="text-gray-400 font-light ">
+        <p className="font-light text-gray-400 ">
           Please enter the status of your product.
         </p>
       </div>
@@ -466,7 +466,7 @@ export default function FormProduct({
 
           <motion.select
             {...animate}
-            className="block w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+            className="block w-full rounded-xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
             onChange={handleChange}
             name="product_status"
             id="product_status"
@@ -546,9 +546,9 @@ export default function FormProduct({
           </div>
         </div>
       ) : undefined}
-      <div className="w-full bg-blue-50 py-5 rounded-xl mb-2 mt-6 ps-2">
+      <div className="mb-2 mt-6 w-full rounded-xl bg-blue-50 py-5 ps-2">
         <h1 className="text-xl font-medium ">Add Recipe</h1>
-        <p className="text-gray-400 font-light ">
+        <p className="font-light text-gray-400 ">
           Please enter the recipe of your product.
         </p>
       </div>
@@ -565,7 +565,7 @@ export default function FormProduct({
               <label htmlFor="ingredient">Ingredient</label>
               <motion.select
                 {...animate}
-                className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                className="mt-2 w-full rounded-xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 onChange={(event) => handleChangeRecipe(event, index)}
                 name="ingredient_id"
                 id="ingredient_id"
@@ -595,9 +595,9 @@ export default function FormProduct({
                 value={data.quantity}
               />
             </div>
-            <div className="col-span-1 flex justify-center items-center">
+            <div className="col-span-1 flex items-center justify-center">
               <Button
-                className=" text-orange-500 bg-transparent hover:text-white mt-8"
+                className=" mt-8 bg-transparent text-orange-500 hover:text-white"
                 type="button"
                 onClick={(event) => handleDeleteRecipe(event, data.id)}
               >
@@ -620,15 +620,15 @@ export default function FormProduct({
 
       {/* save or discard button */}
 
-      <div className="bg-white -mx-px ">
+      <div className="-mx-px bg-white ">
         <div className="flex justify-start pb-6">
           <NavLink to="/AdminDashboard/product">
-            <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
+            <Button className="me-2 mt-8 border-2 border-orange-500 bg-white text-orange-500 hover:text-white">
               Discard
             </Button>
           </NavLink>
           <Button
-            className="mt-8 text-white me-2 bg-orange-500 "
+            className="me-2 mt-8 bg-orange-500 text-white "
             type="button"
             onClick={
               productData ? () => swallUpdate(data) : () => swallAdd(data)
