@@ -18,7 +18,7 @@ import Home from "./Page/Home";
 // Menu
 import RootMenuPage from "./Root/Main/Menu/RootMenuPage";
 import Menu from "./Page/Menu";
-import DetailMenu from "./Page/MainPage/DetailMenu";
+import { DetailMenu } from "./Page/MainPage/DetailMenu";
 import { loader as loadDetailMenu } from "./Page/MainPage/DetailMenu";
 
 // root Forgot Password

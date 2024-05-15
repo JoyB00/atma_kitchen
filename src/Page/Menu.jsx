@@ -280,7 +280,7 @@ export default function Menu() {
                             desc={
                               product.description.length < 120
                                 ? product.description
-                                : `${product.description.substring(0, 120)}...`
+                                : `${product.description.substring(0, 100)}...`
                             }
                             price={
                               product.product_price <= 999

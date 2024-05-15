@@ -50,7 +50,7 @@ export default function FormProduct({
           ? productData.product_status
           : "Pre-Order",
         recipe: recipes,
-        limit_amount: "",
+        limit_amount: limits ? limits.limit_amount : "",
         production_date: limits ? limits.production_date : "",
       }
     : {
@@ -73,7 +73,7 @@ export default function FormProduct({
   const [picture, setPicture] = useState(null);
   const [recipe, setRecipe] = useState(recipes ? recipes : []);
   const [counterRecipe, setCounterRecipe] = useState(0);
-  const [checkLimit, setCheckLimit] = useState(null);
+  const [checkLimit, setCheckLimit] = useState(limits?limits:null);
   const [loadingCheckLimit, setLoadingCheckLimit] = useState(false);
 
   console.log("ingredient", ingredient);
