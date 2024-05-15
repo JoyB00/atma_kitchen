@@ -47,8 +47,8 @@ export default function ForgotPasswordEmployeePage() {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col min-h-screen justify-center">
-        <span className="text-orange-500 font-bold text-2xl">
+      <div className="flex min-h-screen flex-col justify-center">
+        <span className="text-2xl font-bold text-orange-500">
           Reset your password
         </span>
         <Form className="px-48">

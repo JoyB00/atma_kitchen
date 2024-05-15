@@ -14,16 +14,16 @@ export default function EditIngredientProcurement() {
   const user = JSON.parse(sessionStorage.getItem("user"));
 
   return (
-    <div className="h-full min-h-screen w-full flex bg-orange-100/50 ">
+    <div className="flex h-full min-h-screen w-full bg-orange-100/50 ">
       <Sidebar role={user.role_id} />
-      <div className=" text-black ps-[20.5rem] pe-[1rem] text-left w-[99vw]">
+      <div className=" w-[99vw] pe-[1rem] ps-[20.5rem] text-left text-black">
         <NavbarAdmin
           url="/MoDashboard/ingredientProcurement"
           page="Ingredient Procurement"
         />
         <div className="mt-32 px-4 ">
-          <div className=" w-full bg-white rounded-2xl p-8 mb-8 shadow-md">
-            <h1 className="font-medium text-2xl">
+          <div className=" mb-8 w-full rounded-2xl bg-white p-8 shadow-md">
+            <h1 className="text-2xl font-medium">
               Edit Ingredient Procurement
             </h1>
             <FormIngredientProcurement

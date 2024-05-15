@@ -108,9 +108,9 @@ export default function ModifyEmployeeForm({
         <EditEmployeeButton setIsOpen={setIsOpen} />
       )}
       <Modal open={isOpen} onClose={handleClose}>
-        <div className="flex justify-center items-center min-h-full">
-          <Box className="flex flex-col bg-white w-2/3 p-8 rounded-xl">
-            <span className="text-[#ef4444] font-semibold text-3xl">
+        <div className="flex min-h-full items-center justify-center">
+          <Box className="flex w-2/3 flex-col rounded-xl bg-white p-8">
+            <span className="text-3xl font-semibold text-[#ef4444]">
               {mode === "add" ? "Add Employee" : "Edit Employee"}
             </span>
             <div className="flex flex-col">
@@ -171,7 +171,7 @@ export default function ModifyEmployeeForm({
                 <div className="py-2" />
                 <motion.select
                   {...animate}
-                  className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
+                  className="block w-full rounded-2xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   onChange={handleChange}
                   name="role_id"
                   id="role_id"
@@ -186,7 +186,7 @@ export default function ModifyEmployeeForm({
                 <div className="py-2" />
                 <motion.select
                   {...animate}
-                  className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
+                  className="block w-full rounded-2xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   onChange={handleChange}
                   name="gender"
                   id="gender"
@@ -231,7 +231,7 @@ export function AddEmployeeButton({ setIsOpen }) {
   };
 
   return (
-    <Button className="bg-orange-500 my-4 text-white" onClick={handleClick}>
+    <Button className="my-4 bg-orange-500 text-white" onClick={handleClick}>
       <FontAwesomeIcon icon={faUserPlus} className="me-1" />
       Add Employee
     </Button>
@@ -245,7 +245,7 @@ export function EditEmployeeButton({ setIsOpen }) {
 
   return (
     <Button
-      className="bg-orange-50 border-2 border-orange-300"
+      className="border-2 border-orange-300 bg-orange-50"
       onClick={handleClick}
     >
       <div className="flex flex-row items-center">

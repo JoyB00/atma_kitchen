@@ -32,7 +32,7 @@ export default function Navbar() {
 
   return (
     <motion.div
-      className={`w-[95%] fixed py-4 z-10 ms-12 my-4 rounded-3xl ${
+      className={`fixed z-10 my-4 ms-12 w-[95%] rounded-3xl py-4 ${
         navbar
           ? "bg-white/50 text-white backdrop-blur-xl"
           : "bg-transparent drop-shadow-sm"
@@ -47,7 +47,7 @@ export default function Navbar() {
         <div className="flex ">
           <NavLink
             to="/Admindashboard"
-            className="text-black font-extrabold text-xl my-auto hover:text-black"
+            className="my-auto text-xl font-extrabold text-black hover:text-black"
           >
             <span className="text-orange-500">ATMA </span>
             KITCHEN
@@ -56,28 +56,28 @@ export default function Navbar() {
         <div className="my-auto text-left">
           <ul className="grid grid-cols-5 gap-3 ">
             <li className="col-span-1">
-              <NavLink to="/" className="text-black  font-normal">
+              <NavLink to="/" className="font-normal  text-black">
                 Home
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="text-black font-normal">
+              <NavLink to="" className="font-normal text-black">
                 About
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="/menu" className="text-black font-normal">
+              <NavLink to="/menu" className="font-normal text-black">
                 Menu
               </NavLink>
             </li>
 
             <li className="col-span-1">
-              <NavLink to="" className="text-black font-normal">
+              <NavLink to="" className="font-normal text-black">
                 Order
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="text-black font-normal">
+              <NavLink to="" className="font-normal text-black">
                 Contact
               </NavLink>
             </li>
@@ -88,7 +88,7 @@ export default function Navbar() {
           sessionStorage.getItem("user") != null ? (
             <>
               <Button
-                className=" rounded-full p-3 hover:border-transparent text-black me-auto"
+                className=" me-auto rounded-full p-3 text-black hover:border-transparent"
                 withoutAnimate
               >
                 <FontAwesomeIcon icon={faBell} size="lg" />
@@ -98,7 +98,7 @@ export default function Navbar() {
               </Button>
               <div className="px-2" />
               <Button
-                className="rounded-full p-3 hover:border-transparent text-black me-auto"
+                className="me-auto rounded-full p-3 text-black hover:border-transparent"
                 withoutAnimate
               >
                 <FontAwesomeIcon icon={faCartShopping} size="lg" />
@@ -111,20 +111,20 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <div className="border-orange-400 border-e-2">
-                <Button className="border-2 bg-orange-500 rounded-3xl me-2">
+              <div className="border-e-2 border-orange-400">
+                <Button className="me-2 rounded-3xl border-2 bg-orange-500">
                   <NavLink
                     to="/login"
-                    className="text-white font-normal hover:text-white"
+                    className="font-normal text-white hover:text-white"
                   >
                     Login
                   </NavLink>
                 </Button>
               </div>
-              <Button className="border-2 border-orange-500 bg-transparent rounded-3xl ms-2">
+              <Button className="ms-2 rounded-3xl border-2 border-orange-500 bg-transparent">
                 <NavLink
                   to="/register"
-                  className="text-orange-500 font-normal hover:text-white"
+                  className="font-normal text-orange-500 hover:text-white"
                 >
                   Sign Up
                 </NavLink>
@@ -185,7 +185,7 @@ export function ProfileMenu() {
     <div>
       <div className="flex flex-row">
         <Button
-          className="rounded-full p-0 hover:border-transparent w-16"
+          className="w-16 rounded-full p-0 hover:border-transparent"
           withoutAnimate
           type="submit"
           onClick={handleOpen}
@@ -194,12 +194,12 @@ export function ProfileMenu() {
             <img
               src="https://api.dicebear.com/8.x/adventurer/svg?seed=Abby"
               alt="avatar"
-              className="w-20 p-0 my-auto"
+              className="my-auto w-20 p-0"
             />
           </div>
         </Button>
         <div className="px-1" />
-        <h1 className="text-lg font-semibold text-black my-auto">
+        <h1 className="my-auto text-lg font-semibold text-black">
           <EllipsisText text={authUser ? authUser.fullName : ""} length={10} />
         </h1>
       </div>
@@ -212,8 +212,8 @@ export function ProfileMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <div className="bg-transparent min-w-64"></div>
-        <div className="px-4 py-2 flex flex-col">
+        <div className="min-w-64 bg-transparent"></div>
+        <div className="flex flex-col px-4 py-2">
           <Button className="hover:text-white" onClick={navigateToProfile}>
             My profile
           </Button>

@@ -218,10 +218,10 @@ export default function FormHampers({
   return (
     <Form method={hampersData ? "patch" : "post"}>
       {console.log("data details ", data.details)}
-      <div className="grid grid-cols-5 my-8">
+      <div className="my-8 grid grid-cols-5">
         <div className="col-span-3 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
-          <p className="text-gray-400 font-light mb-6">
+          <p className="mb-6 font-light text-gray-400">
             Please enter the basic information of your hampers.
           </p>
           <Input
@@ -257,13 +257,13 @@ export default function FormHampers({
         </div>
         <div className="col-span-2">
           <h1 className="text-xl font-medium">Hampers Picture</h1>
-          <p className="text-gray-400 font-light mb-12">
+          <p className="mb-12 font-light text-gray-400">
             Please add or change your image hampers.
           </p>
           <motion.div {...animate}>
             {picture || hampersData?.hampers_picture ? (
               <div className="mt-2  rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
-                <div className="flex justify-center h-36 ">
+                <div className="flex h-36 justify-center ">
                   <img
                     src={
                       picture || !hampersData
@@ -271,12 +271,12 @@ export default function FormHampers({
                         : getPicture(hampersData.hampers_picture, "hampers")
                     }
                     alt="hampers picture"
-                    className="object-cover h-36"
+                    className="h-36 object-cover"
                   />
                 </div>
                 <div className="flex justify-center">
                   <Button
-                    className="mt-4 text-orange-500 me-2 bg-transparent hover:text-white "
+                    className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
                     type="button"
                     onClick={() =>
                       document.getElementById("hampers_picture").click()
@@ -285,7 +285,7 @@ export default function FormHampers({
                     <FontAwesomeIcon icon={faPencil} className="me-1" /> Change
                   </Button>
                   <Button
-                    className="mt-4 text-orange-500 me-2 bg-transparent hover:text-white "
+                    className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
                     type="button"
                     onClick={removePicture}
                   >
@@ -307,7 +307,7 @@ export default function FormHampers({
         </div>
       </div>
       <h1 className="text-xl font-medium">Add Details</h1>
-      <p className="text-gray-400 font-light mb-6">
+      <p className="mb-6 font-light text-gray-400">
         Please enter the detail of your hampers.
       </p>
       <hr />
@@ -315,12 +315,12 @@ export default function FormHampers({
       {/* add Detail Hampers */}
       {details.map((data, index) => {
         return (
-          <div className="grid grid-cols-5 gap-8 mt-4" key={index}>
+          <div className="mt-4 grid grid-cols-5 gap-8" key={index}>
             <div className="col-span-2 my-auto">
               <label htmlFor="ingredient">Category</label>
               <motion.select
                 {...animate}
-                className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                className="mt-2 w-full rounded-xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 onChange={(event) => handleChangeCategoryDetails(event, index)}
                 name="category"
                 id="category"
@@ -348,7 +348,7 @@ export default function FormHampers({
                 <>
                   <motion.select
                     {...animate}
-                    className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                    className="mt-2 w-full rounded-xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     onChange={(event) => handleChangeDetails(event, index)}
                     name="ingredient_id"
                     id="ingredient_id"
@@ -369,7 +369,7 @@ export default function FormHampers({
                 <>
                   <motion.select
                     {...animate}
-                    className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                    className="mt-2 w-full rounded-xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                     onChange={(event) => handleChangeDetails(event, index)}
                     name="product_id"
                     id="product_id"
@@ -388,9 +388,9 @@ export default function FormHampers({
                 </>
               )}
             </div>
-            <div className="col-span-1 flex justify-center items-center">
+            <div className="col-span-1 flex items-center justify-center">
               <Button
-                className=" text-orange-500 bg-transparent hover:text-white mt-8"
+                className=" mt-8 bg-transparent text-orange-500 hover:text-white"
                 type="button"
                 onClick={(event) => handleDeleteDetails(event, data.id)}
               >
@@ -411,15 +411,15 @@ export default function FormHampers({
           Add Detail
         </button>
       </div>
-      <div className="bg-white sticky bottom-0 -mx-px ">
+      <div className="sticky bottom-0 -mx-px bg-white ">
         <div className="flex justify-start pb-6">
           <NavLink to="/AdminDashboard/hampers">
-            <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
+            <Button className="me-2 mt-8 border-2 border-orange-500 bg-white text-orange-500 hover:text-white">
               Discard
             </Button>
           </NavLink>
           <Button
-            className="mt-8 text-white me-2 bg-orange-500 "
+            className="me-2 mt-8 bg-orange-500 text-white "
             type="button"
             onClick={
               hampersData ? () => swallUpdate(data) : () => swallAdd(data)

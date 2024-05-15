@@ -44,18 +44,18 @@ export default function ModalDetailTransaction({ open, setOpen, id }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="bg-orange-500 w-full p-4">
-            <h1 className="text-3xl text-white font-semibold">
+          <div className="w-full bg-orange-500 p-4">
+            <h1 className="text-3xl font-semibold text-white">
               <FontAwesomeIcon icon={faCartShopping} className=" me-2" />
               Transaction Details
             </h1>
           </div>
-          <div className="grid grid-cols-5 gap-6 px-6 mt-6">
+          <div className="mt-6 grid grid-cols-5 gap-6 px-6">
             <div className="col-span-5">
               <div className="w-screen">
-                <h1 className="text-black font-semibold pb-2 ">Detail Items</h1>
+                <h1 className="pb-2 font-semibold text-black ">Detail Items</h1>
                 <Badge bgColor="bg-orange-500" ringColor="ring-transparent">
-                  <p className=" text-white text-lg">
+                  <p className=" text-lg text-white">
                     Total Price :{" "}
                     {details.transaction.total_price <= 999
                       ? details.transaction.total_price
@@ -64,11 +64,11 @@ export default function ModalDetailTransaction({ open, setOpen, id }) {
                   </p>
                 </Badge>
               </div>
-              <div className="border-2 my-8 rounded-xl pb-4 ">
-                <table className=" text-black w-full">
+              <div className="my-8 rounded-xl border-2 pb-4 ">
+                <table className=" w-full text-black">
                   <thead>
                     <tr>
-                      <th className="ps-4 py-4">Item</th>
+                      <th className="py-4 ps-4">Item</th>
                       <th className="pe-2 text-center">Quantity</th>
                       <th className="text-center">Price</th>
                       <th className="text-center">Total</th>
@@ -81,7 +81,7 @@ export default function ModalDetailTransaction({ open, setOpen, id }) {
                           <td className="py-2 ps-2  text-sm">
                             <FontAwesomeIcon
                               icon={faEgg}
-                              className="text-orange-500 me-2"
+                              className="me-2 text-orange-500"
                             />
                             {item.product
                               ? item.product.product_name

@@ -157,15 +157,15 @@ export default function FormEmployeeSalary({ dataEdit, id }) {
   return (
     <Form method="post">
       {console.log(data)}
-      <div className="grid grid-cols-5 mt-8">
+      <div className="mt-8 grid grid-cols-5">
         <div className="col-span-5 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
-          <p className="text-gray-400 font-light mb-6">
+          <p className="mb-6 font-light text-gray-400">
             Please enter the basic information of the salary.
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-12 mb-4 gap-6">
+      <div className="mb-4 grid grid-cols-12 gap-6">
         <div className="col-span-6 mb-2">
           <div className="mb-2">
             <label htmlFor="procurement_date">Date</label>
@@ -228,15 +228,15 @@ export default function FormEmployeeSalary({ dataEdit, id }) {
 
       {/* save or discard button */}
 
-      <div className="bg-white sticky bottom-0 -mx-px flex justify-between ">
+      <div className="sticky bottom-0 -mx-px flex justify-between bg-white ">
         <div className="mb-4">
           <NavLink to="/OwnerDashboard/employeeSalary">
-            <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
+            <Button className="me-2 mt-8 border-2 border-orange-500 bg-white text-orange-500 hover:text-white">
               Discard
             </Button>
           </NavLink>
           <Button
-            className="mt-8 text-white me-2 bg-orange-500 "
+            className="me-2 mt-8 bg-orange-500 text-white "
             type="button"
             onClick={dataEdit ? () => swallUpdate(data) : () => swallAdd(data)}
           >

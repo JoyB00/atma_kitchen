@@ -17,7 +17,7 @@ import "../App.css";
 
 export default function CarouselGrid({ children }) {
   return (
-    <div className="w-full my-auto max-w-7xl mx-auto px-2">
+    <div className="mx-auto my-auto w-full max-w-7xl px-2">
       <Swiper
         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay, Grid]}
         spaceBetween={50}
@@ -32,7 +32,7 @@ export default function CarouselGrid({ children }) {
           delay: 5000,
           disableOnInteraction: false,
         }}
-        className="mySwiper py-16 ps-9 pe-2"
+        className="mySwiper py-16 pe-2 ps-9"
       >
         {children}
       </Swiper>

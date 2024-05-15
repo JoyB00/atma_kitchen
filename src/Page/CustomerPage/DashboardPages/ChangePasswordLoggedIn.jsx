@@ -8,7 +8,7 @@ export default function ChangePasswordLoggedIn() {
   return (
     <>
       <NavBar />
-      <div className="flex flex-col min-h-screen justify-center w-4/6 px-20">
+      <div className="flex min-h-screen w-4/6 flex-col justify-center px-20">
         <Header />
         <ChangePasswordLoggedInForm />
       </div>
@@ -21,7 +21,7 @@ export function Header() {
   return (
     <>
       <div className="flex flex-col items-start">
-        <span className="font-bold text-orange-500 text-3xl">
+        <span className="text-3xl font-bold text-orange-500">
           Change Password
         </span>
         <span className="text-xl">
@@ -69,7 +69,7 @@ export function ChangePasswordLoggedInForm() {
         type="password"
       />
       <div className="py-2" />
-      <div className="flex justofy-start">
+      <div className="justofy-start flex">
         <Button className="bg-orange-500" withoutAnimate type="submit">
           Save changes
         </Button>

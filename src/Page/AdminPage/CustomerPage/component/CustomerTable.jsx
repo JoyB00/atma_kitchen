@@ -19,21 +19,21 @@ export default function CustomerTable({ data, search, length }) {
 
   return (
     <>
-      <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className=" mb-6 mt-4 w-full  rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
-            <th className="text-start font-medium text-sm py-8 ps-8">
+            <th className="py-8 ps-8 text-start text-sm font-medium">
               Full Name
             </th>
-            <th className="text-start font-medium text-sm pe-6 ">Email</th>
-            <th className="text-start font-medium text-sm pe-6 ">
+            <th className="pe-6 text-start text-sm font-medium ">Email</th>
+            <th className="pe-6 text-start text-sm font-medium ">
               Phone Number
             </th>
-            <th className="text-start font-medium text-sm pe-6">
+            <th className="pe-6 text-start text-sm font-medium">
               Date Of Birth
             </th>
-            <th className="text-center font-medium text-sm pe-6">Point</th>
-            <th className="text-center font-medium text-sm pe">
+            <th className="pe-6 text-center text-sm font-medium">Point</th>
+            <th className="pe text-center text-sm font-medium">
               Nominal Balance
             </th>
           </tr>
@@ -54,10 +54,10 @@ export default function CustomerTable({ data, search, length }) {
             .map((item) => (
               <motion.tr
                 //   variants={productItem}
-                className="border-t-2 border-gray-100  text-black text-sm"
+                className="border-t-2 border-gray-100  text-sm text-black"
                 key={item.id}
               >
-                <td className="font-medium py-6 ps-6 text-sm">
+                <td className="py-6 ps-6 text-sm font-medium">
                   <div className="flex items-center ">
                     <LazyLoadImage
                       effect="blur"
@@ -67,24 +67,24 @@ export default function CustomerTable({ data, search, length }) {
                           : "https://api.dicebear.com/8.x/adventurer/svg?seed=Abby"
                       }
                       alt="profile customer"
-                      className="w-16 h-16 rounded-full object-cover"
+                      className="h-16 w-16 rounded-full object-cover"
                     />
                     <p className="ps-3 ">{item.users.fullName}</p>
                   </div>
                 </td>
-                <td className="font-medium text-start text-sm">
+                <td className="text-start text-sm font-medium">
                   <p className="ps-3 ">{item.users.email}</p>
                 </td>
-                <td className="font-medium text-start text-sm">
+                <td className="text-start text-sm font-medium">
                   {item.users.phoneNumber}
                 </td>
-                <td className="text-center font-medium text-sm">
+                <td className="text-center text-sm font-medium">
                   {item.users.dateOfBirth}
                 </td>
-                <td className="font-medium text-center text-sm">
+                <td className="text-center text-sm font-medium">
                   {item.point}
                 </td>
-                <td className="font-medium text-center text-sm">
+                <td className="text-center text-sm font-medium">
                   {item.nominal_balance}
                 </td>
               </motion.tr>
@@ -96,7 +96,7 @@ export default function CustomerTable({ data, search, length }) {
               <Pagination
                 count={Math.ceil(length / productPerPage)}
                 size="small"
-                className="flex justify-center mb-4"
+                className="mb-4 flex justify-center"
                 onChange={handleChange}
               />
             </td>

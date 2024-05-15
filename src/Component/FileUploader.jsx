@@ -18,7 +18,7 @@ export default function FileUploader({ id, ...props }) {
           <div className="mt-4 flex text-sm leading-6 text-gray-600">
             <label
               htmlFor={id}
-              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 text-lg hover:text-indigo-500"
+              className="relative cursor-pointer rounded-md bg-white text-lg font-semibold text-indigo-600 hover:text-indigo-500"
             >
               <span>Upload a file</span>
               <input

@@ -200,15 +200,15 @@ export default function FormIngredientProcurement({
 
   return (
     <Form method="post">
-      <div className="grid grid-cols-5 mt-8">
+      <div className="mt-8 grid grid-cols-5">
         <div className="col-span-5 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
-          <p className="text-gray-400 font-light mb-6">
+          <p className="mb-6 font-light text-gray-400">
             Please enter the basic information of your Ingredient Procurement.
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-12 mb-4">
+      <div className="mb-4 grid grid-cols-12">
         <div className="col-span-6 mb-2">
           <div className="mb-2">
             <label htmlFor="procurement_date">Procurement Date</label>
@@ -234,7 +234,7 @@ export default function FormIngredientProcurement({
         }
         return (
           <div key={index}>
-            <h1 className="text-xl mt-3 font-semibold">
+            <h1 className="mt-3 text-xl font-semibold">
               Ingredient Procurement {index + 1}
             </h1>
             <div className="grid grid-cols-12 gap-6" key={index}>
@@ -246,7 +246,7 @@ export default function FormIngredientProcurement({
 
                 <motion.select
                   {...animate}
-                  className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                  className="block w-full rounded-xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   onChange={(event) => handleChangeDetail(event, index)}
                   name="ingredient_id"
                   id="ingredient_id"
@@ -305,7 +305,7 @@ export default function FormIngredientProcurement({
             <div className="flex justify-end">
               <Button
                 withoutAnimate
-                className=" text-blue-400 bg-transparent hover:text-blue-600 mb-2"
+                className=" mb-2 bg-transparent text-blue-400 hover:text-blue-600"
                 type="button"
                 onClick={(event) => handleDeleteDetail(event, data.id)}
               >
@@ -330,22 +330,22 @@ export default function FormIngredientProcurement({
 
       {/* save or discard button */}
 
-      <div className="bg-white sticky bottom-0 -mx-px flex justify-between ">
+      <div className="sticky bottom-0 -mx-px flex justify-between bg-white ">
         <div className="mb-4">
           <NavLink to="/MoDashboard/ingredientProcurement">
-            <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
+            <Button className="me-2 mt-8 border-2 border-orange-500 bg-white text-orange-500 hover:text-white">
               Discard
             </Button>
           </NavLink>
           <Button
-            className="mt-8 text-white me-2 bg-orange-500 "
+            className="me-2 mt-8 bg-orange-500 text-white "
             type="button"
             onClick={dataEdit ? () => swallUpdate(data) : () => swallAdd(data)}
           >
             <FontAwesomeIcon icon={faSave} className="me-1" /> Save
           </Button>
         </div>
-        <div className=" flex items-center my-auto pt-8 ">
+        <div className=" my-auto flex items-center pt-8 ">
           <h1 className="text-2xl font-semibold text-orange-500">
             {" "}
             <FontAwesomeIcon icon={faDollar} className="me-1" /> Total Price :{" "}

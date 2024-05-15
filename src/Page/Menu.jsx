@@ -48,9 +48,9 @@ export default function Menu() {
 
   return (
     <AnimatePresence>
-      <div className="w-full h-screen bg-transparent">
+      <div className="h-screen w-full bg-transparent">
         <Navbar />
-        <div className="text-orange-500 pt-36 ps-6 pb-20">
+        <div className="pb-20 ps-6 pt-36 text-orange-500">
           <div className="flex ps-6 text-xl ">
             <h1 className="text-5xl font-semibold">What We Served</h1>
           </div>
@@ -64,10 +64,10 @@ export default function Menu() {
             </NavLink>
           </div>
         </div>
-        <div className=" grid grid-cols-5 gap-y-6 gap-x-3 px-12">
-          <div className=" h-fit col-span-1 border-2 border-gray-100 rounded-xl text-black text-left ">
-            <h2 className="font-semibold pt-4 px-4">Sorted By</h2>
-            <ul className="text-black px-8 pt-3 pb-6 border-b-2">
+        <div className=" grid grid-cols-5 gap-x-3 gap-y-6 px-12">
+          <div className=" col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black ">
+            <h2 className="px-4 pt-4 font-semibold">Sorted By</h2>
+            <ul className="border-b-2 px-8 pb-6 pt-3 text-black">
               <li className="pt-2">
                 <NavLink className="text-black">Available Product</NavLink>
               </li>
@@ -83,8 +83,8 @@ export default function Menu() {
             </ul>
 
             {/* Category */}
-            <h2 className="font-semibold pt-4 px-4">Category</h2>
-            <ul className="text-black px-8 pt-3 pb-6 ">
+            <h2 className="px-4 pt-4 font-semibold">Category</h2>
+            <ul className="px-8 pb-6 pt-3 text-black ">
               <li className="pt-2">
                 <NavLink className="text-black">Cake</NavLink>
               </li>
@@ -104,7 +104,7 @@ export default function Menu() {
           </div>
           <div className="col-span-4">
             {isPending ? (
-              <div className="w-full h-screen bg-transparent">
+              <div className="h-screen w-full bg-transparent">
                 <RotateLoader
                   color="orange"
                   loading={isPending}
@@ -126,7 +126,7 @@ export default function Menu() {
                   variants={card}
                   initial="hidden"
                   animate="visible"
-                  className="rounded-xl grid grid-cols-3 gap-4"
+                  className="grid grid-cols-3 gap-4 rounded-xl"
                 >
                   {data.slice(startIndex, endIndex).map((product) => (
                     <motion.li
@@ -157,7 +157,7 @@ export default function Menu() {
                 <Pagination
                   count={Math.ceil(data.length / productPerPage)}
                   size="small"
-                  className="flex justify-center mt-6"
+                  className="mt-6 flex justify-center"
                   onChange={handleChange}
                 />
               </>

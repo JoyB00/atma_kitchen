@@ -5,9 +5,9 @@ import FooterDashboard from "../../../Component/FooterDashboard";
 export default function Dashboard() {
   const user = JSON.parse(sessionStorage.getItem("user"));
   return (
-    <div className="flex bg-orange-100/50 w-full h-full">
+    <div className="flex h-full w-full bg-orange-100/50">
       <Sidebar role={user.role_id} />
-      <div className=" text-black ps-[20.5rem] pe-[1rem] text-left ">
+      <div className=" pe-[1rem] ps-[20.5rem] text-left text-black ">
         <NavbarAdmin
           url={
             user.role_id == 2

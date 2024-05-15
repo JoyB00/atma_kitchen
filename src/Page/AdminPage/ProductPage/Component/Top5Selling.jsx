@@ -24,11 +24,11 @@ export default function Top5Selling({ data }) {
   };
 
   return (
-    <table className=" w-full h-[50%] mt-4 mb-6 text-gray-500 bg-white rounded-3xl drop-shadow-lg">
+    <table className=" mb-6 mt-4 h-[50%] w-full rounded-3xl bg-white text-gray-500 drop-shadow-lg">
       <thead className="border-b-2">
         <tr>
-          <th className="text-start font-medium py-8 ps-8">Top 5 Selling</th>
-          <th className="text-start font-medium pe-6">Sold</th>
+          <th className="py-8 ps-8 text-start font-medium">Top 5 Selling</th>
+          <th className="pe-6 text-start font-medium">Sold</th>
         </tr>
       </thead>
 
@@ -39,7 +39,7 @@ export default function Top5Selling({ data }) {
             className="border-t-2 border-gray-100  text-black"
             key={item.id}
           >
-            <td className="font-medium py-6 ps-6 ">
+            <td className="py-6 ps-6 font-medium ">
               <div className="flex items-center ">
                 <LazyLoadImage
                   effect="blur"
@@ -49,12 +49,12 @@ export default function Top5Selling({ data }) {
                       : defaultImage
                   }
                   alt={item.product_name}
-                  className="w-16 h-16 rounded-full object-cover"
+                  className="h-16 w-16 rounded-full object-cover"
                 />
-                <p className="ps-3 text-md">{item.product_name}</p>
+                <p className="text-md ps-3">{item.product_name}</p>
               </div>
             </td>
-            <td className="font-medium text-center pe-6">100 pcs</td>
+            <td className="pe-6 text-center font-medium">100 pcs</td>
           </motion.tr>
         ))}
       </motion.tbody>
