@@ -75,6 +75,7 @@ import RootCustomer from "./Root/Customer/RootCustomer";
 import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
 import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
+import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
 
 // Root Consignor
 
@@ -458,6 +459,10 @@ const router = createBrowserRouter([
           {
             path: "ChangePassword",
             element: <ChangePasswordLoggedIn />,
+          },
+          {
+            path: "OrderHistory",
+            element: <OrderHistory />,
           },
         ],
       },

@@ -1,6 +1,6 @@
 import Modal from "../../../../Component/Modal";
 import { useEffect, useRef, useState } from "react";
-import { GetDetailTransaction } from "../../../../api/CartApi";
+import { GetDetailTransaction } from "../../../../api/TransactionApi";
 import { BeatLoader } from "react-spinners";
 import { motion } from "framer-motion";
 import { LazyLoadImage } from "react-lazy-load-image-component";
