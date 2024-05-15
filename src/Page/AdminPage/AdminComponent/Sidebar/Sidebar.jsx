@@ -10,7 +10,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { expandOperational, expandMaster } from "../../../../lib/AtomVar";
+import {
+  expandOperational,
+  expandMaster,
+  expandTransaction,
+} from "../../../../lib/AtomVar";
 import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
 import OwnerNavigation from "./component/OwnerNavigation";
@@ -21,11 +25,15 @@ export default function Sidebar({ role, fullName }) {
   const [expandedMaster, setExpandedMaster] = useAtom(expandMaster);
   const [expandedOperational, setExpandedOperational] =
     useAtom(expandOperational);
+  const [expandedTransaction, setExpandedTransaction] =
+    useAtom(expandTransaction);
 
-  const toggleExpanded = () => {
+  const collapseMenu = () => {
     setExpandedMaster(false);
     setExpandedOperational(false);
+    setExpandedTransaction(false);
   };
+
   return (
     <div className="w-[20rem] h-full bg-white text-black py-12 px-6 fixed drop-shadow-lg rounded-r-3xl z-10 overflow-y-auto ">
       <img src={Logo} alt="" className="w-1/6 mx-auto pb-3" />
@@ -55,7 +63,7 @@ export default function Sidebar({ role, fullName }) {
                 ? "/OwnerDashboard"
                 : ""
             }
-            onClick={toggleExpanded}
+            onClick={collapseMenu}
             end
           >
             <div className="text-center col-span-1 -ms-2 ">
@@ -71,6 +79,8 @@ export default function Sidebar({ role, fullName }) {
             setExpandedMaster={setExpandedMaster}
             expandedOperational={expandedOperational}
             setExpandedOperational={setExpandedOperational}
+            expandedTransaction={expandedTransaction}
+            setExpandedTransaction={setExpandedTransaction}
           />
         ) : role == 3 ? (
           <OperationalNavigation
