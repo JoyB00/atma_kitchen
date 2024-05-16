@@ -1,18 +1,18 @@
-import Navbar from "../../Component/Navbar";
-import Footer from "../../Component/Footer";
-import { GetProductById } from "../../api/ProductApi";
-import { getPicture } from "../../api";
+import Navbar from "../../../Component/Navbar";
+import Footer from "../../../Component/Footer";
+import { GetProductById } from "../../../api/ProductApi";
+import { getPicture } from "../../../api";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useRouteLoaderData } from "react-router-dom";
-import defaultImage from "../../assets/ProductAsset/lapis leggite.jpg";
+import defaultImage from "../../../assets/ProductAsset/lapis leggite.jpg";
 import { NavLink } from "react-router-dom";
-import Badge from "../../Component/Badge";
+import Badge from "../../../Component/Badge";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useEffect, useState } from "react";
-import Input from "../../Component/Input";
-import InputDate from "../../Component/InputDate";
-import Button from "../../Component/Button";
+import Input from "../../../Component/Input";
+import InputDate from "../../../Component/InputDate";
+import Button from "../../../Component/Button";
 
 export function DetailMenu() {
   const menu = useRouteLoaderData("detail-menu");

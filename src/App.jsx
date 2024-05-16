@@ -18,8 +18,12 @@ import Home from "./Page/Home";
 // Menu
 import RootMenuPage from "./Root/Main/Menu/RootMenuPage";
 import Menu from "./Page/Menu";
-import { DetailMenu } from "./Page/MainPage/DetailMenu";
-import { loader as loadDetailMenu } from "./Page/MainPage/DetailMenu";
+import { DetailMenu } from "./Page/MainPage/Menu/DetailMenu";
+import { loader as loadDetailMenu } from "./Page/MainPage/Menu/DetailMenu";
+
+// Hampers Menu
+import RootMenuHampersPage from "./Root/Main/Hampers/RootMenuHampers";
+import HampersMenu from "./Page/MainPage/HampersMenu/HampersMenu";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -183,6 +187,21 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "hampers",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootMenuHampersPage />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <HampersMenu />,
+          },
+        ],
+      },
+
       {
         path: "AdminDashboard",
         element: (
