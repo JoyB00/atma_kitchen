@@ -8,6 +8,7 @@ import { Pagination } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FetchAllProducts } from "../api/ProductApi";
+import { FetchAllHampers } from "../api/HampersApi";
 import { RotateLoader } from "react-spinners";
 import { getPicture } from "../api";
 export default function Menu() {
@@ -37,7 +38,7 @@ export default function Menu() {
           .includes(event.target.value.toLowerCase()) ||
         item.categories.category_name
           .toLowerCase()
-          .includes(event.target.value.toLowerCase())
+          .includes(event.target.value.toLowerCase()),
     );
     setFilteredProduct(filteredItem);
   };
@@ -46,10 +47,11 @@ export default function Menu() {
     setPage(1);
     setFilterSelected(event.target.id);
     setSortSelected("default");
+
     const filteredItem = products.filter(
       (item) =>
         item.categories.category_name === event.target.id ||
-        event.target.id === "all"
+        event.target.id === "all",
     );
     setFilteredProduct(filteredItem);
     filteredProduct.sort;
@@ -60,12 +62,12 @@ export default function Menu() {
     setSortSelected(event.target.value);
     if (event.target.value === "ascending") {
       const ascSort = [...filteredProduct].sort((a, b) =>
-        a.product_name.toLowerCase() < b.product_name.toLowerCase() ? -1 : 1
+        a.product_name.toLowerCase() < b.product_name.toLowerCase() ? -1 : 1,
       );
       setFilteredProduct(ascSort);
     } else if (event.target.value === "descending") {
       const dscSort = [...filteredProduct].sort((a, b) =>
-        a.product_name.toLowerCase() > b.product_name.toLowerCase() ? -1 : 1
+        a.product_name.toLowerCase() > b.product_name.toLowerCase() ? -1 : 1,
       );
       setFilteredProduct(dscSort);
     } else {
@@ -113,7 +115,7 @@ export default function Menu() {
     <AnimatePresence>
       <div className="h-screen w-full bg-transparent">
         <Navbar />
-        <div className="text-orange-500 pt-36 ps-6 ">
+        <div className="ps-6 pt-36 text-orange-500 ">
           <div className="flex ps-6 text-xl ">
             <h1 className="text-5xl font-semibold">What We Served</h1>
           </div>
@@ -121,17 +123,17 @@ export default function Menu() {
             <NavLink to="/">
               <p className="text-black hover:text-orange-500">Home</p>
             </NavLink>
-            <p className="text-black "> / </p>
+            <p className="px-2 text-black"> {">"} </p>
             <NavLink to="/menu">
               <p className="text-black hover:text-orange-500">Menu</p>
             </NavLink>
           </div>
         </div>
-        <div className="flex justify-between px-10 items-center pb-4">
+        <div className="flex items-center justify-between px-10 pb-4">
           <div className="w-1/5 ps-2">
             <motion.select
               {...animate}
-              className="mt-2 w-full text-black border-0 py-3 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-3xl"
+              className="mt-2 w-full rounded-3xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
               onChange={handleSortByAscDsc}
               name="category"
               id="category"
@@ -153,10 +155,10 @@ export default function Menu() {
             />
           </div>
         </div>
-        <div className=" grid grid-cols-5 gap-y-6 gap-x-3 px-12">
-          <div className=" h-fit col-span-1 border-2 border-gray-100 rounded-xl text-black text-left ">
-            <h2 className="font-semibold pt-4 px-4">Filtered By Category</h2>
-            <ul className="text-black px-8 pt-3 pb-6 ">
+        <div className=" grid grid-cols-5 gap-x-3 gap-y-6 px-12">
+          <div className=" col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black ">
+            <h2 className="px-4 pt-4 font-semibold">Filtered By Category</h2>
+            <ul className="px-8 pb-6 pt-3 text-black ">
               <li className="pt-2">
                 <NavLink
                   className={`${
@@ -256,7 +258,7 @@ export default function Menu() {
                   className="grid grid-cols-3 gap-4 rounded-xl"
                 >
                   {filteredProduct.length === 0 ? (
-                    <div className="bg-orange-50 col-span-3 h-screen flex justify-center items-center ">
+                    <div className="col-span-3 flex h-screen items-center justify-center bg-orange-50 ">
                       <p className="text-black">Product Not Found</p>
                     </div>
                   ) : (
