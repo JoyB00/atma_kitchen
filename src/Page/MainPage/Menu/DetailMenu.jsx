@@ -13,17 +13,19 @@ import { useEffect, useState } from "react";
 import Input from "../../../Component/Input";
 import InputDate from "../../../Component/InputDate";
 import Button from "../../../Component/Button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AddCartItem } from "../../../api/CartApi";
+import toast from "react-hot-toast";
 
 export function DetailMenu() {
   const menu = useRouteLoaderData("detail-menu");
 
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(menu.product.category_id === 4 ? 2 : 1);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   return (
     <div className="flex min-h-screen w-full flex-col bg-transparent">
-      {console.log(menu)}
       <Navbar />
       <div className="grid grid-cols-12 gap-x-16 px-24 pt-36 text-orange-500">
         <div className="col-span-5">
@@ -66,7 +68,11 @@ export function DetailMenu() {
             indicatorColor="secondary"
             aria-label="secondary tabs example"
           >
-            <Tab value={1} label="Pre-Order" />
+            <Tab
+              value={1}
+              label="Pre-Order"
+              disabled={menu.product.category_id === 4}
+            />
             <Tab value={2} label="Ready" />
           </Tabs>
           <PreOrder value={value} menu={menu} />
@@ -81,23 +87,48 @@ export function DetailMenu() {
 }
 
 export function PreOrder({ value, menu }) {
-  function formatCurrency(amount) {
-    const formatter = new Intl.NumberFormat("ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-
-    return formatter.format(amount);
-  }
-
-  const [preOrderDate, setPreOrderDate] = useState("");
+  const [data, setData] = useState({
+    quantity: 1,
+    product_id: menu.product.id,
+    order_date: "",
+    total_price: menu.product.product_price,
+  });
   const [currentStock, setCurrentStock] = useState(0);
-  const [amount, setAmount] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(menu.product.product_price);
+  const queryClient = useQueryClient();
+
+  const addToCart = useMutation({
+    mutationFn: (data) => {
+      return AddCartItem(data);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["carts"]);
+    },
+    onError: (error) => {
+      console.log(error.message);
+      throw error.message;
+    },
+  });
+
+  const handleButtonAddToCart = (data) => {
+    toast.promise(
+      addToCart.mutateAsync(data),
+      {
+        loading: "Loading",
+        success: "Your file has successful Added",
+        error: (err) => err,
+      },
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "top-center",
+      },
+    );
+  };
 
   const handleChangeDate = (event) => {
-    setPreOrderDate(event.target.value);
-    setAmount(1);
+    setData({ ...data, order_date: event.target.value, quantity: 1 });
     const temp = menu.allLimit.find(
       (limit) => limit.production_date === event.target.value,
     );
@@ -109,17 +140,28 @@ export function PreOrder({ value, menu }) {
   };
 
   const handleChangeAmount = (type) => {
-    if (type === "increment" && amount + 1 <= currentStock) {
-      setAmount(amount + 1);
-    } else if (type === "decrement" && amount - 1 > 0) {
-      setAmount(amount - 1);
+    if (type === "increment" && data.quantity + 1 <= currentStock) {
+      setData({ ...data, quantity: data.quantity + 1 });
+    } else if (type === "decrement" && data.quantity - 1 > 0) {
+      setData({ ...data, quantity: data.quantity - 1 });
     }
-    console.log(amount);
   };
 
+  function formatCurrency(amount) {
+    const formatter = new Intl.NumberFormat("ID", {
+      style: "currency",
+      currency: "IDR",
+    });
+
+    return formatter.format(amount);
+  }
+
   useEffect(() => {
-    setTotalPrice(menu.product.product_price * amount);
-  }, [amount]);
+    setData({
+      ...data,
+      total_price: parseInt(menu.product.product_price * data.quantity),
+    });
+  }, [data.quantity]);
   return (
     <div className={`${value !== 1 ? "hidden" : undefined}`}>
       <div className="grid grid-cols-6 gap-x-5 pt-3">
@@ -132,14 +174,14 @@ export function PreOrder({ value, menu }) {
           />
         </div>
       </div>
-      {preOrderDate ? (
+      {data.order_date ? (
         <p className="ps-1 pt-2 text-gray-400">
           Current Stock : {currentStock}
         </p>
       ) : undefined}
 
       <div
-        className={`${currentStock == 0 || !preOrderDate ? "hidden" : undefined}`}
+        className={`${currentStock == 0 || !data.order_date ? "hidden" : undefined}`}
       >
         <div className="flex w-3/5 justify-between py-2">
           <div className="pt-2">
@@ -151,7 +193,7 @@ export function PreOrder({ value, menu }) {
             </Button>
           </div>
           <div className="w-1/5 text-center">
-            <Input id="amount" value={amount} textCenter readOnly />
+            <Input id="amount" value={data.quantity} textCenter readOnly />
           </div>
           <div className="pt-2">
             <Button
@@ -162,11 +204,14 @@ export function PreOrder({ value, menu }) {
             </Button>
           </div>
           <h1 className="py-3 text-3xl font-semibold text-orange-500">
-            {formatCurrency(totalPrice)}
+            {formatCurrency(data.total_price)}
           </h1>
         </div>
         <div className="flex justify-start gap-x-4">
-          <Button className="border-orange-500 bg-transparent text-orange-500 hover:text-white">
+          <Button
+            className="border-orange-500 bg-transparent text-orange-500 hover:text-white"
+            onClick={() => handleButtonAddToCart(data)}
+          >
             Add To Cart
           </Button>
           <Button className="bg-orange-500 text-white">Buy Now</Button>
@@ -176,6 +221,7 @@ export function PreOrder({ value, menu }) {
   );
 }
 export function ReadyStock({ value, menu }) {
+  var currentDate = new Date().toJSON().slice(0, 10);
   function formatCurrency(amount) {
     const formatter = new Intl.NumberFormat("ID", {
       style: "currency",
@@ -185,26 +231,32 @@ export function ReadyStock({ value, menu }) {
     return formatter.format(amount);
   }
 
+  const [data, setData] = useState({
+    quantity: 1,
+    product_id: menu.product.id,
+    order_date: currentDate,
+    total_price: menu.product.product_price,
+  });
+
   const [currentStock, setCurrentStock] = useState(menu.product.ready_stock);
-  const [amount, setAmount] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(menu.product.product_price);
 
   const handleChangeAmount = (type) => {
-    if (type === "increment" && amount + 1 <= currentStock) {
-      setAmount(amount + 1);
-    } else if (type === "decrement" && amount - 1 > 0) {
-      setAmount(amount - 1);
+    if (type === "increment" && data.quantity + 1 <= currentStock) {
+      setData({ ...data, quantity: data.quantity + 1 });
+    } else if (type === "decrement" && data.quantity - 1 > 0) {
+      setData({ ...data, quantity: data.quantity - 1 });
     }
-    console.log(amount);
   };
 
   useEffect(() => {
-    setTotalPrice(menu.product.product_price * amount);
-  }, [amount]);
+    setData({
+      ...data,
+      total_price: parseInt(menu.product.product_price * data.quantity),
+    });
+  }, [data.quantity]);
   return (
     <div className={`${value !== 2 ? "hidden" : undefined}`}>
       <p className="ps-1 pt-4 text-gray-400">Ready Stock : {currentStock}</p>
-
       <div className={`${currentStock == 0 ? "hidden" : undefined}`}>
         <div className="flex w-3/5 justify-between py-2">
           <div className="pt-2">
@@ -216,7 +268,7 @@ export function ReadyStock({ value, menu }) {
             </Button>
           </div>
           <div className="w-1/5 text-center">
-            <Input id="amount" value={amount} textCenter readOnly />
+            <Input id="amount" value={data.quantity} textCenter readOnly />
           </div>
           <div className="pt-2">
             <Button
@@ -227,7 +279,7 @@ export function ReadyStock({ value, menu }) {
             </Button>
           </div>
           <h1 className="py-3 text-3xl font-semibold text-orange-500">
-            {formatCurrency(totalPrice)}
+            {formatCurrency(data.total_price)}
           </h1>
         </div>
         <div className="flex justify-start gap-x-4">

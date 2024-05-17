@@ -16,7 +16,6 @@ export default function HampersMenu() {
   const [hampers, setHampers] = useState([]);
   const [filteredHampers, setFilteredHampers] = useState([]);
   const [isPending, setIsPending] = useState(false);
-  const [filterSelected, setFilterSelected] = useState("all");
   const [sortSelected, setSortSelected] = useState("default");
   let animate = {
     initial: { opacity: 0, y: -100 },

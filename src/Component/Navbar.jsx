@@ -12,6 +12,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 import EllipsisText from "react-ellipsis-text";
+import { useQuery } from "@tanstack/react-query";
+import { FetchCarts } from "../api/CartApi";
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false);
@@ -24,6 +26,11 @@ export default function Navbar() {
       setNavbar(false);
     }
   };
+
+  const carts = useQuery({
+    queryKey: ["carts"],
+    queryFn: FetchCarts,
+  });
 
   useEffect(() => {
     changeBackground();
@@ -93,18 +100,22 @@ export default function Navbar() {
               >
                 <FontAwesomeIcon icon={faBell} size="lg" />
                 {/* <Badge bgColor="bg-yellow-300" ringColor="ring-transparent">
-                  1
+                  {carts.data.length}
                 </Badge> */}
               </Button>
-              <div className="px-2" />
+              <motion.div
+                className="px-2"
+                animate={{ scale: [1, 1.2, 1] }}
+                trasition={{ duration: 0.3 }}
+              />
               <Button
                 className="me-auto rounded-full p-3 text-black hover:border-transparent"
                 withoutAnimate
               >
                 <FontAwesomeIcon icon={faCartShopping} size="lg" />
-                {/* <Badge bgColor="bg-yellow-300" ringColor="ring-transparent">
-                  1
-                </Badge> */}
+                <Badge bgColor="bg-yellow-300" ringColor="ring-transparent">
+                  {carts.isFetching ? "..." : carts.data.length}
+                </Badge>
               </Button>
               <div className="px-2" />
               <ProfileMenu />
