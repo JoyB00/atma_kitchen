@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faCircleExclamation,
-  faPowerOff,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import MenuComponent from "../../../../Component/Menu";
 import { LogOut } from "../../../../api/AuthApi";
 import { useNavigate } from "react-router-dom";

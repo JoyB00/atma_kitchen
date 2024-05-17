@@ -48,6 +48,10 @@ import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
+// Root Transaction Admin
+import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
+import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
+
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
 import CustomerPage from "./Page/AdminPage/CustomerPage/CustomerPage";
@@ -77,7 +81,6 @@ import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePas
 import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
 
 // Root Consignor
-
 import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
 import ConsignorPage from "./Page/MOPage/Consignor/ConsignorPage";
 import AddConsignor from "./Page/MOPage/Consignor/AddConsignor/AddConsignor";
@@ -105,7 +108,6 @@ import { loader as loadSalary } from "./Page/OwnerPage/EmployeeSalaryPage/EditEm
 //
 import ForgotPasswordEmployeePage from "./Page/EmployeePage/ForgotPassword";
 import { loader as loadId } from "./Page/EmployeePage/ForgotPassword";
-import { Root } from "postcss";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -262,6 +264,20 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <CustomerOrderHistoryPage />,
+              },
+            ],
+          },
+          {
+            path: "transaction",
+            element: <RootTransaction />,
+            children: [
+              {
+                path: "delivery",
+                element: <DeliveryPage />,
+              },
+              {
+                path: "paymentConfirmation",
+                element: <MainDashboard />,
               },
             ],
           },
