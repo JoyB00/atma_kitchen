@@ -89,6 +89,7 @@ import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
 import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
+import ModifyAddressPage from "./Page/CustomerPage/DashboardPages/ModifyAddress";
 
 // Root Consignor
 import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
@@ -520,6 +521,10 @@ const router = createBrowserRouter([
           {
             path: "OrderHistory",
             element: <OrderHistory />,
+          },
+          {
+            path: "Addresses",
+            element: <ModifyAddressPage />,
           },
         ],
       },

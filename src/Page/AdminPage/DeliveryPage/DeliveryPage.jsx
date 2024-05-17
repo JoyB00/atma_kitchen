@@ -2,6 +2,7 @@ import Sidebar from "../../AdminPage/AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin";
 import FooterDashboard from "../../../Component/FooterDashboard";
 import { useState } from "react";
+import BodyDeliveryRange from "./DeliveryBody";
 
 export default function DeliveryPage() {
   const [search, setSearch] = useState("");
@@ -17,6 +18,7 @@ export default function DeliveryPage() {
           setSearch={setSearch}
         />
         <div className="mt-32 px-4 ">
+          <BodyDeliveryRange />
           <FooterDashboard />
         </div>
       </div>

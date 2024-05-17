@@ -38,15 +38,16 @@ export function CustomerProfileContent() {
             subtitle="Edit and view your information here"
             link={"/CustomerDashboard/EditProfile"}
           />
+          <NavButton
+            title="Change address"
+            subtitle="Delivery to any location"
+            link={"/CustomerDashboard/Addresses"}
+          />
           {/* <NavButton
             title="Change password"
             subtitle="Ever forget your password?"
             link={"/CustomerDashboard/ChangePassword"}
           /> */}
-          <NavButton
-            title="Change address"
-            subtitle="Delivery to any location"
-          />
         </div>
       </div>
     </>
@@ -145,7 +146,7 @@ export function NavButton({ title, subtitle, link }) {
     <Card className="w-64 ">
       <div className="flex h-full flex-col items-start p-4">
         <span className="text-xl font-bold text-[#f99417]">{title}</span>
-        <span className="text-md text-left text-gray-600">{subtitle}</span>
+        <span className="text-left text-base text-gray-600">{subtitle}</span>
         <div className="h-full py-2" />
         <Button className="bg-orange-400" onClick={handleClick}>
           <FontAwesomeIcon icon={faAngleRight} />
