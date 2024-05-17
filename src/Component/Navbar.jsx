@@ -53,7 +53,7 @@ export default function Navbar() {
             KITCHEN
           </NavLink>
         </div>
-        <div className="my-auto text-left">
+        <div className="my-auto text-center">
           <ul className="grid grid-cols-5 gap-3 ">
             <li className="col-span-1">
               <NavLink to="/" className="font-normal  text-black">
@@ -61,19 +61,19 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="font-normal text-black">
-                About
+              <NavLink to="/menu" className="font-normal text-black">
+                Menu
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="/menu" className="font-normal text-black">
-                Menu
+              <NavLink to="/hampers" className="font-normal text-black">
+                Hampers
               </NavLink>
             </li>
 
             <li className="col-span-1">
               <NavLink to="" className="font-normal text-black">
-                Order
+                About
               </NavLink>
             </li>
             <li className="col-span-1">

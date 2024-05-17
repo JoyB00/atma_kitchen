@@ -8,12 +8,22 @@ import { Suspense } from "react";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
+import ProtectedRootForgotPass from "./Root/ProtectedRoot/ProtectedRootForgotPass";
 import LoadingPage from "./Component/LoadingPage";
 //
 import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
+
+// Menu
+import RootMenuPage from "./Root/Main/Menu/RootMenuPage";
 import Menu from "./Page/Menu";
+import { DetailMenu } from "./Page/MainPage/Menu/DetailMenu";
+import { loader as loadDetailMenu } from "./Page/MainPage/Menu/DetailMenu";
+
+// Hampers Menu
+import RootMenuHampersPage from "./Root/Main/Hampers/RootMenuHampers";
+import HampersMenu from "./Page/MainPage/HampersMenu/HampersMenu";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -142,7 +152,11 @@ const router = createBrowserRouter([
           },
           {
             path: ":token",
-            element: <ChangePassword />,
+            element: (
+              <ProtectedRootForgotPass>
+                <ChangePassword />
+              </ProtectedRootForgotPass>
+            ),
           },
         ],
       },
@@ -154,10 +168,42 @@ const router = createBrowserRouter([
         path: "menu",
         element: (
           <ProtectedRoot role_id={4}>
-            <Menu />,
+            <RootMenuPage />
           </ProtectedRoot>
         ),
+        children: [
+          {
+            index: true,
+            element: <Menu />,
+          },
+          {
+            path: ":id",
+            id: "detail-menu",
+            loader: loadDetailMenu,
+            children: [
+              {
+                index: true,
+                element: <DetailMenu />,
+              },
+            ],
+          },
+        ],
       },
+      {
+        path: "hampers",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootMenuHampersPage />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <HampersMenu />,
+          },
+        ],
+      },
+
       {
         path: "AdminDashboard",
         element: (

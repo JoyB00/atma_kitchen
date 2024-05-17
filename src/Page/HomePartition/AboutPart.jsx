@@ -3,8 +3,8 @@ import Button from "../../Component/Button";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 export default function AboutPart() {
   return (
-    <div className="flex h-screen bg-gradient-to-bl from-transparent via-transparent to-orange-50 py-24">
-      <div className="flex w-1/2 justify-start text-black">
+    <div className="h-full flex bg-gradient-to-bl to-orange-50 via-transparent from-transparent py-24">
+      <div className="w-1/2 text-black flex justify-start">
         <LazyLoadImage
           effect="blur"
           src={Drink}

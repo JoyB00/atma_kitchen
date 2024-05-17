@@ -78,7 +78,7 @@ export function Header() {
           </div>
         </>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col text-black">
           <div className="flex flex-row items-center">
             <img
               src="https://api.dicebear.com/8.x/adventurer/svg?seed=user.fullName"

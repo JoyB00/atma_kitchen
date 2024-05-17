@@ -1,21 +1,20 @@
-import Navbar from "../Component/Navbar";
+import Navbar from "../../../Component/Navbar";
 import { NavLink } from "react-router-dom";
-import defaultImage from "../assets/ProductAsset/lapis leggite.jpg";
-import Input from "../Component/Input";
-import CardProduct from "../Component/Card";
-import Footer from "../Component/Footer";
+import defaultImage from "../../../assets/ProductAsset/lapis leggite.jpg";
+import Input from "../../../Component/Input";
+import CardProduct from "../../../Component/Card";
+import Footer from "../../../Component/Footer";
 import { Pagination } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FetchAllProducts } from "../api/ProductApi";
-import { FetchAllHampers } from "../api/HampersApi";
+import { FetchAllHampers } from "../../../api/HampersApi";
 import { RotateLoader } from "react-spinners";
-import { getPicture } from "../api";
-export default function Menu() {
+import { getPicture } from "../../../api";
+export default function HampersMenu() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [products, setProducts] = useState([]);
-  const [filteredProduct, setFilteredProduct] = useState([]);
+  const [hampers, setHampers] = useState([]);
+  const [filteredHampers, setFilteredHampers] = useState([]);
   const [isPending, setIsPending] = useState(false);
   const [filterSelected, setFilterSelected] = useState("all");
   const [sortSelected, setSortSelected] = useState("default");
@@ -31,47 +30,29 @@ export default function Menu() {
   const handleSearch = (event) => {
     setPage(1);
     setSearch(event.target.value);
-    const filteredItem = products.filter(
-      (item) =>
-        item.product_name
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase()) ||
-        item.categories.category_name
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase()),
+    const filteredItem = hampers.filter((item) =>
+      item.hampers_name
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase()),
     );
-    setFilteredProduct(filteredItem);
-  };
-
-  const handleSortByCategory = (event) => {
-    setPage(1);
-    setFilterSelected(event.target.id);
-    setSortSelected("default");
-
-    const filteredItem = products.filter(
-      (item) =>
-        item.categories.category_name === event.target.id ||
-        event.target.id === "all",
-    );
-    setFilteredProduct(filteredItem);
-    filteredProduct.sort;
+    setFilteredHampers(filteredItem);
   };
 
   const handleSortByAscDsc = (event) => {
     setPage(1);
     setSortSelected(event.target.value);
     if (event.target.value === "ascending") {
-      const ascSort = [...filteredProduct].sort((a, b) =>
-        a.product_name.toLowerCase() < b.product_name.toLowerCase() ? -1 : 1,
+      const ascSort = [...filteredHampers].sort((a, b) =>
+        a.hampers_name.toLowerCase() < b.hampers_name.toLowerCase() ? -1 : 1,
       );
-      setFilteredProduct(ascSort);
+      setFilteredHampers(ascSort);
     } else if (event.target.value === "descending") {
-      const dscSort = [...filteredProduct].sort((a, b) =>
-        a.product_name.toLowerCase() > b.product_name.toLowerCase() ? -1 : 1,
+      const dscSort = [...filteredHampers].sort((a, b) =>
+        a.hampers_name.toLowerCase() > b.hampers_name.toLowerCase() ? -1 : 1,
       );
-      setFilteredProduct(dscSort);
+      setFilteredHampers(dscSort);
     } else {
-      setFilteredProduct(products);
+      setFilteredHampers(hampers);
     }
   };
 
@@ -101,10 +82,10 @@ export default function Menu() {
 
   useEffect(() => {
     setIsPending(true);
-    FetchAllProducts()
+    FetchAllHampers()
       .then((res) => {
-        setProducts(res);
-        setFilteredProduct(res);
+        setHampers(res.hampers);
+        setFilteredHampers(res.hampers);
         setIsPending(false);
       })
       .catch((err) => {
@@ -113,6 +94,7 @@ export default function Menu() {
   }, []);
   return (
     <AnimatePresence>
+      {console.log(hampers)}
       <div className="h-screen w-full bg-transparent">
         <Navbar />
         <div className="ps-6 pt-36 text-orange-500 ">
@@ -124,8 +106,8 @@ export default function Menu() {
               <p className="text-black hover:text-orange-500">Home</p>
             </NavLink>
             <p className="px-2 text-black"> {">"} </p>
-            <NavLink to="/menu">
-              <p className="text-black hover:text-orange-500">Menu</p>
+            <NavLink to="/hampers">
+              <p className="text-black hover:text-orange-500">Hampers</p>
             </NavLink>
           </div>
         </div>
@@ -156,82 +138,7 @@ export default function Menu() {
           </div>
         </div>
         <div className=" grid grid-cols-5 gap-x-3 gap-y-6 px-12">
-          <div className=" col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black ">
-            <h2 className="px-4 pt-4 font-semibold">Filtered By Category</h2>
-            <ul className="px-8 pb-6 pt-3 text-black ">
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "all" ? "text-orange-500" : "text-black"
-                  }`}
-                  id="all"
-                  onClick={handleSortByCategory}
-                >
-                  All
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Cake" ? "text-orange-500" : "text-black"
-                  }`}
-                  id="Cake"
-                  onClick={handleSortByCategory}
-                >
-                  Cake
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Bread"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Bread"
-                  onClick={handleSortByCategory}
-                >
-                  Bread
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Drink"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Drink"
-                  onClick={handleSortByCategory}
-                >
-                  Drink
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Titipan"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Titipan"
-                  onClick={handleSortByCategory}
-                >
-                  Entrusted
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className="text-black"
-                  id="Hampers"
-                  onClick={handleSortByCategory}
-                >
-                  Hampers
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-          <div className="col-span-4">
+          <div className="col-span-5 ">
             {isPending ? (
               <div className="h-screen w-full bg-transparent">
                 <RotateLoader
@@ -257,47 +164,54 @@ export default function Menu() {
                   animate="visible"
                   className="grid grid-cols-3 gap-4 rounded-xl"
                 >
-                  {filteredProduct.length === 0 ? (
+                  {filteredHampers.length === 0 ? (
                     <div className="col-span-3 flex h-screen items-center justify-center bg-orange-50 ">
-                      <p className="text-black">Product Not Found</p>
+                      <p className="text-black">Hampers Not Found</p>
                     </div>
                   ) : (
-                    filteredProduct
+                    filteredHampers
                       .slice(startIndex, endIndex)
-                      .map((product) => (
+                      .map((hampers) => (
                         <motion.li
                           className="col-span-1"
-                          key={product.id}
+                          key={hampers.id}
                           variants={productItem}
                           transition={{ type: "spring" }}
                         >
                           <CardProduct
-                            id={product.id}
-                            alt={product.product_name}
+                            id={hampers.id}
+                            alt={hampers.hampers_name}
                             image={
-                              product.product_picture
-                                ? getPicture(product.product_picture, "product")
+                              hampers.hampers_picture
+                                ? getPicture(hampers.hampers_picture, "hampers")
                                 : defaultImage
                             }
                             desc={
-                              product.description.length < 120
-                                ? product.description
-                                : `${product.description.substring(0, 100)}...`
+                              `Detail Hampers: ` +
+                              hampers.hampers_detail.map((detail) => {
+                                if (detail.product?.product_name) {
+                                  return " " + detail.product.product_name;
+                                } else {
+                                  return (
+                                    " " + detail.ingredients.ingredient_name
+                                  );
+                                }
+                              })
                             }
                             price={
-                              product.product_price <= 999
-                                ? product.product_price
-                                : (product.product_price / 1000).toFixed(1) +
+                              hampers.hampers_price <= 999
+                                ? hampers.hampers_price
+                                : (hampers.hampers_price / 1000).toFixed(1) +
                                   "K"
                             }
-                            title={product.product_name}
+                            title={hampers.hampers_name}
                           />
                         </motion.li>
                       ))
                   )}
                 </motion.ul>
                 <Pagination
-                  count={Math.ceil(filteredProduct.length / productPerPage)}
+                  count={Math.ceil(filteredHampers.length / productPerPage)}
                   size="small"
                   className="mt-6 flex justify-center"
                   onChange={handleChange}

@@ -49,8 +49,8 @@ export function TransactionTile({ detailedTransaction }) {
   const ProductTile = (transactionDetail) => {
     const detail = transactionDetail.transactionDetail;
     return (
-      <div className="flex flex-row items-center text-nowrap px-4 py-2">
-        <span className="text-md text-start font-bold">
+      <div className="flex flex-row px-4 items-center py-2 text-nowrap text-black">
+        <span className="font-bold text-md text-start">
           {detail.product.product_name} (x{detail.quantity})
         </span>
         <div className="w-full" />

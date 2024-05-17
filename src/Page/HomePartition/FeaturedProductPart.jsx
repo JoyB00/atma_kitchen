@@ -46,7 +46,8 @@ export default function FeaturedProduct({ data, loading }) {
             {data?.map((product) => (
               <SwiperSlide className="gap-8 py-3" key={product.id}>
                 <CardProduct
-                  // alt={product.alt}
+                  id={product.id}
+                  alt={product.product_name}
                   image={
                     product.product_picture
                       ? getPicture(product.product_picture, "product")
