@@ -17,7 +17,7 @@ import { FetchCarts } from "../api/CartApi";
 
 export default function Navbar() {
   const [navbar, setNavbar] = useState(false);
-
+  const navigate = useNavigate();
   const changeBackground = () => {
     if (window.scrollY >= 40) {
       // console.log(window.scrollY);
@@ -31,6 +31,10 @@ export default function Navbar() {
     queryKey: ["carts"],
     queryFn: FetchCarts,
   });
+
+  const goToCartpage = () => {
+    navigate("/cart");
+  };
 
   useEffect(() => {
     changeBackground();
@@ -109,6 +113,7 @@ export default function Navbar() {
                 trasition={{ duration: 0.3 }}
               />
               <Button
+                onClick={goToCartpage}
                 className="me-auto rounded-full p-3 text-black hover:border-transparent"
                 withoutAnimate
               >

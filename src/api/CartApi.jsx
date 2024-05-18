@@ -13,6 +13,19 @@ const FetchCarts = async () => {
     return error.response.data;
   }
 };
+const FetchCartsPerDate = async () => {
+  try {
+    const response = await useAxios.get("/cartPerDate", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
 
 const AddCartItem = async (data) => {
   try {
@@ -57,4 +70,10 @@ const DeleteCartItem = async (id) => {
   }
 };
 
-export { FetchCarts, AddCartItem, UpdateCartItem, DeleteCartItem };
+export {
+  FetchCarts,
+  FetchCartsPerDate,
+  AddCartItem,
+  UpdateCartItem,
+  DeleteCartItem,
+};

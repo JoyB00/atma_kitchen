@@ -88,6 +88,7 @@ export function DetailMenu() {
 
 export function PreOrder({ value, menu }) {
   const [data, setData] = useState({
+    status: "Pre-Order",
     quantity: 1,
     product_id: menu.product.id,
     order_date: "",
@@ -232,12 +233,12 @@ export function ReadyStock({ value, menu }) {
   }
 
   const [data, setData] = useState({
+    status: "Ready",
     quantity: 1,
     product_id: menu.product.id,
     order_date: currentDate,
     total_price: menu.product.product_price,
   });
-
   const [currentStock, setCurrentStock] = useState(menu.product.ready_stock);
 
   const handleChangeAmount = (type) => {
@@ -246,6 +247,38 @@ export function ReadyStock({ value, menu }) {
     } else if (type === "decrement" && data.quantity - 1 > 0) {
       setData({ ...data, quantity: data.quantity - 1 });
     }
+  };
+  const queryClient = useQueryClient();
+
+  const addToCart = useMutation({
+    mutationFn: (data) => {
+      return AddCartItem(data);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["carts"]);
+    },
+    onError: (error) => {
+      console.log(error.message);
+      throw error.message;
+    },
+  });
+
+  const handleButtonAddToCart = (data) => {
+    toast.promise(
+      addToCart.mutateAsync(data),
+      {
+        loading: "Loading",
+        success: "Your file has successful Added",
+        error: (err) => err,
+      },
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "top-center",
+      },
+    );
   };
 
   useEffect(() => {
@@ -283,7 +316,10 @@ export function ReadyStock({ value, menu }) {
           </h1>
         </div>
         <div className="flex justify-start gap-x-4">
-          <Button className="border-orange-500 bg-transparent text-orange-500 hover:text-white">
+          <Button
+            className="border-orange-500 bg-transparent text-orange-500 hover:text-white"
+            onClick={() => handleButtonAddToCart(data)}
+          >
             Add To Cart
           </Button>
           <Button className="bg-orange-500 text-white">Buy Now</Button>

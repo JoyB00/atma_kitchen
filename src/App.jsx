@@ -25,6 +25,10 @@ import { loader as loadDetailMenu } from "./Page/MainPage/Menu/DetailMenu";
 import RootMenuHampersPage from "./Root/Main/Hampers/RootMenuHampers";
 import HampersMenu from "./Page/MainPage/HampersMenu/HampersMenu";
 
+// Cart
+import RootCart from "./Root/Main/Cart/RootCart";
+import CartPage from "./Page/MainPage/Cart/CartPage";
+
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
 import ForgotPassword from "./Page/ChangePasswordCustomer/ForgotPassword";
@@ -201,7 +205,20 @@ const router = createBrowserRouter([
           },
         ],
       },
-
+      {
+        path: "cart",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootMenuHampersPage />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CartPage />,
+          },
+        ],
+      },
       {
         path: "AdminDashboard",
         element: (
