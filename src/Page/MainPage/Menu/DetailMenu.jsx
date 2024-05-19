@@ -88,7 +88,8 @@ export function DetailMenu() {
 
 export function PreOrder({ value, menu }) {
   const [data, setData] = useState({
-    status: "Pre-Order",
+    status_item: "Pre-Order",
+    limit_item: 0,
     quantity: 1,
     product_id: menu.product.id,
     order_date: "",
@@ -129,14 +130,25 @@ export function PreOrder({ value, menu }) {
   };
 
   const handleChangeDate = (event) => {
-    setData({ ...data, order_date: event.target.value, quantity: 1 });
     const temp = menu.allLimit.find(
       (limit) => limit.production_date === event.target.value,
     );
     if (temp) {
       setCurrentStock(temp.limit_amount);
+      setData({
+        ...data,
+        limit_item: temp.limit_amount,
+        order_date: event.target.value,
+        quantity: 1,
+      });
     } else {
       setCurrentStock(menu.product.daily_stock);
+      setData({
+        ...data,
+        limit_item: menu.product.daily_stock,
+        order_date: event.target.value,
+        quantity: 1,
+      });
     }
   };
 
@@ -168,8 +180,8 @@ export function PreOrder({ value, menu }) {
       <div className="grid grid-cols-6 gap-x-5 pt-3">
         <div className="col-span-4">
           <InputDate
-            id="order-date"
-            name="order-date"
+            id="order_date"
+            name="order_date"
             placeholder="Pre-Order Date"
             onChange={handleChangeDate}
           />
@@ -233,7 +245,8 @@ export function ReadyStock({ value, menu }) {
   }
 
   const [data, setData] = useState({
-    status: "Ready",
+    status_item: "Ready",
+    limit_item: menu.product.ready_stock,
     quantity: 1,
     product_id: menu.product.id,
     order_date: currentDate,
