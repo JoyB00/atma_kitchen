@@ -70,10 +70,26 @@ const DeleteCartItem = async (id) => {
   }
 };
 
+const DeleteListItem = async (data) => {
+  try {
+    const response = await useAxios.post(`/destroyListCart`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error.response.data);
+    return error.response.data;
+  }
+};
+
 export {
   FetchCarts,
   FetchCartsPerDate,
   AddCartItem,
   UpdateCartItem,
   DeleteCartItem,
+  DeleteListItem,
 };

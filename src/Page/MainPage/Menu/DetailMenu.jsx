@@ -20,10 +20,57 @@ import toast from "react-hot-toast";
 export function DetailMenu() {
   const menu = useRouteLoaderData("detail-menu");
 
-  const [value, setValue] = useState(menu.product.category_id === 4 ? 2 : 1);
+  const [value, setValue] = useState(
+    menu.product.category_id === 4 ? "Ready" : "Pre-Order",
+  );
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [data, setData] = useState({
+    status_item: "Pre-Order",
+    limit_item: 0,
+    quantity: 1,
+    product_id: menu.product.id,
+    order_date: "",
+    total_price: menu.product.product_price,
+  });
+  const [currentStock, setCurrentStock] = useState(0);
+  const handleChangeDate = (event) => {
+    const temp = menu.allLimit.find(
+      (limit) => limit.production_date === event.target.value,
+    );
+    if (temp) {
+      console.log("masuk sini");
+      setCurrentStock(temp.limit_amount);
+      setData({
+        ...data,
+        limit_item: temp.limit_amount,
+        order_date: event.target.value,
+        quantity: 1,
+      });
+    } else {
+      if (data.status_item === "Ready") {
+        setCurrentStock(menu.product.ready_stock);
+        setData({
+          ...data,
+          limit_item: menu.product.ready_stock,
+          order_date: event.target.value,
+          quantity: 1,
+        });
+      } else {
+        setCurrentStock(menu.product.daily_stock);
+        setData({
+          ...data,
+          limit_item: menu.product.daily_stock,
+          order_date: event.target.value,
+          quantity: 1,
+        });
+      }
+    }
+  };
+  useEffect(() => {
+    setData({ ...data, status_item: value, quantity: 1 });
+  }, [value]);
   return (
     <div className="flex min-h-screen w-full flex-col bg-transparent">
       <Navbar />
@@ -61,22 +108,46 @@ export function DetailMenu() {
             </Badge>
           </p>
           <p className="pt-5 text-black">{menu.product.description}</p>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="inherit"
-            indicatorColor="secondary"
-            aria-label="secondary tabs example"
-          >
-            <Tab
-              value={1}
-              label="Pre-Order"
-              disabled={menu.product.category_id === 4}
+          <div className="grid grid-cols-6 gap-x-5 pt-3">
+            <div className="col-span-4">
+              <InputDate
+                id="date"
+                name="date"
+                placeholder="Select Date"
+                onChange={handleChangeDate}
+              />
+            </div>
+          </div>
+          <div className={`${!data.order_date ? "hidden" : undefined}`}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="inherit"
+              indicatorColor="secondary"
+              aria-label="secondary tabs example"
+            >
+              <Tab
+                value="Pre-Order"
+                label="Pre-Order"
+                disabled={menu.product.category_id === 4}
+              />
+              <Tab value="Ready" label="Ready" />
+            </Tabs>
+            <PreOrder
+              value={value}
+              menu={menu}
+              data={data}
+              setData={setData}
+              currentStock={currentStock}
             />
-            <Tab value={2} label="Ready" />
-          </Tabs>
-          <PreOrder value={value} menu={menu} />
-          <ReadyStock value={value} menu={menu} />
+            <ReadyStock
+              value={value}
+              menu={menu}
+              data={data}
+              setData={setData}
+              currentStock={menu.product.ready_stock}
+            />
+          </div>
         </div>
       </div>
       <div className="mt-auto from-cyan-100 via-transparent md:pt-12">
@@ -86,18 +157,8 @@ export function DetailMenu() {
   );
 }
 
-export function PreOrder({ value, menu }) {
-  const [data, setData] = useState({
-    status_item: "Pre-Order",
-    limit_item: 0,
-    quantity: 1,
-    product_id: menu.product.id,
-    order_date: "",
-    total_price: menu.product.product_price,
-  });
-  const [currentStock, setCurrentStock] = useState(0);
+export function PreOrder({ value, menu, data, setData, currentStock }) {
   const queryClient = useQueryClient();
-
   const addToCart = useMutation({
     mutationFn: (data) => {
       return AddCartItem(data);
@@ -129,29 +190,6 @@ export function PreOrder({ value, menu }) {
     );
   };
 
-  const handleChangeDate = (event) => {
-    const temp = menu.allLimit.find(
-      (limit) => limit.production_date === event.target.value,
-    );
-    if (temp) {
-      setCurrentStock(temp.limit_amount);
-      setData({
-        ...data,
-        limit_item: temp.limit_amount,
-        order_date: event.target.value,
-        quantity: 1,
-      });
-    } else {
-      setCurrentStock(menu.product.daily_stock);
-      setData({
-        ...data,
-        limit_item: menu.product.daily_stock,
-        order_date: event.target.value,
-        quantity: 1,
-      });
-    }
-  };
-
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
       setData({ ...data, quantity: data.quantity + 1 });
@@ -176,17 +214,8 @@ export function PreOrder({ value, menu }) {
     });
   }, [data.quantity]);
   return (
-    <div className={`${value !== 1 ? "hidden" : undefined}`}>
-      <div className="grid grid-cols-6 gap-x-5 pt-3">
-        <div className="col-span-4">
-          <InputDate
-            id="order_date"
-            name="order_date"
-            placeholder="Pre-Order Date"
-            onChange={handleChangeDate}
-          />
-        </div>
-      </div>
+    <div className={`${value !== "Pre-Order" ? "hidden" : undefined}`}>
+      {console.log("data", currentStock)}
       {data.order_date ? (
         <p className="ps-1 pt-2 text-gray-400">
           Current Stock : {currentStock}
@@ -233,8 +262,7 @@ export function PreOrder({ value, menu }) {
     </div>
   );
 }
-export function ReadyStock({ value, menu }) {
-  var currentDate = new Date().toJSON().slice(0, 10);
+export function ReadyStock({ value, menu, data, setData, currentStock }) {
   function formatCurrency(amount) {
     const formatter = new Intl.NumberFormat("ID", {
       style: "currency",
@@ -243,16 +271,6 @@ export function ReadyStock({ value, menu }) {
 
     return formatter.format(amount);
   }
-
-  const [data, setData] = useState({
-    status_item: "Ready",
-    limit_item: menu.product.ready_stock,
-    quantity: 1,
-    product_id: menu.product.id,
-    order_date: currentDate,
-    total_price: menu.product.product_price,
-  });
-  const [currentStock, setCurrentStock] = useState(menu.product.ready_stock);
 
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
@@ -301,8 +319,8 @@ export function ReadyStock({ value, menu }) {
     });
   }, [data.quantity]);
   return (
-    <div className={`${value !== 2 ? "hidden" : undefined}`}>
-      <p className="ps-1 pt-4 text-gray-400">Ready Stock : {currentStock}</p>
+    <div className={`${value !== "Ready" ? "hidden" : undefined}`}>
+      <p className="ps-1 pt-2 text-gray-400">Ready Stock : {currentStock}</p>
       <div className={`${currentStock == 0 ? "hidden" : undefined}`}>
         <div className="flex w-3/5 justify-between py-2">
           <div className="pt-2">

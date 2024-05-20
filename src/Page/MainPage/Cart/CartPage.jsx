@@ -19,6 +19,7 @@ import {
   FetchCartsPerDate,
   UpdateCartItem,
   DeleteCartItem,
+  DeleteListItem,
 } from "../../../api/CartApi";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Accordion from "@mui/material/Accordion";
@@ -190,6 +191,69 @@ export default function CartPage() {
         }
       });
   };
+  const swallDeleteList = (data) => {
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to Delete Order Date ${data[0].order_date} ?  `,
+        text: `You won't be able to revert this!`,
+        icon: `warning`,
+        showCancelButton: true,
+        confirmButtonColor: `#3085d6`,
+        cancelButtonColor: `#d33`,
+        confirmButtonText: `Yes, update it!`,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          toast.promise(
+            DeleteListItem(data[0])
+              .then(() => {
+                setIsFetching(true);
+                setDataSelected(null);
+                FetchCartsPerDate()
+                  .then((res) => {
+                    setCarts(res);
+                    setFilteredCarts(res);
+                    setTotal(0);
+                    setIsFetching(false);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              })
+              .catch((err) => {
+                console.error(err);
+              }),
+            {
+              loading: "Loading",
+              success: "Your file has been Deleted",
+              error: (err) => err,
+            },
+            {
+              style: {
+                backgroundColor: "#000000",
+                color: "#ffffff",
+              },
+              position: "top-center",
+            },
+          );
+        }
+      });
+  };
+
+  const handleDeleteListCart = (event, data) => {
+    event.preventDefault();
+    if (!dataSelected) {
+      toast.error("Please Check The Order Before", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    } else {
+      swallDeleteList(data);
+    }
+  };
 
   useEffect(() => {
     setIsFetching(true);
@@ -218,7 +282,10 @@ export default function CartPage() {
           </div>
           <div className="flex items-center justify-between gap-x-2 pt-2">
             <div>
-              <Button className="border-orange-500 text-orange-500 hover:text-white">
+              <Button
+                className="border-orange-500 text-orange-500 hover:text-white"
+                onClick={(event) => handleDeleteListCart(event, dataSelected)}
+              >
                 <FontAwesomeIcon icon={faTrash} className="pe-2" />
                 Remove Item
               </Button>
@@ -409,9 +476,38 @@ export default function CartPage() {
                 </>
               )}
             </div>
-            <div className="col-span-4 mt-7 h-20 rounded-2xl border-2 border-gray-300 px-5 pt-5 text-start text-black">
-              <p className="text-lg font-semibold">Total Price : </p>
-              <p className="text-lg font-semibold">{formatCurrency(total)} </p>
+            <div className="col-span-4 mt-7">
+              <div className=" rounded-2xl border-2 border-gray-300 px-5 py-3 text-start text-black">
+                <table className="my-2 w-full">
+                  <tr>
+                    <td>Qty</td>
+                    <td>Item</td>
+                    <td>Sub Total</td>
+                  </tr>
+                  {dataSelected &&
+                    dataSelected[0].data.map((data) => {
+                      return (
+                        <tr>
+                          <td className="py-2">{data.quantity}</td>
+                          <td>
+                            {data.products
+                              ? data.products.product_name
+                              : data.hampers.hampers_name}
+                          </td>
+                          <td>{formatCurrency(data.total_price)}</td>
+                        </tr>
+                      );
+                    })}
+                </table>
+                <hr />
+                <p className="pt-6 text-lg font-semibold">Total Price : </p>
+                <p className="text-lg font-semibold">
+                  {formatCurrency(total)}{" "}
+                </p>
+                <Button className="my-6 w-full bg-orange-500 text-white">
+                  Order Now
+                </Button>
+              </div>
             </div>
           </div>
         </div>
