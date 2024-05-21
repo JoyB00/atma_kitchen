@@ -262,6 +262,7 @@ export default function Menu() {
                           transition={{ type: "spring" }}
                         >
                           <CardProduct
+                            url="menu"
                             id={product.id}
                             alt={product.product_name}
                             image={

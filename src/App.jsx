@@ -24,10 +24,16 @@ import { loader as loadDetailMenu } from "./Page/MainPage/Menu/DetailMenu";
 // Hampers Menu
 import RootMenuHampersPage from "./Root/Main/Hampers/RootMenuHampers";
 import HampersMenu from "./Page/MainPage/HampersMenu/HampersMenu";
+import { DetailHampersMenu } from "./Page/MainPage/HampersMenu/DetailHampersMenu";
+import { loader as loadDetailHampers } from "./Page/MainPage/HampersMenu/DetailHampersMenu";
 
 // Cart
 import RootCart from "./Root/Main/Cart/RootCart";
 import CartPage from "./Page/MainPage/Cart/CartPage";
+
+// checkout
+import RootCheckout from "./Root/Main/Checkout/RootCheckout";
+import CheckoutPage from "./Page/MainPage/Checkout/CheckoutPage";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -203,19 +209,44 @@ const router = createBrowserRouter([
             index: true,
             element: <HampersMenu />,
           },
+          {
+            path: ":id",
+            id: "detail-menu-hampers",
+            loader: loadDetailHampers,
+            children: [
+              {
+                index: true,
+                element: <DetailHampersMenu />,
+              },
+            ],
+          },
         ],
       },
       {
         path: "cart",
         element: (
           <ProtectedRoot role_id={4}>
-            <RootMenuHampersPage />
+            <RootCart />
           </ProtectedRoot>
         ),
         children: [
           {
             index: true,
             element: <CartPage />,
+          },
+        ],
+      },
+      {
+        path: "checkout",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootCheckout />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CheckoutPage />,
           },
         ],
       },

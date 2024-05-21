@@ -178,6 +178,7 @@ export default function HampersMenu() {
                           transition={{ type: "spring" }}
                         >
                           <CardProduct
+                            url="hampers"
                             id={hampers.id}
                             alt={hampers.hampers_name}
                             image={

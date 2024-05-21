@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
-export default function CardComp({ id, title, price, desc, image, alt }) {
+export default function CardComp({ id, title, price, desc, image, alt, url }) {
   const [idItemLoad, setIdItemLoad] = useState();
   const [load, setLoad] = useState(false);
 
@@ -31,7 +31,7 @@ export default function CardComp({ id, title, price, desc, image, alt }) {
           {desc}
         </p>
         <div className="mt-auto px-1">
-          <NavLink to={`/menu/${id}`}>
+          <NavLink to={`/${url}/${id}`}>
             <Button
               className="bg-orange-500 rounded-xl w-full text-white "
               onClick={handleLoadDetail}

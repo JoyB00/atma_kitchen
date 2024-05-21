@@ -27,6 +27,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartPage() {
   function formatCurrency(amount) {
@@ -36,6 +37,7 @@ export default function CartPage() {
     });
     return formatter.format(amount);
   }
+  const queryClient = useQueryClient();
   const [carts, setCarts] = useState([]);
   const [filteredCarts, setFilteredCarts] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -81,25 +83,45 @@ export default function CartPage() {
           type === "increment" &&
           updatedCart.data[index].quantity < updatedCart.data[index].limit_item
         ) {
-          updatedCart.data[index] = {
-            ...updatedCart.data[index],
-            quantity: updatedCart.data[index].quantity + 1,
-            total_price:
-              updatedCart.data[index].products.product_price *
-              (updatedCart.data[index].quantity + 1),
-          };
+          if (updatedCart.data[index].products) {
+            updatedCart.data[index] = {
+              ...updatedCart.data[index],
+              quantity: updatedCart.data[index].quantity + 1,
+              total_price:
+                updatedCart.data[index].products.product_price *
+                (updatedCart.data[index].quantity + 1),
+            };
+          } else {
+            updatedCart.data[index] = {
+              ...updatedCart.data[index],
+              quantity: updatedCart.data[index].quantity + 1,
+              total_price:
+                updatedCart.data[index].hampers.hampers_price *
+                (updatedCart.data[index].quantity + 1),
+            };
+          }
           console.log("up", updatedCart.data[index]);
         } else if (
           type === "decrement" &&
           updatedCart.data[index].quantity > 1
         ) {
-          updatedCart.data[index] = {
-            ...updatedCart.data[index],
-            quantity: updatedCart.data[index].quantity - 1,
-            total_price:
-              updatedCart.data[index].products.product_price *
-              (updatedCart.data[index].quantity - 1),
-          };
+          if (updatedCart.data[index].products) {
+            updatedCart.data[index] = {
+              ...updatedCart.data[index],
+              quantity: updatedCart.data[index].quantity - 1,
+              total_price:
+                updatedCart.data[index].products.product_price *
+                (updatedCart.data[index].quantity - 1),
+            };
+          } else {
+            updatedCart.data[index] = {
+              ...updatedCart.data[index],
+              quantity: updatedCart.data[index].quantity - 1,
+              total_price:
+                updatedCart.data[index].hampers.hampers_price *
+                (updatedCart.data[index].quantity - 1),
+            };
+          }
         }
 
         updatedDataSelected[0] = updatedCart;
@@ -146,7 +168,7 @@ export default function CartPage() {
   const swallDelete = (data) => {
     withReactContent(Swal)
       .fire({
-        title: `Are you sure to Delete ${data.products.product_name} ?  `,
+        title: `Are you sure to Delete ${data.products ? data.products.product_name : data.hampers.hampers_name} ?  `,
         text: `You won't be able to revert this!`,
         icon: `warning`,
         showCancelButton: true,
@@ -167,6 +189,7 @@ export default function CartPage() {
                     setFilteredCarts(res);
                     setTotal(0);
                     setIsFetching(false);
+                    queryClient.invalidateQueries(["carts"]);
                   })
                   .catch((err) => {
                     console.log(err);
@@ -185,7 +208,7 @@ export default function CartPage() {
                 backgroundColor: "#000000",
                 color: "#ffffff",
               },
-              position: "top-center",
+              position: "bottom-right",
             },
           );
         }
@@ -194,7 +217,7 @@ export default function CartPage() {
   const swallDeleteList = (data) => {
     withReactContent(Swal)
       .fire({
-        title: `Are you sure to Delete Order Date ${data[0].order_date} ?  `,
+        title: `Are you sure to Delete Order Date ${data[0].order_date.slice(0, 16)} ?  `,
         text: `You won't be able to revert this!`,
         icon: `warning`,
         showCancelButton: true,
@@ -215,6 +238,7 @@ export default function CartPage() {
                     setFilteredCarts(res);
                     setTotal(0);
                     setIsFetching(false);
+                    queryClient.invalidateQueries(["carts"]);
                   })
                   .catch((err) => {
                     console.log(err);
@@ -233,7 +257,7 @@ export default function CartPage() {
                 backgroundColor: "#000000",
                 color: "#ffffff",
               },
-              position: "top-center",
+              position: "bottom-right",
             },
           );
         }
@@ -302,18 +326,12 @@ export default function CartPage() {
             </div>
           </div>
           <div className="grid grid-cols-12 gap-x-8">
-            <div className="col-span-8 pt-5">
+            <div className="col-span-8 rounded-2xl border-2 border-gray-200 p-5">
               {isFetching ? (
                 <RotateLoader
                   color="orange"
                   loading={isFetching}
-                  cssOverride={{
-                    position: "absolute",
-                    top: "40%",
-                    left: "30%",
-                    transform: "translate(-50%, -50%)",
-                    borderColor: "red",
-                  }}
+                  cssOverride={{ marginTop: "10%" }}
                   size={50}
                   aria-label="Loading Spinner"
                   data-testid="loader"
@@ -323,7 +341,7 @@ export default function CartPage() {
                   {filteredCarts.map((item) => {
                     return (
                       <div
-                        className="py-2"
+                        className="py-2 "
                         key={item.order_date}
                         aria-disabled={true}
                       >
@@ -347,7 +365,7 @@ export default function CartPage() {
                               htmlFor={item.order_date}
                               className="ms-2 text-sm font-medium "
                             >
-                              Order on date : {item.order_date}
+                              Order on date : {item.order_date.slice(0, 16)}
                             </label>
                           </AccordionSummary>
                           <AccordionDetails>
@@ -477,7 +495,7 @@ export default function CartPage() {
               )}
             </div>
             <div className="col-span-4 mt-7">
-              <div className=" rounded-2xl border-2 border-gray-300 px-5 py-3 text-start text-black">
+              <div className=" rounded-2xl border-2 border-gray-200 px-5 py-3 text-start text-black">
                 <table className="my-2 w-full">
                   <tr>
                     <td>Qty</td>
@@ -500,12 +518,14 @@ export default function CartPage() {
                     })}
                 </table>
                 <hr />
-                <p className="pt-6 text-lg font-semibold">Total Price : </p>
-                <p className="text-lg font-semibold">
+                <p className="pt-6 text-start text-lg font-semibold">
+                  Total Price :{" "}
+                </p>
+                <p className="text-start text-lg font-semibold">
                   {formatCurrency(total)}{" "}
                 </p>
                 <Button className="my-6 w-full bg-orange-500 text-white">
-                  Order Now
+                  <FontAwesomeIcon icon={faCartShopping} /> Order Now
                 </Button>
               </div>
             </div>

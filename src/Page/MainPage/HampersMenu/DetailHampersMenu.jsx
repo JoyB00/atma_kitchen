@@ -1,6 +1,6 @@
 import Navbar from "../../../Component/Navbar";
 import Footer from "../../../Component/Footer";
-import { GetProductById } from "../../../api/ProductApi";
+import { GetHampersById } from "../../../api/HampersApi";
 import { getPicture } from "../../../api";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useRouteLoaderData } from "react-router-dom";
@@ -16,13 +16,18 @@ import Button from "../../../Component/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AddCartItem } from "../../../api/CartApi";
 import toast from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBox,
+  faCalendar,
+  faCookie,
+  faEgg,
+} from "@fortawesome/free-solid-svg-icons";
 
-export function DetailMenu() {
-  const menu = useRouteLoaderData("detail-menu");
+export function DetailHampersMenu() {
+  const hampers = useRouteLoaderData("detail-menu-hampers");
 
-  const [value, setValue] = useState(
-    menu.product.category_id === 4 ? "Ready" : "Pre-Order",
-  );
+  const [value, setValue] = useState("Pre-Order");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -30,86 +35,137 @@ export function DetailMenu() {
     status_item: "Pre-Order",
     limit_item: 0,
     quantity: 1,
-    product_id: menu.product.id,
-    hampers_id: null,
+    hampers_id: hampers.hampers.id,
+    product_id: null,
     order_date: "",
-    total_price: menu.product.product_price,
+    total_price: hampers.hampers.hampers_price,
   });
-  const [currentStock, setCurrentStock] = useState(0);
+  const [limit, setLimit] = useState(0);
   const handleChangeDate = (event) => {
-    const temp = menu.allLimit.find(
-      (limit) => limit.production_date === event.target.value,
-    );
-    if (temp) {
-      setCurrentStock(temp.limit_amount);
+    const selectedDate = event.target.value;
+    let newLimit = hampers.details[0].product.daily_stock;
+
+    hampers.details.forEach((item, index) => {
+      if (item.product) {
+        const tempLimit = item.product.all_limit?.find(
+          (limit) => limit.production_date === selectedDate,
+        );
+        if (tempLimit) {
+          if (index === 0 || newLimit > tempLimit.limit_amount) {
+            newLimit = tempLimit.limit_amount;
+          }
+          console.log("new", newLimit);
+        } else {
+          console.log(tempLimit);
+          if (index === 0 || newLimit > item.product.daily_stock) {
+            newLimit = item.product.daily_stock;
+          }
+        }
+      }
+    });
+    setLimit(newLimit);
+    setData({
+      ...data,
+      limit_item: newLimit,
+      order_date: event.target.value,
+      quantity: 1,
+    });
+  };
+  useEffect(() => {
+    if (value === "Ready") {
       setData({
         ...data,
-        limit_item: temp.limit_amount,
-        order_date: event.target.value,
+        limit_item: hampers.ready_stock[0].ready_stock,
+        status_item: value,
         quantity: 1,
       });
     } else {
-      if (data.status_item === "Ready") {
-        setCurrentStock(menu.product.ready_stock);
-        setData({
-          ...data,
-          limit_item: menu.product.ready_stock,
-          order_date: event.target.value,
-          quantity: 1,
-        });
-      } else {
-        setCurrentStock(menu.product.daily_stock);
-        setData({
-          ...data,
-          limit_item: menu.product.daily_stock,
-          order_date: event.target.value,
-          quantity: 1,
-        });
-      }
+      setData({ ...data, status_item: value, quantity: 1 });
     }
-  };
-  useEffect(() => {
-    setData({ ...data, status_item: value, quantity: 1 });
   }, [value]);
   return (
     <div className="flex min-h-screen w-full flex-col bg-transparent">
+      {console.log(limit)}
       <Navbar />
-      <div className="grid grid-cols-12 gap-x-16 px-24 pt-36 text-orange-500">
+      <div className="grid grid-cols-12 gap-x-16 px-20 pt-36 text-orange-500">
         <div className="col-span-5">
           <LazyLoadImage
             effect="blur"
             src={
-              menu.product.product_picture
-                ? getPicture(menu.product.product_picture, "product")
+              hampers.hampers.hampers_picture
+                ? getPicture(hampers.hampers.hampers_picture, "hampers")
                 : defaultImage
             }
-            alt={menu.product.product_name}
-            className="h-[35rem] w-full rounded-xl object-cover"
+            alt={hampers.hampers.hampers_name}
+            className="h-[45rem] w-full rounded-xl object-cover"
           />
         </div>
         <div className="col-span-7 text-left">
           <div className="flex text-xl ">
-            <NavLink to="/menu">
-              <p className="text-black hover:text-orange-500">Menu</p>
+            <NavLink to="/hampers">
+              <p className="text-black hover:text-orange-500">Hampers</p>
             </NavLink>
             <p className="px-2 text-black"> {">"} </p>
-            <NavLink to={`/menu/${menu.product.id}`}>
+            <NavLink to={`/hampers/${hampers.hampers.id}`}>
               <p className="font-semibold text-orange-500 hover:text-orange-500">
-                {menu.product.product_name}
+                {hampers.hampers.hampers_name}
               </p>
             </NavLink>
           </div>
           <h1 className="pt-5 text-5xl font-semibold text-black">
-            {menu.product.product_name}
+            {hampers.hampers.hampers_name}
           </h1>
           <p className="text-white">
             <Badge bgColor="bg-orange-500" ringColor="ring-transparent">
-              {menu.product.categories.category_name}
+              Hampers
             </Badge>
           </p>
-          <p className="pt-5 text-black">{menu.product.description}</p>
+          <p className="py-4 text-black">
+            Every item in our hampers is lovingly handcrafted by our skilled
+            bakers. We use only the finest ingredients to ensure that each bite
+            is a moment of pure indulgence. From the rich aroma of freshly baked
+            bread to the delightful crunch of our signature cookies, our bakery
+            treats are made with passion and precision.
+          </p>
+          <div className="w-1/2 rounded-2xl border-2 border-orange-200 p-3 font-semibold text-black">
+            <p className="pb-1">Hampers Details :</p>
+            <div>
+              {hampers.details.map((detail) => {
+                return (
+                  <div className="font-normal" key={detail.id}>
+                    {detail.product?.product_name ? (
+                      <p className="pb-1">
+                        <FontAwesomeIcon
+                          icon={faCookie}
+                          className="pe-2 text-orange-500"
+                        />
+                        {detail.product.product_name}
+                      </p>
+                    ) : (
+                      <p className="pb-1">
+                        <FontAwesomeIcon
+                          icon={faBox}
+                          className="pe-2 text-orange-500"
+                        />
+                        {detail.ingredients.ingredient_name}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           <div className="grid grid-cols-6 gap-x-5 pt-3">
-            <div className="col-span-4">
+            <div className="col-span-4 mt-2">
+              <div className="mb-2">
+                <label htmlFor="date" className="font-normal text-black">
+                  <FontAwesomeIcon
+                    icon={faCalendar}
+                    className="px-1 text-orange-500"
+                  />{" "}
+                  Select Date
+                </label>
+              </div>
               <InputDateTime
                 id="date"
                 name="date"
@@ -129,23 +185,23 @@ export function DetailMenu() {
               <Tab
                 value="Pre-Order"
                 label="Pre-Order"
-                disabled={menu.product.category_id === 4}
+                // disabled={hampers.product.category_id === 4}
               />
               <Tab value="Ready" label="Ready" />
             </Tabs>
             <PreOrder
               value={value}
-              menu={menu}
+              hampers={hampers}
               data={data}
               setData={setData}
-              currentStock={currentStock}
+              currentStock={limit}
             />
             <ReadyStock
               value={value}
-              menu={menu}
+              hampers={hampers}
               data={data}
               setData={setData}
-              currentStock={menu.product.ready_stock}
+              currentStock={hampers.ready_stock[0].ready_stock}
             />
           </div>
         </div>
@@ -157,7 +213,7 @@ export function DetailMenu() {
   );
 }
 
-export function PreOrder({ value, menu, data, setData, currentStock }) {
+export function PreOrder({ value, hampers, data, setData, currentStock }) {
   const queryClient = useQueryClient();
   const addToCart = useMutation({
     mutationFn: (data) => {
@@ -210,12 +266,12 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
   useEffect(() => {
     setData({
       ...data,
-      total_price: parseInt(menu.product.product_price * data.quantity),
+      total_price: parseInt(hampers.hampers.hampers_price * data.quantity),
     });
   }, [data.quantity]);
   return (
     <div className={`${value !== "Pre-Order" ? "hidden" : undefined}`}>
-      {console.log("data", data)}
+      {console.log("data", currentStock)}
       {data.order_date ? (
         <p className="ps-1 pt-2 text-gray-400">
           Current Stock : {currentStock}
@@ -262,7 +318,7 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
     </div>
   );
 }
-export function ReadyStock({ value, menu, data, setData, currentStock }) {
+export function ReadyStock({ value, hampers, data, setData, currentStock }) {
   function formatCurrency(amount) {
     const formatter = new Intl.NumberFormat("ID", {
       style: "currency",
@@ -315,7 +371,7 @@ export function ReadyStock({ value, menu, data, setData, currentStock }) {
   useEffect(() => {
     setData({
       ...data,
-      total_price: parseInt(menu.product.product_price * data.quantity),
+      total_price: parseInt(hampers.hampers.hampers_price * data.quantity),
     });
   }, [data.quantity]);
   return (
@@ -362,6 +418,7 @@ export function ReadyStock({ value, menu, data, setData, currentStock }) {
 
 export async function loader({ params }) {
   const id = params.id;
-  const product = await GetProductById(id);
-  return product;
+  const hampers = await GetHampersById(id);
+  console.log(hampers);
+  return hampers;
 }
