@@ -68,6 +68,10 @@ import AddHampers from "./Page/AdminPage/HampersPage/AddHampers/AddHampers";
 import { loader as hampersDetailLoader } from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 
+// Root Transaction Admin
+import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
+import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
+
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
 import CustomerPage from "./Page/AdminPage/CustomerPage/CustomerPage";
@@ -95,9 +99,9 @@ import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
 import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
+import ModifyAddressPage from "./Page/CustomerPage/DashboardPages/ModifyAddress";
 
 // Root Consignor
-
 import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
 import ConsignorPage from "./Page/MOPage/Consignor/ConsignorPage";
 import AddConsignor from "./Page/MOPage/Consignor/AddConsignor/AddConsignor";
@@ -125,7 +129,6 @@ import { loader as loadSalary } from "./Page/OwnerPage/EmployeeSalaryPage/EditEm
 //
 import ForgotPasswordEmployeePage from "./Page/EmployeePage/ForgotPassword";
 import { loader as loadId } from "./Page/EmployeePage/ForgotPassword";
-import { Root } from "postcss";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -361,6 +364,20 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "transaction",
+            element: <RootTransaction />,
+            children: [
+              {
+                path: "delivery",
+                element: <DeliveryPage />,
+              },
+              {
+                path: "paymentConfirmation",
+                element: <MainDashboard />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -554,6 +571,10 @@ const router = createBrowserRouter([
           {
             path: "OrderHistory",
             element: <OrderHistory />,
+          },
+          {
+            path: "Addresses",
+            element: <ModifyAddressPage />,
           },
         ],
       },

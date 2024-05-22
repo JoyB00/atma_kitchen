@@ -2,7 +2,6 @@ import { atom } from "jotai";
 import { GetAllIngredients } from "../api/IngredientApi";
 import { FetchAllCategories } from "../api/CategoryApi";
 import { FetchAllProducts } from "../api/ProductApi";
-import { GetHampersById } from "../api/HampersApi";
 import { FetchAllConsignors } from "../api/ConsignorApi";
 import { FetchAllEmployees } from "../api/EmployeeApi";
 import { FetchAllRoles } from "../api/RoleApi";
@@ -11,6 +10,7 @@ import {
   GetCustomerTransactions,
   GetDetailTransaction,
 } from "../api/TransactionApi";
+import { FetchAllAddresses } from "../api/AddressApi";
 
 const fetchCategories = async () => {
   try {
@@ -114,6 +114,16 @@ const fetchCustomerOrderHistory = async () => {
 };
 const customerOrderHistory = atom(fetchCustomerOrderHistory);
 
+const fetchAddresses = async () => {
+  try {
+    const response = await FetchAllAddresses();
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+const allAddresses = atom(fetchAddresses);
+
 export {
   allIngredients,
   allCategories,
@@ -124,4 +134,5 @@ export {
   allCustomers,
   loggedInCustomer,
   customerOrderHistory,
+  allAddresses,
 };
