@@ -1,12 +1,5 @@
 import Logo from "../../../../assets/atmak-removebg.png";
-import Navigation from "./component/Navigation";
-import {
-  faBreadSlice,
-  faEgg,
-  faGifts,
-  faHouse,
-  faPowerOff,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
@@ -19,9 +12,8 @@ import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
 import OwnerNavigation from "./component/OwnerNavigation";
 import { NavLink } from "react-router-dom";
-import Button from "../../../../Component/Button";
 
-export default function Sidebar({ role, fullName }) {
+export default function Sidebar({ role }) {
   const [expandedMaster, setExpandedMaster] = useAtom(expandMaster);
   const [expandedOperational, setExpandedOperational] =
     useAtom(expandOperational);
@@ -35,7 +27,7 @@ export default function Sidebar({ role, fullName }) {
   };
 
   return (
-    <div className="fixed z-10 h-full w-[20rem] overflow-y-auto rounded-r-3xl bg-white px-6 py-12 text-black drop-shadow-lg ">
+    <div className="fixed z-10 h-full w-80 overflow-y-auto rounded-r-3xl bg-white px-6 py-12 text-black drop-shadow-lg ">
       <img src={Logo} alt="" className="mx-auto w-1/6 pb-3" />
       <h1 className="px-5 text-2xl font-bold">
         <span className="text-orange-500 ">ATMA</span> KITCHEN

@@ -16,9 +16,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import Button from "../../../../../Component/Button";
-import { useNavigate } from "react-router-dom";
-import { expandTransaction } from "../../../../../lib/AtomVar";
 
 export default function AdminNavigation({
   expandedMaster,
@@ -136,12 +133,12 @@ export default function AdminNavigation({
           <Navigation
             label="Delivery"
             icon={faTruck}
-            url={"/AdminDashboard/"}
+            url={"/AdminDashboard/transaction/delivery"}
           />
           <Navigation
             label="Payment Confirmation"
             icon={faCheckToSlot}
-            url={"/AdminDashboard/"}
+            url={"/AdminDashboard/transaction/paymentConfirmation"}
           />
         </div>
       ) : undefined}
