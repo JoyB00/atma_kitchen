@@ -16,6 +16,7 @@ import Button from "../../../Component/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AddCartItem } from "../../../api/CartApi";
 import toast from "react-hot-toast";
+import { formatCurrency } from "../../../lib/FormatCurrency";
 
 export function DetailMenu() {
   const menu = useRouteLoaderData("detail-menu");
@@ -198,15 +199,6 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
     }
   };
 
-  function formatCurrency(amount) {
-    const formatter = new Intl.NumberFormat("ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-
-    return formatter.format(amount);
-  }
-
   useEffect(() => {
     setData({
       ...data,
@@ -263,15 +255,6 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
   );
 }
 export function ReadyStock({ value, menu, data, setData, currentStock }) {
-  function formatCurrency(amount) {
-    const formatter = new Intl.NumberFormat("ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-
-    return formatter.format(amount);
-  }
-
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
       setData({ ...data, quantity: data.quantity + 1 });

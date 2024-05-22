@@ -51,11 +51,11 @@ export function TransactionTile({ detailedTransaction }) {
     return (
       <div className="flex flex-row px-4 items-center py-2 text-nowrap text-black">
         <span className="font-bold text-md text-start">
-          {detail.product.product_name} (x{detail.quantity})
+          {detail.product?detail.product.product_name:detail.hampers.hampers_name} (x{detail.quantity})
         </span>
         <div className="w-full" />
         <span className=" text-end text-sm">
-          Rp. {detail.product.product_price}
+          Rp. {detail.product?detail.product.product_price:detail.hampers.hampers_price}
         </span>
       </div>
     );
