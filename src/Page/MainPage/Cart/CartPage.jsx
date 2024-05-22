@@ -5,7 +5,7 @@ import Input from "../../../Component/Input";
 import Footer from "../../../Component/Footer";
 import { Pagination } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { RotateLoader } from "react-spinners";
 import { getPicture } from "../../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,29 +28,26 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useQueryClient } from "@tanstack/react-query";
+import { StoreTransaction } from "../../../api/TransactionApi";
+import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "../../../lib/FormatCurrency";
 
 export default function CartPage() {
-  function formatCurrency(amount) {
-    const formatter = new Intl.NumberFormat("ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-    return formatter.format(amount);
-  }
   const queryClient = useQueryClient();
   const [carts, setCarts] = useState([]);
   const [filteredCarts, setFilteredCarts] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [dataSelected, setDataSelected] = useState();
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
     const filteredItem = carts.filter((item) =>
       item.order_date.toLowerCase().includes(event.target.value.toLowerCase()),
     );
-    console.log(filteredItem);
     setFilteredCarts(filteredItem);
   };
 
@@ -58,11 +55,12 @@ export default function CartPage() {
     const orderDataSelected = filteredCarts.filter(
       (item) => item.order_date === event.target.value,
     );
-    setDataSelected(orderDataSelected);
     let total = 0;
     orderDataSelected[0].data.forEach((element) => {
       total += element.total_price;
     });
+    orderDataSelected[0].total = total;
+    setDataSelected(orderDataSelected);
     setTotal(total);
   };
   const handleChangeAmount = (type, index, item) => {
@@ -100,7 +98,6 @@ export default function CartPage() {
                 (updatedCart.data[index].quantity + 1),
             };
           }
-          console.log("up", updatedCart.data[index]);
         } else if (
           type === "decrement" &&
           updatedCart.data[index].quantity > 1
@@ -162,6 +159,31 @@ export default function CartPage() {
       });
     } else {
       swallDelete(data);
+    }
+  };
+
+  const handleStoreOrder = (data) => {
+    if (!dataSelected) {
+      toast.error("Please Check The Order Before", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    } else {
+      setLoading(true);
+      StoreTransaction(data[0])
+        .then((res) => {
+          console.log(res);
+          queryClient.invalidateQueries(["carts"]);
+          navigate(`/checkout/${res.transaction.id}`);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
   };
 
@@ -378,7 +400,7 @@ export default function CartPage() {
                                   <th className="text-start font-medium ">
                                     Quantity
                                   </th>
-                                  <th className="text-start font-medium ">
+                                  <th className="text-end font-medium ">
                                     Subtotal
                                   </th>
                                 </tr>
@@ -439,10 +461,11 @@ export default function CartPage() {
                                         </div>
                                       </td>
                                       <td>
-                                        <div className="flex w-2/4 justify-between py-2">
-                                          <div className="pt-2">
+                                        <div className="flex w-3/4 justify-between rounded-2xl border-2 border-gray-200">
+                                          <div className="">
                                             <Button
-                                              className={`border-orange-500 bg-transparent text-orange-500 hover:text-white`}
+                                              withoutAnimate
+                                              className={`border-0 border-transparent bg-transparent text-orange-500`}
                                               onClick={() =>
                                                 handleChangeAmount(
                                                   "decrement",
@@ -454,17 +477,13 @@ export default function CartPage() {
                                               -
                                             </Button>
                                           </div>
-                                          <div className="w-3/5 text-center">
-                                            <Input
-                                              id="amount"
-                                              value={order.quantity}
-                                              textCenter
-                                              readOnly
-                                            />
+                                          <div className="flex items-center text-center">
+                                            <p>{order.quantity}</p>
                                           </div>
-                                          <div className="pt-2">
+                                          <div className="">
                                             <Button
-                                              className="border-orange-500 bg-transparent text-orange-500 hover:text-white"
+                                              withoutAnimate
+                                              className={`border-0 bg-transparent text-orange-500`}
                                               onClick={() =>
                                                 handleChangeAmount(
                                                   "increment",
@@ -478,7 +497,7 @@ export default function CartPage() {
                                           </div>
                                         </div>
                                       </td>
-                                      <td className="text-start">
+                                      <td className="text-end font-semibold">
                                         {formatCurrency(order.total_price)}
                                       </td>
                                     </motion.tr>
@@ -524,7 +543,10 @@ export default function CartPage() {
                 <p className="text-start text-lg font-semibold">
                   {formatCurrency(total)}{" "}
                 </p>
-                <Button className="my-6 w-full bg-orange-500 text-white">
+                <Button
+                  className="my-6 w-full bg-orange-500 text-white"
+                  onClick={() => handleStoreOrder(dataSelected)}
+                >
                   <FontAwesomeIcon icon={faCartShopping} /> Order Now
                 </Button>
               </div>

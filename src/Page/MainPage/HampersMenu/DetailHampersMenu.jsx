@@ -17,6 +17,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AddCartItem } from "../../../api/CartApi";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { formatCurrency } from "../../../lib/FormatCurrency";
 import {
   faBox,
   faCalendar,
@@ -253,15 +254,6 @@ export function PreOrder({ value, hampers, data, setData, currentStock }) {
       setData({ ...data, quantity: data.quantity - 1 });
     }
   };
-
-  function formatCurrency(amount) {
-    const formatter = new Intl.NumberFormat("ID", {
-      style: "currency",
-      currency: "IDR",
-    });
-
-    return formatter.format(amount);
-  }
 
   useEffect(() => {
     setData({

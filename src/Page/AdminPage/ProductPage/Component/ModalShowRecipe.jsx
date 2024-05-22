@@ -105,17 +105,6 @@ export default function ModalShowRecipe({ open, setOpen, id }) {
                   </tbody>
                 </table>
               </div>
-              {/* <h1 className="mt-4 text-end text-2xl font-semibold text-orange-500">
-                {" "}
-                <FontAwesomeIcon icon={faDollar} className="me-1" /> Total Price
-                :{" "}
-                {ingredientProcurement.ingredient_procurement.total_price <= 999
-                  ? ingredientProcurement.ingredient_procurement.total_price
-                  : (
-                      ingredientProcurement.ingredient_procurement.total_price /
-                      1000
-                    ).toFixed(1) + "K"}
-              </h1> */}
             </div>
           </div>
         </motion.div>

@@ -34,7 +34,7 @@ import CartPage from "./Page/MainPage/Cart/CartPage";
 // checkout
 import RootCheckout from "./Root/Main/Checkout/RootCheckout";
 import CheckoutPage from "./Page/MainPage/Checkout/CheckoutPage";
-
+import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
 import ForgotPassword from "./Page/ChangePasswordCustomer/ForgotPassword";
@@ -237,7 +237,9 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "checkout",
+        path: "checkout/:id",
+        id: "order-detail",
+        loader: loadOrder,
         element: (
           <ProtectedRoot role_id={4}>
             <RootCheckout />
