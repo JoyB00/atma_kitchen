@@ -111,7 +111,6 @@ export default function HampersTable({ data, search, length }) {
             .slice(startIndex, endIndex)
             .map((item) => (
               <motion.tr
-                //   variants={productItem}
                 className="border-t-2 border-gray-100  text-black"
                 key={item.id}
               >

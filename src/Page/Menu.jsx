@@ -8,7 +8,6 @@ import { Pagination } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FetchAllProducts } from "../api/ProductApi";
-import { FetchAllHampers } from "../api/HampersApi";
 import { RotateLoader } from "react-spinners";
 import { getPicture } from "../api";
 export default function Menu() {
@@ -220,15 +219,6 @@ export default function Menu() {
                   Entrusted
                 </NavLink>
               </li>
-              <li className="pt-2">
-                <NavLink
-                  className="text-black"
-                  id="Hampers"
-                  onClick={handleSortByCategory}
-                >
-                  Hampers
-                </NavLink>
-              </li>
             </ul>
           </div>
           <div className="col-span-4">
@@ -272,6 +262,7 @@ export default function Menu() {
                           transition={{ type: "spring" }}
                         >
                           <CardProduct
+                            url="menu"
                             id={product.id}
                             alt={product.product_name}
                             image={
