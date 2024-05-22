@@ -3,14 +3,21 @@ import Footer from "../../../Component/Footer";
 import Input from "../../../Component/Input.jsx";
 import Button from "../../../Component/Button.jsx";
 import { Form } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { FetchAllAddresses } from "../../../api/AddressApi.jsx";
 import { RotateLoader } from "react-spinners";
 import { useState } from "react";
-import { Modal } from "@mui/material";
+import { Modal, Box } from "@mui/material";
 import delivery from "../../../assets/delivery.json";
 import Lottie from "lottie-react";
-import { AddAddress } from "../../../api/AddressApi";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  AddAddress,
+  EditAddress,
+  GetAddressById,
+  DeleteAddress,
+} from "../../../api/AddressApi";
+import { BeatLoader } from "react-spinners";
+import { toast } from "react-hot-toast";
 
 export default function ModifyAddressPage() {
   const addresses = useQuery({
@@ -53,6 +60,8 @@ export default function ModifyAddressPage() {
 
 export function AddAddressModal() {
   const [isOpened, setIsOpened] = useState(false);
+  const [isChildOpened, setIsChildOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
   const handleChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
@@ -64,10 +73,22 @@ export function AddAddressModal() {
   const closeModal = () => {
     setIsOpened(false);
   };
+  const openChildModal = () => {
+    setIsChildOpened(true);
+  };
+  const closeChildModal = () => {
+    setIsChildOpened(false);
+  };
 
+  const queryClient = useQueryClient();
   const submit = async () => {
     try {
-      const response = AddAddress(data);
+      const response = await AddAddress(data);
+      closeModal();
+      closeChildModal();
+      await queryClient.refetchQueries("addresses");
+      setIsLoading(false);
+      toast.success("The address has been added succesfully!");
       return response;
     } catch (error) {
       console.log(error.response.data);
@@ -95,10 +116,10 @@ export function AddAddressModal() {
                 <Input
                   onChange={handleChange}
                   withAnimate
-                  label="Full address"
-                  id="fullAddress"
+                  label="Complete address"
+                  id="complete_address"
                   type="text"
-                  placeholder="Full address"
+                  placeholder="Complete address"
                 />
                 <Input
                   onChange={handleChange}
@@ -120,19 +141,55 @@ export function AddAddressModal() {
                   onChange={handleChange}
                   withAnimate
                   label="Postal code"
-                  id="postalCode"
+                  id="postal_code"
                   type="text"
                   placeholder="Postal code"
                 />
                 <div className="flex flex-row justify-center pt-2">
                   <Button
                     className="bg-orange-500 text-sm text-white"
-                    onClick={submit}
+                    onClick={openChildModal}
                   >
                     Save
                   </Button>
+                  <Modal open={isChildOpened} onClose={closeChildModal}>
+                    <div className="flex size-full items-center justify-center text-black">
+                      <div className="flex min-h-20 flex-col items-center rounded-md bg-slate-100 p-16">
+                        <span className="text-lg">
+                          Are you sure wanna add this address?
+                        </span>
+                        <div className="py-2" />
+                        <div className="flex flex-row">
+                          <Button
+                            className="bg-orange-500 text-sm text-white"
+                            onClick={submit}
+                          >
+                            {isLoading ? (
+                              <BeatLoader
+                                color="white"
+                                loading={true}
+                                size={10}
+                              />
+                            ) : (
+                              <span>Yes, it is correct</span>
+                            )}
+                          </Button>
+                          <div className="px-1" />
+                          <Button
+                            className="border-orange-500 text-sm text-orange-500 hover:text-white"
+                            onClick={closeChildModal}
+                          >
+                            Nope, go back
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
                   <div className="px-1" />
-                  <Button className="border-orange-500 text-sm text-orange-500 hover:text-white">
+                  <Button
+                    className="border-orange-500 text-sm text-orange-500 hover:text-white"
+                    onClick={closeModal}
+                  >
                     Cancel
                   </Button>
                 </div>
@@ -140,6 +197,163 @@ export function AddAddressModal() {
               <div className="min-h-full w-px bg-slate-300" />
               <Lottie animationData={delivery} className="w-1/3" />
             </div>
+          </div>
+        </div>
+      </Modal>
+    </>
+  );
+}
+
+export function EditAddressForm({ address }) {
+  const [isOpened, setIsOpened] = useState(false);
+  const [isChildOpened, setIsChildOpened] = useState(false);
+  const [data, setData] = useState({
+    id: address.id,
+    complete_address: address.complete_address,
+    city: address.city,
+    subdistrict: address.subdistrict,
+    postal_code: address.postal_code,
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const handleChange = (event) => {
+    setData({ ...data, [event.target.name]: event.target.value });
+  };
+
+  const openModal = () => {
+    setIsOpened(true);
+  };
+  const closeModal = () => {
+    setIsOpened(false);
+  };
+  const openChildModal = () => {
+    setIsChildOpened(true);
+  };
+  const closeChildModal = () => {
+    setIsChildOpened(false);
+  };
+
+  const queryClient = useQueryClient();
+  const submit = async () => {
+    try {
+      setIsLoading(true);
+      const response = await EditAddress(data);
+      closeModal();
+      closeChildModal();
+      await queryClient.refetchQueries("addresses");
+      setIsLoading(false);
+      toast.success("The address has been edited succesfully!");
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      {/* i'll switch this to fontawesome icon sometime 😅 */}
+      <Button
+        className="border-orange-500 text-orange-500 hover:text-white"
+        onClick={openModal}
+      >
+        Edit
+      </Button>
+
+      <Modal open={isOpened} onClose={closeModal}>
+        <div className="flex size-full items-center justify-center">
+          <div className="flex min-h-20 w-1/2 flex-col rounded-md bg-slate-100 p-8">
+            <span className="text-2xl font-bold text-orange-600">
+              Edit Address
+            </span>
+            <span className="text-base font-semibold text-black">
+              Make sure it is correct, so we can deliver faster 😊
+            </span>
+            <div className="py-2" />
+            <Form>
+              <Input
+                onChange={handleChange}
+                withAnimate
+                label="Complete address"
+                id="complete_address"
+                type="text"
+                placeholder="Complete address"
+                defaultValue={address.complete_address}
+              />
+              <Input
+                onChange={handleChange}
+                withAnimate
+                label="City"
+                id="city"
+                type="text"
+                placeholder="City"
+                defaultValue={address.city}
+              />
+              <Input
+                onChange={handleChange}
+                withAnimate
+                label="Subdistrict"
+                id="subdistrict"
+                type="text"
+                placeholder="Subdistrict"
+                defaultValue={address.subdistrict}
+              />
+              <Input
+                onChange={handleChange}
+                withAnimate
+                label="Postal code"
+                id="postal_code"
+                type="text"
+                placeholder="Postal code"
+                defaultValue={address.postal_code}
+              />
+              <div className="flex flex-row justify-center pt-2">
+                <Button
+                  className="bg-orange-500 text-sm text-white"
+                  onClick={openChildModal}
+                >
+                  Save
+                </Button>
+                <Modal open={isChildOpened} onClose={closeChildModal}>
+                  <div className="flex size-full items-center justify-center text-black">
+                    <div className="flex min-h-20 flex-col items-center rounded-md bg-slate-100 p-16">
+                      <span className="text-lg">
+                        Are you sure wanna edit this address?
+                      </span>
+                      <div className="py-2" />
+                      <div className="flex flex-row">
+                        <Button
+                          className="bg-orange-500 text-sm text-white"
+                          onClick={submit}
+                        >
+                          {isLoading ? (
+                            <BeatLoader
+                              color="white"
+                              loading={true}
+                              size={10}
+                            />
+                          ) : (
+                            <span>Yes, it is correct</span>
+                          )}
+                        </Button>
+                        <div className="px-1" />
+                        <Button
+                          className="border-orange-500 text-sm text-orange-500 hover:text-white"
+                          onClick={closeChildModal}
+                        >
+                          Nope, go back
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
+                <div className="px-1" />
+                <Button
+                  className="border-orange-500 text-sm text-orange-500 hover:text-white"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Form>
           </div>
         </div>
       </Modal>
@@ -158,10 +372,7 @@ export function AddressTile({ address }) {
         <span className="text-sm">{address.postal_code}</span>
       </div>
       <div className="flex flex-col text-white">
-        {/* i'll switch this to fontawesome icon sometime 😅 */}
-        <Button className="border-orange-500 text-orange-500 hover:text-white">
-          Edit
-        </Button>
+        <EditAddressForm address={address} />
         <div className="py-1" />
         <Button className="border-red-500 text-red-500 hover:text-white">
           Delete

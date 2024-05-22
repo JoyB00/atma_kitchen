@@ -14,6 +14,20 @@ const FetchAllAddresses = async () => {
   }
 };
 
+const GetAddressById = async (id) => {
+  try {
+    const response = await useAxios.get(`/address/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 const AddAddress = async (data) => {
   try {
     const response = await useAxios.post("/address", data, {
@@ -30,7 +44,7 @@ const AddAddress = async (data) => {
 
 const EditAddress = async (data) => {
   try {
-    const response = await useAxios.put(`/customer/${data.id}`, data, {
+    const response = await useAxios.put(`/address/${data.id}`, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -56,4 +70,10 @@ const DeleteAddress = async (id) => {
   }
 };
 
-export { FetchAllAddresses, AddAddress, EditAddress, DeleteAddress };
+export {
+  FetchAllAddresses,
+  GetAddressById,
+  AddAddress,
+  EditAddress,
+  DeleteAddress,
+};
