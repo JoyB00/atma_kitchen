@@ -8,14 +8,34 @@ import { Suspense } from "react";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
+import ProtectedRootForgotPass from "./Root/ProtectedRoot/ProtectedRootForgotPass";
 import LoadingPage from "./Component/LoadingPage";
 //
 import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
+
+// Menu
+import RootMenuPage from "./Root/Main/Menu/RootMenuPage";
 import About from "./Page/About";
 import Menu from "./Page/Menu";
-import Contact from "./Page/Contact";
+import { DetailMenu } from "./Page/MainPage/Menu/DetailMenu";
+import { loader as loadDetailMenu } from "./Page/MainPage/Menu/DetailMenu";
+
+// Hampers Menu
+import RootMenuHampersPage from "./Root/Main/Hampers/RootMenuHampers";
+import HampersMenu from "./Page/MainPage/HampersMenu/HampersMenu";
+import { DetailHampersMenu } from "./Page/MainPage/HampersMenu/DetailHampersMenu";
+import { loader as loadDetailHampers } from "./Page/MainPage/HampersMenu/DetailHampersMenu";
+
+// Cart
+import RootCart from "./Root/Main/Cart/RootCart";
+import CartPage from "./Page/MainPage/Cart/CartPage";
+
+// checkout
+import RootCheckout from "./Root/Main/Checkout/RootCheckout";
+import CheckoutPage from "./Page/MainPage/Checkout/CheckoutPage";
+import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";import Contact from "./Page/Contact";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -76,6 +96,7 @@ import RootCustomer from "./Root/Customer/RootCustomer";
 import CustomerProfile from "./Page/CustomerPage/CustomerProfile";
 import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomerProfile";
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
+import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
 
 // Root Consignor
 
@@ -102,6 +123,11 @@ import AddEmployeeSalary from "./Page/OwnerPage/EmployeeSalaryPage/AddEmployeeSa
 import { loader as loadEmployee } from "./Page/OwnerPage/EmployeeSalaryPage/AddEmployeeSalary/AddEmployeeSalary";
 import EditEmployeeSalary from "./Page/OwnerPage/EmployeeSalaryPage/EditEmployeeSalary/EditEmployeeSalary";
 import { loader as loadSalary } from "./Page/OwnerPage/EmployeeSalaryPage/EditEmployeeSalary/EditEmployeeSalary";
+
+//
+import ForgotPasswordEmployeePage from "./Page/EmployeePage/ForgotPassword";
+import { loader as loadId } from "./Page/EmployeePage/ForgotPassword";
+import { Root } from "postcss";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -136,7 +162,11 @@ const router = createBrowserRouter([
           },
           {
             path: ":token",
-            element: <ChangePassword />,
+            element: (
+              <ProtectedRootForgotPass>
+                <ChangePassword />
+              </ProtectedRootForgotPass>
+            ),
           },
         ],
       },
@@ -154,8 +184,86 @@ const router = createBrowserRouter([
         path: "menu",
         element: (
           <ProtectedRoot role_id={4}>
-            <Menu />,
+            <RootMenuPage />
           </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Menu />,
+          },
+          {
+            path: ":id",
+            id: "detail-menu",
+            loader: loadDetailMenu,
+            children: [
+              {
+                index: true,
+                element: <DetailMenu />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "hampers",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootMenuHampersPage />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <HampersMenu />,
+          },
+          {
+            path: ":id",
+            id: "detail-menu-hampers",
+            loader: loadDetailHampers,
+            children: [
+              {
+                index: true,
+                element: <DetailHampersMenu />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "cart",
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootCart />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CartPage />,
+          },
+        ],
+      },
+      {
+        path: "checkout/:id",
+        id: "order-detail",
+        loader: loadOrder,
+        element: (
+          <ProtectedRoot role_id={4}>
+            <RootCheckout />
+          </ProtectedRoot>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CheckoutPage />,
+          },
+        ],
+      },
+      {
+        path: "contact",
+        element: (
+            <Contact />
         ),
       },
       {
@@ -425,6 +533,23 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "ForgotPasswordEmployee",
+        element: <RootEmployee />,
+        children: [
+          {
+            path: ":roleId",
+            id: "load-id",
+            loader: loadId,
+            children: [
+              {
+                index: true,
+                element: <ForgotPasswordEmployeePage />,
+              },
+            ],
+          },
+        ],
+      },
+      {
         path: "CustomerDashboard",
         element: (
           <ProtectedRoot role_id={4}>
@@ -445,6 +570,10 @@ const router = createBrowserRouter([
           {
             path: "ChangePassword",
             element: <ChangePasswordLoggedIn />,
+          },
+          {
+            path: "OrderHistory",
+            element: <OrderHistory />,
           },
         ],
       },

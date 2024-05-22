@@ -8,21 +8,25 @@ import { Modal, Box } from "@mui/material";
 import Input from "../../../../Component/Input.jsx";
 import InputDate from "../../../../Component/InputDate.jsx";
 import { AddEmployee, UpdateEmployee } from "../../../../api/EmployeeApi.jsx";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function ModifyEmployeeForm({
   mode,
   id_employee,
   employee,
   roleList,
+  setInvalidator,
 }) {
   const [data, setData] = useState({
     id: mode === "edit" ? employee.id : 0,
-    role_id: mode === "edit" ? employee.role_id : 0,
-    gender: mode === "edit" ? employee.gender : "",
-    fullName: mode === "edit" ? employee.fullName : "",
-    email: mode === "edit" ? employee.email : "",
-    phoneNumber: mode === "edit" ? employee.phoneNumber : "",
-    dateOfBirth: mode === "edit" ? employee.dateOfBirth : "",
+    role_id: mode === "edit" ? employee.users.role_id : 0,
+    gender: mode === "edit" ? employee.users.gender : "Male",
+    fullName: mode === "edit" ? employee.users.fullName : "",
+    email: mode === "edit" ? employee.users.email : "",
+    phoneNumber: mode === "edit" ? employee.users.phoneNumber : "",
+    dateOfBirth: mode === "edit" ? employee.users.dateOfBirth : "",
   });
   const gender = ["Male", "Female", "Prefer not to say"];
   let animate = {
@@ -39,13 +43,43 @@ export default function ModifyEmployeeForm({
     setData({ ...data, [event.target.name]: event.target.value });
   };
 
+  const swallUpdate = () => {
+    setIsOpen(false);
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to save this employee ?  `,
+        text: `You won't be able to revert this!`,
+        icon: `warning`,
+        showCancelButton: true,
+        confirmButtonColor: `#3085d6`,
+        cancelButtonColor: `#d33`,
+        confirmButtonText: `Yes, update it!`,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          modifyEmployee();
+        }
+      });
+  };
+
   const modifyEmployee = () => {
     if (mode === "add") {
       console.log("Creating employee");
       console.log(data);
+
+      //show confirmation dialog
+
       // for add mode
       AddEmployee(data).then((res) => {
         console.log(res);
+      });
+
+      toast.success("Employee has been added", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
       });
     } else {
       // for edit mode
@@ -54,8 +88,16 @@ export default function ModifyEmployeeForm({
       UpdateEmployee(data).then((res) => {
         console.log(res);
       });
-      setIsOpen(false);
+
+      toast.success("Employee has been updated", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
     }
+    setInvalidator((prev) => !prev);
   };
 
   return (
@@ -66,9 +108,9 @@ export default function ModifyEmployeeForm({
         <EditEmployeeButton setIsOpen={setIsOpen} />
       )}
       <Modal open={isOpen} onClose={handleClose}>
-        <div className="flex justify-center items-center min-h-full">
-          <Box className="flex flex-col bg-white w-2/3 p-8 rounded-xl">
-            <span className="text-[#ef4444] font-semibold text-3xl">
+        <div className="flex min-h-full items-center justify-center">
+          <Box className="flex w-2/3 flex-col rounded-xl bg-white p-8">
+            <span className="text-3xl font-semibold text-[#ef4444]">
               {mode === "add" ? "Add Employee" : "Edit Employee"}
             </span>
             <div className="flex flex-col">
@@ -82,25 +124,27 @@ export default function ModifyEmployeeForm({
                   placeholder="Full Name"
                   defaultValue={data.fullName}
                 />
-                <Input
-                  onChange={handleChange}
-                  withAnimate
-                  label="E-mail"
-                  id="email"
-                  type="text"
-                  placeholder="E-mail"
-                  defaultValue={data.email}
-                />
                 {mode === "add" ? (
-                  <Input
-                    onChange={handleChange}
-                    withAnimate
-                    label="Password"
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    defaultValue={data.password}
-                  />
+                  <>
+                    <Input
+                      onChange={handleChange}
+                      withAnimate
+                      label="E-mail"
+                      id="email"
+                      type="text"
+                      placeholder="E-mail"
+                      defaultValue={data.email}
+                    />
+                    <Input
+                      onChange={handleChange}
+                      withAnimate
+                      label="Password"
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      defaultValue={data.password}
+                    />
+                  </>
                 ) : (
                   <div />
                 )}
@@ -127,7 +171,7 @@ export default function ModifyEmployeeForm({
                 <div className="py-2" />
                 <motion.select
                   {...animate}
-                  className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
+                  className="block w-full rounded-2xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   onChange={handleChange}
                   name="role_id"
                   id="role_id"
@@ -142,7 +186,7 @@ export default function ModifyEmployeeForm({
                 <div className="py-2" />
                 <motion.select
                   {...animate}
-                  className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
+                  className="block w-full rounded-2xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                   onChange={handleChange}
                   name="gender"
                   id="gender"
@@ -160,7 +204,7 @@ export default function ModifyEmployeeForm({
                 <Button
                   className="bg-orange-500"
                   withoutAnimate
-                  onClick={modifyEmployee}
+                  onClick={swallUpdate}
                 >
                   Save changes
                 </Button>
@@ -187,7 +231,7 @@ export function AddEmployeeButton({ setIsOpen }) {
   };
 
   return (
-    <Button className="bg-orange-500 my-4 text-white" onClick={handleClick}>
+    <Button className="my-4 bg-orange-500 text-white" onClick={handleClick}>
       <FontAwesomeIcon icon={faUserPlus} className="me-1" />
       Add Employee
     </Button>
@@ -201,7 +245,7 @@ export function EditEmployeeButton({ setIsOpen }) {
 
   return (
     <Button
-      className="bg-orange-50 border-2 border-orange-300"
+      className="border-2 border-orange-300 bg-orange-50"
       onClick={handleClick}
     >
       <div className="flex flex-row items-center">

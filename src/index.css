@@ -56,7 +56,7 @@ button:hover {
 }
 
 button:focus-visible {
-  outline: 4px auto ;
+  outline: 4px auto;
 }
 
 @media (prefers-color-scheme: light) {

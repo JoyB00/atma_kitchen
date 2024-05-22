@@ -8,17 +8,25 @@ import {
   faFilePen,
   faGifts,
   faHistory,
-  faHouse,
+  faLock,
   faUser,
+  faMoneyBill,
+  faTruck,
+  faCheckToSlot,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import Button from "../../../../../Component/Button";
+import { useNavigate } from "react-router-dom";
+import { expandTransaction } from "../../../../../lib/AtomVar";
 
 export default function AdminNavigation({
   expandedMaster,
   setExpandedMaster,
   expandedOperational,
   setExpandedOperational,
+  expandedTransaction,
+  setExpandedTransaction,
 }) {
   return (
     <>
@@ -29,16 +37,16 @@ export default function AdminNavigation({
         transition={{ type: "just" }}
         className={`${
           expandedMaster
-            ? "text-white bg-gradient-to-b from-orange-400  to-orange-500 text-start rounded-full hover:text-white "
-            : " text-gray-400 text-start hover:text-orange-400"
-        }py-4 mt-2 grid-cols-4 grid w-full`}
+            ? "rounded-full bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-white "
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-4 mt-2 grid w-full grid-cols-4`}
         onClick={() => setExpandedMaster(!expandedMaster)}
       >
-        <div className="ms-3 text-start col-span-1">
+        <div className="col-span-1 ms-3 text-start">
           <FontAwesomeIcon icon={faFilePen} />
         </div>
-        <p className="font-normal text-start col-span-2 ">Master Data</p>
-        <div className="flex justify-end my-auto text-start col-span-1">
+        <p className="col-span-2 text-start font-normal ">Master Data</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
             icon={expandedMaster ? faChevronDown : faChevronRight}
           />
@@ -63,6 +71,7 @@ export default function AdminNavigation({
           />
         </div>
       ) : undefined}
+
       <motion.button
         whileHover={{
           scale: 1.05,
@@ -70,16 +79,16 @@ export default function AdminNavigation({
         transition={{ type: "just" }}
         className={`${
           expandedOperational
-            ? "text-white bg-gradient-to-b from-orange-400  to-orange-500 text-start rounded-2xl hover:text-orange-400"
-            : " text-gray-400 text-start hover:text-orange-400"
-        }py-2 mt-2 grid-cols-4 grid w-full`}
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-2 mt-2 grid w-full grid-cols-4`}
         onClick={() => setExpandedOperational(!expandedOperational)}
       >
-        <div className="ms-3  text-start col-span-1">
+        <div className="col-span-1  ms-3 text-start">
           <FontAwesomeIcon icon={faFileArchive} />
         </div>
-        <p className="font-normal text-start col-span-2 ">Operational Data</p>
-        <div className="flex justify-end my-auto text-start col-span-1">
+        <p className="col-span-2 text-start font-normal ">Operational Data</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
             icon={expandedOperational ? faChevronDown : faChevronRight}
           />
@@ -99,6 +108,49 @@ export default function AdminNavigation({
           />
         </div>
       ) : undefined}
+
+      <motion.button
+        whileHover={{
+          scale: 1.05,
+        }}
+        transition={{ type: "just" }}
+        className={`${
+          expandedTransaction
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-2 mt-2 grid w-full grid-cols-4`}
+        onClick={() => setExpandedTransaction(!expandedTransaction)}
+      >
+        <div className="col-span-1  ms-3 text-start">
+          <FontAwesomeIcon icon={faMoneyBill} />
+        </div>
+        <p className="col-span-2 text-start font-normal ">Transactions</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
+          <FontAwesomeIcon
+            icon={expandedTransaction ? faChevronDown : faChevronRight}
+          />
+        </div>
+      </motion.button>
+      {expandedTransaction ? (
+        <div className="ms-8">
+          <Navigation
+            label="Delivery"
+            icon={faTruck}
+            url={"/AdminDashboard/"}
+          />
+          <Navigation
+            label="Payment Confirmation"
+            icon={faCheckToSlot}
+            url={"/AdminDashboard/"}
+          />
+        </div>
+      ) : undefined}
+
+      <Navigation
+        label="Forgot password?"
+        icon={faLock}
+        url={"/ForgotPasswordEmployee/2"}
+      />
     </>
   );
 }

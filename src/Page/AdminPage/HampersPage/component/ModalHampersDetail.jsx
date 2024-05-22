@@ -39,32 +39,32 @@ export default function ModalHampersDetail({ open, setOpen, id }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="bg-orange-500 w-full p-4">
-            <h1 className="text-3xl text-white font-semibold">
+          <div className="w-full bg-orange-500 p-4">
+            <h1 className="text-3xl font-semibold text-white">
               <FontAwesomeIcon icon={faGifts} className=" me-2" />
               Hampers Details
             </h1>
           </div>
-          <div className="grid grid-cols-5 gap-6 px-6 mt-6">
+          <div className="mt-6 grid grid-cols-5 gap-6 px-6">
             <div className="col-span-2">
               <div className="mt-2 h-full rounded-lg border border-dashed border-gray-900/25 px-2">
                 <LazyLoadImage
                   effect="blur"
                   alt="Hampers Picture"
                   src={getPicture(hampers.hampers.hampers_picture, "hampers")}
-                  className="object-cover h-[30rem] w-full "
+                  className="h-[30rem] w-full object-cover "
                 />
               </div>
             </div>
             <div className="col-span-3">
               <div className="w-screen">
-                <h1 className="text-black font-semibold ">
+                <h1 className="font-semibold text-black ">
                   {hampers.hampers.hampers_name.length < 11
                     ? hampers.hampers.hampers_name
                     : `${hampers.hampers.hampers_name.substring(0, 11)}...`}
                 </h1>
                 <Badge bgColor="bg-orange-500" ringColor="ring-transparent">
-                  <p className=" text-white text-lg">
+                  <p className=" text-lg text-white">
                     Price :{" "}
                     {hampers.hampers.hampers_price <= 999
                       ? hampers.hampers.hampers_price
@@ -72,8 +72,8 @@ export default function ModalHampersDetail({ open, setOpen, id }) {
                   </p>
                 </Badge>
               </div>
-              <div className="border-2 mt-4 rounded-xl ">
-                <ul className="text-black p-4">
+              <div className="mt-4 rounded-xl border-2 ">
+                <ul className="p-4 text-black">
                   {hampers.details.map((item) => {
                     return (
                       <li key={item.id} className="mb-3">
@@ -81,7 +81,7 @@ export default function ModalHampersDetail({ open, setOpen, id }) {
                           <>
                             <FontAwesomeIcon
                               icon={faEgg}
-                              className="text-orange-500 me-2"
+                              className="me-2 text-orange-500"
                             />
                             {item.ingredients.ingredient_name}
                           </>
@@ -89,7 +89,7 @@ export default function ModalHampersDetail({ open, setOpen, id }) {
                           <>
                             <FontAwesomeIcon
                               icon={faCookie}
-                              className="text-orange-500 me-2"
+                              className="me-2 text-orange-500"
                             />
                             {item.product.product_name}
                           </>

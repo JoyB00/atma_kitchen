@@ -5,13 +5,19 @@ import Input from "../../../Component/Input.jsx";
 import InputDate from "../../../Component/InputDate.jsx";
 import { motion } from "framer-motion";
 import Button from "../../../Component/Button.jsx";
-import { useState, useEffect } from "react";
-import { GetCustomerById, UpdateCustomer } from "../../../api/CustomerApi.jsx";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  EditCustomer,
+  GetLoggedInCustomer,
+} from "../../../api/CustomerApi.jsx";
+import { RotateLoader } from "react-spinners";
+
 export default function EditCustomerProfile() {
   return (
     <>
       <NavBar />
-      <div className="flex flex-col min-h-screen justify-center">
+      <div className="flex min-h-screen flex-col justify-center">
         <EditCustomerProfileContent />
       </div>
       <Footer />
@@ -22,7 +28,7 @@ export default function EditCustomerProfile() {
 export function EditCustomerProfileContent() {
   return (
     <>
-      <div className="flex flex-col px-20 w-1/2">
+      <div className="flex w-1/2 flex-col px-20">
         <Header />
         <div className="py-2" />
         <EditForm />
@@ -32,95 +38,138 @@ export function EditCustomerProfileContent() {
 }
 
 export function EditForm() {
-  const [formData, setFormData] = useState({
+  const user = useQuery({
+    queryKey: ["user"],
+    queryFn: GetLoggedInCustomer,
+  });
+  const [data, setData] = useState({
+    id: user.data.users.id,
     fullName: "",
     phoneNumber: "",
     gender: "",
     dateOfBirth: "",
   });
-
-  useEffect(() => {
-    const fetchCustomerData = async () => {
-      try {
-        const customerData = await GetCustomerById(); 
-        setFormData({
-          fullName: customerData.fullName,
-          phoneNumber: customerData.phoneNumber,
-          gender: customerData.gender,
-          dateOfBirth: customerData.dateOfBirth,
-        });
-      } catch (error) {
-        console.log("Error fetching customer data: ", error);
-      }
-    };
-    fetchCustomerData();
-  }, []);
-
   const handleChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    setData({ ...data, [event.target.name]: event.target.value });
   };
-
-  const handleSubmit = async (event) => {
+  const navigate = useNavigate();
+  const gender = ["Male", "Female", "Prefer not to say"];
+  let animate = {
+    initial: { opacity: 0, y: -100 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
+  const cancel = (event) => {
     event.preventDefault();
+    navigate("/CustomerDashboard");
+  };
+  const editProfile = () => {
+    // filling unedited data
+
+    if (data.fullName === "") {
+      data.fullName = user.data.users.fullName;
+    }
+    if (data.gender === "") {
+      data.gender = user.data.users.gender;
+    }
+    if (data.phoneNumber === "") {
+      data.phoneNumber = user.data.users.phoneNumber;
+    }
+    if (data.dateOfBirth === "") {
+      data.dateOfBirth = user.data.users.dateOfBirth;
+    }
+
     try {
-      await UpdateCustomer(formData); 
-      console.log("Customer data updated successfully!");
+      EditCustomer(data);
+      navigate("/CustomerDashboard");
     } catch (error) {
-      console.log("Error updating customer data: ", error);
+      console.log(error.response.data);
     }
   };
 
-  const genderOptions = ["Male", "Female", "Prefer not to say"];
-
   return (
-    <Form onSubmit={handleSubmit} method="post">
-      <Input
-        onChange={handleChange}
-        value={formData.fullName}
-        name="fullName"
-        type="text"
-        placeholder="Full Name"
-      />
-      <Input
-        onChange={handleChange}
-        value={formData.phoneNumber}
-        name="phoneNumber"
-        type="number"
-        placeholder="Phone Number"
-      />
-  <div className="py-1" />
-    <div className="grid grid-cols-2 gap-2">
-      <div className="col-span-1">
-      <motion.select
-        onChange={handleChange}
-        value={formData.gender}
-        name="gender"
-      >
-        {genderOptions.map((gender) => (
-          <option value={gender} key={gender}>
-            {gender}
-          </option>
-        ))}
-        </motion.select>
-        </div>
-        <div className="col-span-1 my-auto">
+    <>
+      {user.isFetching ? (
+        <>
+          <div className="flex justify-center py-20">
+            <RotateLoader
+              color="orange"
+              loading={user.isFetching}
+              cssOverride={{
+                justifyContent: "center",
+                borderColor: "red",
+              }}
+              size={50}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        </>
+      ) : (
+        <Form onSubmit={editProfile} method="post">
           <Input
             onChange={handleChange}
-            value={formData.dateOfBirth}
-            name="dateOfBirth"
-            type="date"
-            placeholder="Date of Birth"
+            withAnimate
+            label="Full Name"
+            id="fullName"
+            type="text"
+            placeholder="Full Name"
+            defaultValue={user.data.users.fullName}
           />
-        </div>
-      </div>
-      <div className="py-2" />
-      <div className="flex justofy-start">
-        <Button className="bg-orange-500" withoutAnimate type="submit">
-          Save changes
-        </Button>
-        <div className="px-1" />
-      </div>
-    </Form>
+          <Input
+            onChange={handleChange}
+            withAnimate
+            label="phoneNumber"
+            id="phoneNumber"
+            type="Number"
+            placeholder="Phone Number"
+            defaultValue={user.data.users.phoneNumber}
+          />
+          <div className="py-1" />
+          <div className="grid grid-cols-2 gap-2">
+            <div className="col-span-1">
+              <motion.select
+                {...animate}
+                className="block w-full rounded-2xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                onChange={handleChange}
+                name="gender"
+                id="gender"
+                defaultValue={user.data.users.gender}
+              >
+                {gender.map((gender) => (
+                  <option value={gender} key={gender}>
+                    {gender}
+                  </option>
+                ))}
+              </motion.select>
+            </div>
+            <div className="col-span-1 my-auto">
+              <InputDate
+                id="dateOfBirth"
+                name="dateOfBirth"
+                onChange={handleChange}
+                placeholder="Date of Birth"
+                defaultValue={user.data.users.dateOfBirth}
+              />
+            </div>
+          </div>
+          <div className="py-2" />
+          <div className="justofy-start flex">
+            <Button
+              className="bg-orange-500"
+              withoutAnimate
+              onClick={editProfile}
+            >
+              Save changes
+            </Button>
+            <div className="px-1" />
+            <Button className="" withoutAnimate onClick={cancel}>
+              Cancel
+            </Button>
+          </div>
+        </Form>
+      )}
+    </>
   );
 }
 
@@ -128,7 +177,7 @@ export function Header() {
   return (
     <>
       <div className="flex flex-col items-start">
-        <span className="font-bold text-orange-500 text-3xl">Edit profile</span>
+        <span className="text-3xl font-bold text-orange-500">Edit profile</span>
         <span className="text-xl">Undo your mistake here</span>
       </div>
     </>

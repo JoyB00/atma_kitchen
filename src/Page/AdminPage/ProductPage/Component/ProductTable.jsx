@@ -74,7 +74,7 @@ export default function ProductTable({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -95,7 +95,7 @@ export default function ProductTable({ search, data, length }) {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async (id) => {
-      await DeleteProduct(id);
+      await DisableProduct(id);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["products"]);
@@ -110,17 +110,17 @@ export default function ProductTable({ search, data, length }) {
   }, []);
   return (
     <>
-      <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className=" mb-6 mt-4 w-full  rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
-            <th className="text-start font-medium py-8 ps-8">Product Name</th>
-            <th className="text-start font-medium pe-6">Product Status</th>
-            <th className="text-start font-medium pe-6">Category</th>
-            <th className="text-center font-medium pe-6 ">Ready Stock</th>
-            <th className="text-center font-medium pe-6 ">Daily Stock</th>
-            <th className="text-start font-medium pe-6">Price</th>
+            <th className="py-8 ps-8 text-start font-medium">Product Name</th>
+            <th className="pe-6 text-start font-medium">Product Status</th>
+            <th className="pe-6 text-start font-medium">Category</th>
+            <th className="pe-6 text-center font-medium ">Ready Stock</th>
+            <th className="pe-6 text-center font-medium ">Daily Stock</th>
+            <th className="pe-6 text-start font-medium">Price</th>
             <th className="text-center font-medium ">Recipes</th>
-            <th className="text-center font-medium pe-6">Action</th>
+            <th className="pe-6 text-center font-medium">Action</th>
           </tr>
         </thead>
         <motion.tbody
@@ -142,7 +142,7 @@ export default function ProductTable({ search, data, length }) {
                 className="border-t-2 border-gray-100  text-black"
                 key={item.id}
               >
-                <td className="font-medium py-6 ps-4 pe-6">
+                <td className="py-6 pe-6 ps-4 font-medium">
                   <div className="flex items-center ">
                     <LazyLoadImage
                       effect="blur"
@@ -152,16 +152,16 @@ export default function ProductTable({ search, data, length }) {
                           : defaultImage
                       }
                       alt=""
-                      className="w-16 h-16 rounded-full object-cover"
+                      className="h-16 w-16 rounded-full object-cover"
                     />
                     <div>
                       <p className="ps-3 text-sm">{item.product_name}</p>
                       <Button
                         withoutAnimate
-                        className=" text-orange-500 bg-transparent hover:text-orange-600 text-center"
+                        className=" bg-transparent text-center text-orange-500 hover:text-orange-600"
                         onClick={() => handleOpenModalLimit(item.id)}
                       >
-                        <p className="text-sm text-start">
+                        <p className="text-start text-sm">
                           <FontAwesomeIcon icon={faCalendar} className="me-2" />
                           See Limit Daily
                         </p>
@@ -169,16 +169,16 @@ export default function ProductTable({ search, data, length }) {
                     </div>
                   </div>
                 </td>
-                <td className="font-medium text-start text-sm">
+                <td className="text-start text-sm font-medium">
                   {item.product_status}
                 </td>
-                <td className="font-medium text-start text-sm">
+                <td className="text-start text-sm font-medium">
                   {item.categories.category_name}
                 </td>
-                <td className="font-medium text-center text-sm ">
+                <td className="text-center text-sm font-medium ">
                   {item.ready_stock} pcs
                 </td>
-                <td className="font-medium text-center text-sm">
+                <td className="text-center text-sm font-medium">
                   {item.daily_stock} pcs
                 </td>
                 <td className="text-start font-medium ">
@@ -192,7 +192,7 @@ export default function ProductTable({ search, data, length }) {
                 </td>
                 <td className="text-center">
                   <Button
-                    className=" text-orange-500 px-4 text-[0.9rem] mx-2 w-7/12 bg-transparent hover:text-white text-center"
+                    className=" mx-2 w-7/12 bg-transparent px-4 text-center text-[0.9rem] text-orange-500 hover:text-white"
                     onClick={() => handleOpenModal(item.id)}
                   >
                     <p>
@@ -205,10 +205,10 @@ export default function ProductTable({ search, data, length }) {
                   </Button>
                 </td>
                 <td className="font-medium ">
-                  <div className="flex justify-center me-2">
+                  <div className="me-2 flex justify-center">
                     <NavLink to={`/AdminDashboard/product/${item.id}`}>
                       <Button
-                        className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
+                        className="me-2 bg-orange-500 px-4 text-[0.9rem] text-white"
                         onClick={() => handleLoadEdit(item.id)}
                       >
                         {load && idItemLoad == item.id ? (
@@ -222,7 +222,7 @@ export default function ProductTable({ search, data, length }) {
                       </Button>
                     </NavLink>
                     <Button
-                      className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-[0.9rem]"
+                      className="border-orange-500 bg-transparent px-2 text-[0.9rem] text-orange-500 hover:text-white"
                       onClick={() => swallDelete(item)}
                     >
                       <FontAwesomeIcon icon={faTrash} className="me-2" />
@@ -239,7 +239,7 @@ export default function ProductTable({ search, data, length }) {
               <Pagination
                 count={Math.ceil(length / productPerPage)}
                 size="small"
-                className="flex justify-center mb-4"
+                className="mb-4 flex justify-center"
                 onChange={handleChange}
               />
             </td>

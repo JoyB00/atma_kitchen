@@ -28,8 +28,8 @@ export default function Register() {
     <div className="w-full ">
       <Navbar />
 
-      <div className=" md:flex  bg-gradient-to-r from-cyan-100 via-transparent pt-24">
-        <div className="w-1/2 pb-16 my-auto max-w-screen-md">
+      <div className=" bg-gradient-to-r  from-cyan-100 via-transparent pt-24 md:flex">
+        <div className="my-auto w-1/2 max-w-screen-md pb-16">
           <Carousel {...settings} className="mySwiper">
             <SwiperSlide className="px-8  drop-shadow-md">
               <Lottie animationData={kue} />
@@ -37,12 +37,12 @@ export default function Register() {
             <SwiperSlide className=" px-8 drop-shadow-md">
               <Lottie animationData={chef} />
             </SwiperSlide>
-            <SwiperSlide className="px-6 ms-12 drop-shadow-md">
+            <SwiperSlide className="ms-12 px-6 drop-shadow-md">
               <Lottie animationData={delivery} />
             </SwiperSlide>
           </Carousel>
         </div>
-        <div className="w-1/2 my-auto">
+        <div className="my-auto w-1/2">
           {/* Box register */}
           <motion.img
             initial={{ opacity: 0, y: -100 }}
@@ -50,19 +50,19 @@ export default function Register() {
             exit={{ opacity: 0, y: -20 }}
             src={Logo}
             alt=""
-            className="w-1/6 mx-auto"
+            className="mx-auto w-1/6"
           />
           <motion.div
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-gradient-to-b from-transparent to-orange-400 p-1 mx-20 rounded-3xl"
+            className="mx-20 rounded-3xl bg-gradient-to-b from-transparent to-orange-400 p-1"
           >
-            <div className="bg-white rounded-3xl px-9 py-8">
-              <h2 className="font-semibold text-black text-5xl p-2 text-left">
+            <div className="rounded-3xl bg-white px-9 py-8">
+              <h2 className="p-2 text-left text-5xl font-semibold text-black">
                 Welcome!
               </h2>
-              <p className="font-light text-black px-2 mb-4 text-left">
+              <p className="mb-4 px-2 text-left font-light text-black">
                 "A slice of delight, crafted with precision and love, a Lapis
                 Legit indulgence awaits.”
               </p>

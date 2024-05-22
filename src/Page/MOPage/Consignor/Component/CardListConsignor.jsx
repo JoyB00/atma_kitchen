@@ -81,7 +81,7 @@ export default function CardListConsignor({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -115,11 +115,14 @@ export default function CardListConsignor({ search, data, length }) {
                     paddingX: "5px",
                   }}
                 >
-                  <div className="my-auto bg-orange-100 rounded-full flex justify-center h-2/3">
+                  <div className="my-auto flex h-2/3 justify-center rounded-full bg-orange-100">
                     <img
-                      src="https://api.dicebear.com/8.x/adventurer/svg?seed=Jasper"
+                      src={
+                        "https://api.dicebear.com/8.x/adventurer/svg?seed=" +
+                        consignor.consignor_name
+                      }
                       alt="avatar"
-                      className="w-28"
+                      className="w-24"
                     />
                   </div>
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -142,7 +145,7 @@ export default function CardListConsignor({ search, data, length }) {
                       >
                         <Button
                           withoutAnimate
-                          className=" text-orange-500 text-sm bg-transparent hover:text-orange-600 px-0 py-2"
+                          className=" bg-transparent px-0 py-2 text-sm text-orange-500 hover:text-orange-600"
                           onClick={() => handleOpenModal(consignor.id)}
                         >
                           <p className="text-start">
@@ -153,7 +156,7 @@ export default function CardListConsignor({ search, data, length }) {
                       </Typography>
                       <NavLink to={`/MoDashboard/consignor/${consignor.id}`}>
                         <Button
-                          className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
+                          className="me-2 bg-orange-500 px-4 text-[0.9rem] text-white"
                           onClick={() => handleLoadEdit(consignor.id)}
                         >
                           {load && itemId == consignor.id ? (
@@ -174,7 +177,7 @@ export default function CardListConsignor({ search, data, length }) {
                         </Button>
                       </NavLink>
                       <Button
-                        className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-sm"
+                        className="border-orange-500 bg-transparent px-2 text-sm text-orange-500 hover:text-white"
                         onClick={() => swalDelete(consignor)}
                       >
                         <FontAwesomeIcon icon={faTrash} className="me-2" />
@@ -195,11 +198,11 @@ export default function CardListConsignor({ search, data, length }) {
             );
           })}
       </motion.div>
-      <div className="w-full flex justify-center pt-6">
+      <div className="flex w-full justify-center pt-6">
         <Pagination
           count={Math.ceil(length / productPerPage)}
           size="small"
-          className="flex justify-center mb-4"
+          className="mb-4 flex justify-center"
           onChange={handleChange}
         />
       </div>

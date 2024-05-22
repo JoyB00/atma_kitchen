@@ -23,7 +23,7 @@ export default function FormIngredient({ ingredientData }) {
       }
     : {
         ingredient_name: "",
-        quantity: "",
+        quantity: 0,
         unit: "gr",
       };
 
@@ -68,7 +68,7 @@ export default function FormIngredient({ ingredientData }) {
     onSuccess: () => {
       queryClient.setQueryData(
         ["ingredients", { id: ingredientData.id }],
-        data
+        data,
       );
       navigate("/AdminDashboard/ingredient");
     },
@@ -103,7 +103,7 @@ export default function FormIngredient({ ingredientData }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -135,7 +135,7 @@ export default function FormIngredient({ ingredientData }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -143,10 +143,10 @@ export default function FormIngredient({ ingredientData }) {
 
   return (
     <Form method={ingredientData ? "patch" : "post"}>
-      <div className="grid grid-cols-5 my-8">
+      <div className="my-8 grid grid-cols-5">
         <div className="col-span-6 pe-12">
           <h1 className="text-xl font-medium">Basic Information</h1>
-          <p className="text-gray-400 font-light mb-6">
+          <p className="mb-6 font-light text-gray-400">
             Please enter the basic information of your ingredient.
           </p>
           <Input
@@ -168,7 +168,7 @@ export default function FormIngredient({ ingredientData }) {
 
               <motion.select
                 {...animate}
-                className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-xl"
+                className="block w-full rounded-xl border-0 px-3 py-3.5 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
                 onChange={handleChange}
                 name="unit"
                 id="unit"
@@ -203,15 +203,15 @@ export default function FormIngredient({ ingredientData }) {
 
       {/* save or discard button */}
 
-      <div className="bg-white sticky bottom-0 -mx-px ">
+      <div className="sticky bottom-0 -mx-px bg-white ">
         <div className="flex justify-start pb-6">
           <NavLink to="/AdminDashboard/ingredient">
-            <Button className="mt-8 text-orange-500 me-2 border-2 border-orange-500 bg-white hover:text-white">
+            <Button className="me-2 mt-8 border-2 border-orange-500 bg-white text-orange-500 hover:text-white">
               Discard
             </Button>
           </NavLink>
           <Button
-            className="mt-8 text-white me-2 bg-orange-500 "
+            className="me-2 mt-8 bg-orange-500 text-white "
             type="button"
             onClick={
               ingredientData ? () => swallUpdate(data) : () => swallAdd(data)

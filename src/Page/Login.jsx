@@ -11,13 +11,13 @@ export default function Login() {
   return (
     <div className="w-full ">
       <Navbar />
-      <div className="h-screen md:flex bg-gradient-to-r from-cyan-100 via-transparent pt-16">
-        <div className="md:w-1/2 my-auto md:pb-8">
-          <div className="mx-auto drop-shadow-lg md:w-full lg:w-11/12 sm:w-0">
+      <div className="h-screen bg-gradient-to-r from-cyan-100 via-transparent pt-16 md:flex">
+        <div className="my-auto md:w-1/2 md:pb-8">
+          <div className="mx-auto drop-shadow-lg sm:w-0 md:w-full lg:w-11/12">
             <Lottie animationData={AnimationLogin} />
           </div>
         </div>
-        <div className="md:w-1/2 my-auto">
+        <div className="my-auto md:w-1/2">
           {/* Box Login */}
           <motion.img
             key="fallback"
@@ -26,29 +26,29 @@ export default function Login() {
             exit={{ opacity: 0, y: -20 }}
             src={Logo}
             alt=""
-            className="w-1/6 mx-auto"
+            className="mx-auto w-1/6"
           />
           <motion.div
             key="fallback"
             initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="bg-gradient-to-b from-transparent to-orange-400 p-1 rounded-3xl xl:mx-24 lg:mx-10 md:mx-3 mx-24"
+            className="mx-24 rounded-3xl bg-gradient-to-b from-transparent to-orange-400 p-1 md:mx-3 lg:mx-10 xl:mx-24"
           >
-            <div className="bg-white rounded-3xl px-9 py-8">
-              <h2 className="font-semibold text-black text-5xl  p-2">
+            <div className="rounded-3xl bg-white px-9 py-8">
+              <h2 className="p-2 text-5xl font-semibold  text-black">
                 Welcome!
               </h2>
-              <p className="font-light text-black lg:px-8 md:px-4 mb-4 xl:text-base md:text-xs">
+              <p className="mb-4 font-light text-black md:px-4 md:text-xs lg:px-8 xl:text-base">
                 Enter your email and password to login
               </p>
               <FormLogin />
-              <div className="lg:flex lg:justify-center md:mx-auto">
-                <p className="text-black lg:text-end md:text-center my-auto lg:text-base md:text-sm">
+              <div className="md:mx-auto lg:flex lg:justify-center">
+                <p className="my-auto text-black md:text-center md:text-sm lg:text-end lg:text-base">
                   Don't have an account yet?
                 </p>
                 <NavLink
-                  className="mx-2 bg-transparent my-auto text-orange-500 lg:text-base md:text-sm"
+                  className="mx-2 my-auto bg-transparent text-orange-500 md:text-sm lg:text-base"
                   to="/register"
                 >
                   Register Now

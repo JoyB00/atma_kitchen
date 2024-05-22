@@ -33,9 +33,25 @@ const VerifyCode = async (data) => {
     throw error.response.data;
   }
 };
+
 const ChangePassword = async (data) => {
   try {
     const response = await useAxios.post("/changePassword", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const ChangePasswordEmployee = async (data) => {
+  try {
+    console.log("changing password");
+    const response = await useAxios.post("/changePasswordEmployee", data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -57,7 +73,7 @@ const LogOut = async () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -65,4 +81,12 @@ const LogOut = async () => {
   }
 };
 
-export { SignUp, SignIn, LogOut, VerifyEmail, VerifyCode, ChangePassword };
+export {
+  SignUp,
+  SignIn,
+  LogOut,
+  VerifyEmail,
+  VerifyCode,
+  ChangePassword,
+  ChangePasswordEmployee,
+};

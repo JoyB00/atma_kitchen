@@ -1,10 +1,10 @@
 export default function Footer() {
   return (
     <footer className=" pt-12 ">
-      <div className=" text-black grid grid-cols-4 text-start xl:px-56 lg:px-32 md:px-36 sm:px-12">
+      <div className=" grid grid-cols-4 text-start text-black sm:px-12 md:px-36 lg:px-32 xl:px-56">
         <div className="col-span-1 px-2">
           <ul className="text-gray-500">
-            <li className="font-extrabold text-lg text-black">
+            <li className="text-lg font-extrabold text-black">
               Atma <span className="text-orange-500">Kitchen</span>
             </li>
             <li className="mt-2 sm:text-sm">
@@ -41,8 +41,8 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="py-2 bg-orange-500 lg:px-56 md:px-36">
-        <p className="text-white font-normal ">
+      <div className="bg-orange-500 py-2 md:px-36 lg:px-56">
+        <p className="font-normal text-white ">
           &copy; Copyright AtmaKitchen . All Rights Reserved
         </p>
       </div>

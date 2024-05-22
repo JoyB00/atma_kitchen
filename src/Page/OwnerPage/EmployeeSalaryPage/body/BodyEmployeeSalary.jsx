@@ -33,16 +33,16 @@ export default function Body({ search }) {
     <div>
       {console.log(employeeList.data)}
       <div className="w-full ">
-        <motion.div className="bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2">
-          <h1 className="px-3 py-8 col-span-2 font-semibold text-white ">
+        <motion.div className="-z-2 me-2 grid grid-cols-3 rounded-2xl bg-gradient-to-t from-orange-400 to-orange-500 drop-shadow-md">
+          <h1 className="col-span-2 px-3 py-8 font-semibold text-white ">
             <FontAwesomeIcon icon={faDollar} /> Salary & Bonus{" "}
           </h1>
-          <div className="ms-12 col-span-1 bg-orange-600 rounded-tl-full" />
+          <div className="col-span-1 ms-12 rounded-tl-full bg-orange-600" />
         </motion.div>
       </div>
-      <div className="flex justify-end mt-4">
+      <div className="mt-4 flex justify-end">
         <Button
-          className="bg-transparent border-2 border-orange-500  text-orange-500 me-2 hover:text-white"
+          className="me-2 border-2 border-orange-500  bg-transparent text-orange-500 hover:text-white"
           onClick={() => setIsOpen(true)}
         >
           <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
@@ -87,20 +87,20 @@ export default function Body({ search }) {
               key={category.id}
             />
           ))}
-          <h1 className="text-lg font-semibold pt-8">Stock Product</h1>
+          <h1 className="pt-8 text-lg font-semibold">Stock Product</h1>
           <Checkbox id="In Stock" label="In Stock" />
           <Checkbox id="Limited" label="Limited" />
           <Checkbox id="Out of Stock" label="Out of Stock" />
         </div>
-        <div className="ms-auto mt-auto h-screen flex items-end">
+        <div className="ms-auto mt-auto flex h-screen items-end">
           <Button
-            className="my-4 text-orange-500 me-2 border-2 border-orange-500 bg-transparent hover:text-white"
+            className="my-4 me-2 border-2 border-orange-500 bg-transparent text-orange-500 hover:text-white"
             onClick={() => setIsOpen(false)}
           >
             Cancel
           </Button>
           <Button
-            className="my-4 text-white me-2 bg-orange-500 "
+            className="my-4 me-2 bg-orange-500 text-white "
             onClick={() => setIsOpen(true)}
           >
             <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter

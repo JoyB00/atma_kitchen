@@ -6,16 +6,29 @@ import ModifyEmployeeForm from "./ModifyEmployeeForm";
 import { useQuery } from "@tanstack/react-query";
 import { RotateLoader } from "react-spinners";
 import { FetchAllEmployees } from "../../../../api/EmployeeApi";
+import { useEffect, useState } from "react";
+import { DeleteEmployee } from "../../../../api/EmployeeApi";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-export default function EmployeeList({ roleList, search }) {
+export default function EmployeeList({
+  roleList,
+  search,
+  invalidator,
+  setInvalidator,
+}) {
   const employeeList = useQuery({
     queryKey: ["employee"],
     queryFn: FetchAllEmployees,
   });
-  console.log(employeeList);
+
+  useEffect(() => {
+    employeeList.refetch();
+  }, [invalidator]);
 
   return (
-    <div className="grid xl:grid-cols-2 2xl:grid-cols-3 gap-4">
+    <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
       {employeeList.isFetching ? (
         <div className="flex justify-center py-20">
           <RotateLoader
@@ -36,12 +49,13 @@ export default function EmployeeList({ roleList, search }) {
             .filter((employee) =>
               employee.users.fullName
                 .toLowerCase()
-                .includes(search.toLowerCase())
+                .includes(search.toLowerCase()),
             )
             .map((employee) => (
               <EmployeeCard
                 employee={employee}
                 role={roleList}
+                setInvalidator={setInvalidator}
                 key={employee.id}
               />
             ))}
@@ -51,9 +65,33 @@ export default function EmployeeList({ roleList, search }) {
   );
 }
 
-export function EmployeeCard({ employee, role }) {
+export function EmployeeCard({ employee, role, setInvalidator }) {
+  const swallUpdate = () => {
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to delete this employee ?  `,
+        text: `You won't be able to revert this!`,
+        icon: `warning`,
+        showCancelButton: true,
+        confirmButtonColor: `#3085d6`,
+        cancelButtonColor: `#d33`,
+        confirmButtonText: `Yes, update it!`,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          deactivateEmployee();
+        }
+      });
+  };
+  const deactivateEmployee = () => {
+    DeleteEmployee(employee.id).then((res) => {
+      console.log(res);
+    });
+    setInvalidator((prev) => !prev);
+  };
+
   return (
-    <div className="flex flex-row px-4 py-3 items-center overflow-clip rounded-lg bg-white shadow-md">
+    <div className="flex flex-row items-center overflow-clip rounded-lg bg-white px-4 py-3 shadow-md">
       <Badge
         color="warning"
         badgeContent={
@@ -70,7 +108,7 @@ export function EmployeeCard({ employee, role }) {
       </Badge>
       <div className="px-3" />
       <div className="flex flex-col items-start">
-        <span className="font-semibold text-lg">{employee.users.fullName}</span>
+        <span className="text-lg font-semibold">{employee.users.fullName}</span>
         <span className="text-sm font-semibold">{employee.users.email}</span>
         <div className="py-1" />
         <span className="text-sm">{employee.users.phoneNumber}</span>
@@ -79,11 +117,16 @@ export function EmployeeCard({ employee, role }) {
           <ModifyEmployeeForm
             mode="edit"
             id_employee={employee.id}
-            employee={employee.users}
+            employee={employee}
             roleList={role}
+            setInvalidator={setInvalidator}
           />
           <div className="px-1" />
-          <Button hoverColor={"#ef4444"} className="bg-white">
+          <Button
+            hoverColor={"#ef4444"}
+            className="bg-white"
+            onClick={swallUpdate}
+          >
             <div className="flex flex-row items-center text-red-500 hover:text-white">
               <FontAwesomeIcon icon={faTrashAlt} />
               <div className="px-2">Delete</div>

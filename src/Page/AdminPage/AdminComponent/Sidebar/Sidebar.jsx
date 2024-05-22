@@ -5,29 +5,39 @@ import {
   faEgg,
   faGifts,
   faHouse,
+  faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useAtom } from "jotai";
-import { expandOperational, expandMaster } from "../../../../lib/AtomVar";
+import {
+  expandOperational,
+  expandMaster,
+  expandTransaction,
+} from "../../../../lib/AtomVar";
 import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
 import OwnerNavigation from "./component/OwnerNavigation";
 import { NavLink } from "react-router-dom";
+import Button from "../../../../Component/Button";
 
-export default function Sidebar({ role }) {
+export default function Sidebar({ role, fullName }) {
   const [expandedMaster, setExpandedMaster] = useAtom(expandMaster);
   const [expandedOperational, setExpandedOperational] =
     useAtom(expandOperational);
+  const [expandedTransaction, setExpandedTransaction] =
+    useAtom(expandTransaction);
 
-  const toggleExpanded = () => {
+  const collapseMenu = () => {
     setExpandedMaster(false);
     setExpandedOperational(false);
+    setExpandedTransaction(false);
   };
+
   return (
-    <div className="w-[20rem] h-full bg-white text-black py-12 px-6 fixed drop-shadow-lg rounded-r-3xl z-10 overflow-y-auto ">
-      <img src={Logo} alt="" className="w-1/6 mx-auto pb-3" />
-      <h1 className="text-2xl font-bold px-5">
+    <div className="fixed z-10 h-full w-[20rem] overflow-y-auto rounded-r-3xl bg-white px-6 py-12 text-black drop-shadow-lg ">
+      <img src={Logo} alt="" className="mx-auto w-1/6 pb-3" />
+      <h1 className="px-5 text-2xl font-bold">
         <span className="text-orange-500 ">ATMA</span> KITCHEN
       </h1>
       <hr className="mt-6" />
@@ -41,25 +51,25 @@ export default function Sidebar({ role }) {
           <NavLink
             className={({ isActive }) =>
               isActive
-                ? "py-4 mt-2 grid-cols-3 grid rounded-full text-orange-400 bg-orange-100 "
-                : "py-2 mt-2 grid-cols-3 grid text-gray-400 bg-white "
+                ? "mt-2 grid grid-cols-3 rounded-full bg-orange-100 py-4 text-orange-400 "
+                : "mt-2 grid grid-cols-3 bg-white py-2 text-gray-400 "
             }
             to={
               role == 2
                 ? "/AdminDashboard"
                 : role == 3
-                ? "/MoDashboard"
-                : role == 1
-                ? "/OwnerDashboard"
-                : ""
+                  ? "/MoDashboard"
+                  : role == 1
+                    ? "/OwnerDashboard"
+                    : ""
             }
-            onClick={toggleExpanded}
+            onClick={collapseMenu}
             end
           >
-            <div className="text-center col-span-1 -ms-2 ">
+            <div className="col-span-1 -ms-2 text-center ">
               <FontAwesomeIcon icon={faHouse} />
             </div>
-            <p className="font-normal col-span-2 -ms-2">Main Dashbord</p>
+            <p className="col-span-2 -ms-2 font-normal">Main Dashbord</p>
           </NavLink>
         </motion.div>
 
@@ -69,6 +79,8 @@ export default function Sidebar({ role }) {
             setExpandedMaster={setExpandedMaster}
             expandedOperational={expandedOperational}
             setExpandedOperational={setExpandedOperational}
+            expandedTransaction={expandedTransaction}
+            setExpandedTransaction={setExpandedTransaction}
           />
         ) : role == 3 ? (
           <OperationalNavigation

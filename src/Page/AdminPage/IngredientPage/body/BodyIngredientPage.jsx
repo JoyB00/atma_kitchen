@@ -10,10 +10,12 @@ import IngredientTable from "../Component/IngredientTable";
 // import Checkbox from "../../../../Component/Checkbox";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { GetAllIngredients } from "../../../../api/IngredientApi";
 import LoadingTable from "../Component/LoadingTable";
+import { allIngredients } from "../../../../lib/FetchFunctions";
 export default function BodyIngredient({ search }) {
   const ingredient = useQuery({
     queryKey: ["ingredient"],
@@ -22,22 +24,22 @@ export default function BodyIngredient({ search }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <div className="w-full grid grid-cols-6">
-        <motion.div className="col-span-4 bg-gradient-to-t from-orange-400 to-orange-500 grid grid-cols-3 rounded-2xl me-2 drop-shadow-md -z-2">
-          <h1 className="px-3 pt-6 col-span-2 font-semibold text-white ">
+      <div className="grid w-full grid-cols-6">
+        <motion.div className="-z-2 col-span-4 me-2 grid grid-cols-3 rounded-2xl bg-gradient-to-t from-orange-400 to-orange-500 drop-shadow-md">
+          <h1 className="col-span-2 px-3 pt-6 font-semibold text-white ">
             <FontAwesomeIcon icon={faEgg} /> Ingredient Data{" "}
           </h1>
-          <div className="ms-12 col-span-1 bg-orange-600 rounded-tl-full" />
+          <div className="col-span-1 ms-12 rounded-tl-full bg-orange-600" />
         </motion.div>
-        <div className="pt-6 col-span-2 ms-auto">
+        <div className="col-span-2 ms-auto pt-6">
           <Button
-            className="bg-transparent border-2 border-orange-500 my-4 text-orange-500 me-2 hover:text-white"
+            className="my-4 me-2 border-2 border-orange-500 bg-transparent text-orange-500 hover:text-white"
             onClick={() => setIsOpen(true)}
           >
             <FontAwesomeIcon icon={faFilter} className="me-1" /> Filter
           </Button>
           <NavLink to="addIngredient">
-            <Button className="bg-orange-500 my-4 text-white">
+            <Button className="my-4 bg-orange-500 text-white">
               <FontAwesomeIcon icon={faSquarePlus} className="me-1" /> Add
               Ingredient
             </Button>

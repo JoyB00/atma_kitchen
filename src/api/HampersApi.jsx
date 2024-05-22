@@ -73,7 +73,7 @@ const DeleteHampers = async (id) => {
 };
 const DisableHampers = async (id) => {
   try {
-    const response = await useAxios.put(`/hampers/${id}`, {
+    const response = await useAxios.put(`/hampers/${id}`, id, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
@@ -81,6 +81,7 @@ const DisableHampers = async (id) => {
     });
     return response.data.data;
   } catch (error) {
+    console.log(error.response.data);
     return error.response.data;
   }
 };

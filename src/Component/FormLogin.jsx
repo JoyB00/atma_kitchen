@@ -24,7 +24,7 @@ export default function FormLogin() {
     setLoading(true);
     SignIn(data)
       .then((res) => {
-        console.log(res.user.role_id);
+        console.log(res.user);
         if (res.user.role_id === 2) {
           navigate("/AdminDashboard");
         } else if (res.user.role_id === 3) {
@@ -77,17 +77,17 @@ export default function FormLogin() {
         placeholder="Password"
         onChange={handleChange}
       />
-      <div className="flex justify-start mb-5">
+      <div className="mb-5 flex justify-start">
         <NavLink
-          className="mx-2 bg-transparent my-auto text-orange-500 lg:text-base md:text-sm"
+          className="mx-2 my-auto bg-transparent text-orange-500 md:text-sm lg:text-base"
           to="/forgotPassword"
         >
           Forgot Password?
         </NavLink>
       </div>
-      <div className="grid  grid-cols-1 mb-5 ">
+      <div className="mb-5  grid grid-cols-1 ">
         <Button
-          className="mx-2 bg-orange-500 drop-shadow-md rounded-3xl col-span-1 py-3"
+          className="col-span-1 mx-2 rounded-3xl bg-orange-500 py-3 drop-shadow-md"
           type="submit"
         >
           {loading ? (

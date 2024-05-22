@@ -11,7 +11,7 @@ export default function FeaturedProduct({ data, loading }) {
   return (
     <>
       {loading ? (
-        <div className="w-full h-screen bg-gradient-to-tl to-orange-50 via-transparent from-transparent">
+        <div className="h-screen w-full bg-gradient-to-tl from-transparent via-transparent to-orange-50">
           <RotateLoader
             color="orange"
             loading={loading}
@@ -31,11 +31,11 @@ export default function FeaturedProduct({ data, loading }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="bg-gradient-to-tl to-orange-50 via-transparent from-transparent py-24"
+          className="bg-gradient-to-tl from-transparent via-transparent to-orange-50 py-24"
         >
-          <div className=" text-center px-52 ">
-            <h1 className="text-black font-semibold">Our Featured Product</h1>
-            <p className="text-black mt-2 ">
+          <div className=" px-52 text-center ">
+            <h1 className="font-semibold text-black">Our Featured Product</h1>
+            <p className="mt-2 text-black ">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
               dolore ab vitae explicabo doloremque hic iure iusto distinctio non
               esse beatae vel ad reprehenderit harum nihil rerum, odio ut
@@ -46,7 +46,9 @@ export default function FeaturedProduct({ data, loading }) {
             {data?.map((product) => (
               <SwiperSlide className="gap-8 py-3" key={product.id}>
                 <CardProduct
-                  // alt={product.alt}
+                  url="menu"
+                  id={product.id}
+                  alt={product.product_name}
                   image={
                     product.product_picture
                       ? getPicture(product.product_picture, "product")

@@ -13,9 +13,12 @@ import {
   faPeopleCarryBox,
   faTruck,
   faUserTie,
+  faLock,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
+import Button from "../../../../../Component/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function OperationalNavigation({
   expandedMaster,
@@ -23,6 +26,11 @@ export default function OperationalNavigation({
   expandedOperational,
   setExpandedOperational,
 }) {
+  const navigate = useNavigate();
+  const forgotPassword = () => {
+    navigate("/ForgotPasswordEmployee/3");
+  };
+
   return (
     <>
       <motion.button
@@ -32,16 +40,16 @@ export default function OperationalNavigation({
         transition={{ type: "just" }}
         className={`${
           expandedMaster
-            ? "text-white bg-gradient-to-b from-orange-400  to-orange-500 text-start rounded-full hover:text-white "
-            : " text-gray-400 text-start hover:text-orange-400"
-        }py-4 mt-2 grid-cols-4 grid w-full`}
+            ? "rounded-full bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-white "
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-4 mt-2 grid w-full grid-cols-4`}
         onClick={() => setExpandedMaster(!expandedMaster)}
       >
-        <div className="ms-3 text-start col-span-1">
+        <div className="col-span-1 ms-3 text-start">
           <FontAwesomeIcon icon={faFilePen} />
         </div>
-        <p className="font-normal text-start col-span-2 ">Master Data</p>
-        <div className="flex justify-end my-auto text-start col-span-1">
+        <p className="col-span-2 text-start font-normal ">Master Data</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
             icon={expandedMaster ? faChevronDown : faChevronRight}
           />
@@ -73,16 +81,16 @@ export default function OperationalNavigation({
         transition={{ type: "just" }}
         className={`${
           expandedOperational
-            ? "text-white bg-gradient-to-b from-orange-400  to-orange-500 text-start rounded-2xl hover:text-orange-400"
-            : " text-gray-400 text-start hover:text-orange-400"
-        }py-2 mt-2 grid-cols-4 grid w-full`}
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-2 mt-2 grid w-full grid-cols-4`}
         onClick={() => setExpandedOperational(!expandedOperational)}
       >
-        <div className="ms-3  text-start col-span-1">
+        <div className="col-span-1  ms-3 text-start">
           <FontAwesomeIcon icon={faFileArchive} />
         </div>
-        <p className="font-normal text-start col-span-2 ">Operational Data</p>
-        <div className="flex justify-end my-auto text-start col-span-1">
+        <p className="col-span-2 text-start font-normal ">Operational Data</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
             icon={expandedOperational ? faChevronDown : faChevronRight}
           />
@@ -102,6 +110,11 @@ export default function OperationalNavigation({
           />
         </div>
       ) : undefined}
+      <Navigation
+        label="Forgot password?"
+        icon={faLock}
+        url={"/ForgotPasswordEmployee/3"}
+      />
     </>
   );
 }

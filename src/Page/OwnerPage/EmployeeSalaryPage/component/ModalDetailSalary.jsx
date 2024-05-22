@@ -72,7 +72,7 @@ export default function ModalDetailSalary({ open, setOpen, id }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -104,46 +104,46 @@ export default function ModalDetailSalary({ open, setOpen, id }) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
         >
-          <div className="bg-orange-500 w-full p-4">
-            <h1 className="text-3xl text-white font-semibold">
+          <div className="w-full bg-orange-500 p-4">
+            <h1 className="text-3xl font-semibold text-white">
               <FontAwesomeIcon icon={faDollar} className=" me-2" />
               Detail Salary
             </h1>
           </div>
-          <div className="grid grid-cols-5 gap-6 px-6 mt-6">
+          <div className="mt-6 grid grid-cols-5 gap-6 px-6">
             <div className="col-span-5">
               <div className="w-screen">
-                <h1 className="text-black font-semibold text-3xl mb-2">
+                <h1 className="mb-2 text-3xl font-semibold text-black">
                   {data.employee.users.fullName.length < 30
                     ? data.employee.users.fullName
                     : `${data.employee.users.fullName.substring(0, 30)}...`}
                 </h1>
                 <div className="flex justify-start gap-x-2">
                   <Badge bgColor="bg-orange-500" ringColor="ring-transparent">
-                    <p className=" text-white text-lg">
+                    <p className=" text-lg text-white">
                       Role : {data.employee.users.roles.role_name}
                     </p>
                   </Badge>
                   <Badge bgColor="bg-green-500" ringColor="ring-transparent">
-                    <p className=" text-white text-lg">
+                    <p className=" text-lg text-white">
                       Absences : {data.employee.absence.length}
                     </p>
                   </Badge>
                 </div>
                 <div className="pt-4">
                   <NavLink to={`addEmployeeSalary/${data.employee.id}`}>
-                    <Button className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-sm">
+                    <Button className="border-orange-500 bg-transparent px-2 text-sm text-orange-500 hover:text-white">
                       <FontAwesomeIcon icon={faSquarePlus} className="me-1" />{" "}
                       Add Employee Salary
                     </Button>
                   </NavLink>
                 </div>
               </div>
-              <div className="border-2 my-6 rounded-xl pb-4 ">
-                <table className=" text-black w-full">
+              <div className="my-6 rounded-xl border-2 pb-4 ">
+                <table className=" w-full text-black">
                   <thead>
                     <tr>
-                      <th className="ps-4 py-4">Date</th>
+                      <th className="py-4 ps-4">Date</th>
                       <th className="pe-2 text-center">Daily Salary</th>
                       <th className="pe-2 text-center">Bonus</th>
                       <th className="pe-2 text-center">Total</th>
@@ -157,7 +157,7 @@ export default function ModalDetailSalary({ open, setOpen, id }) {
                           <td className="py-2 ps-2 ">
                             <FontAwesomeIcon
                               icon={faEgg}
-                              className="text-orange-500 me-2"
+                              className="me-2 text-orange-500"
                             />
                             {item.pay_date}
                           </td>
@@ -181,7 +181,7 @@ export default function ModalDetailSalary({ open, setOpen, id }) {
                               to={`/OwnerDashboard/employeeSalary/${item.id}`}
                             >
                               <Button
-                                className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
+                                className="me-2 bg-orange-500 px-4 text-[0.9rem] text-white"
                                 onClick={() => handleLoadEdit(item.id)}
                               >
                                 {load && itemId == item.id ? (
@@ -202,7 +202,7 @@ export default function ModalDetailSalary({ open, setOpen, id }) {
                               </Button>
                             </NavLink>
                             <Button
-                              className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-sm"
+                              className="border-orange-500 bg-transparent px-2 text-sm text-orange-500 hover:text-white"
                               onClick={() => swalDelete(item)}
                             >
                               <FontAwesomeIcon

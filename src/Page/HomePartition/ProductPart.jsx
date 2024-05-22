@@ -40,8 +40,8 @@ export default function Product() {
   };
   return (
     <div className="bg-red-50/40 py-24">
-      <h1 className="text-black font-semibold">Welcome To Our Store</h1>
-      <p className="text-black px-52 my-3">
+      <h1 className="font-semibold text-black">Welcome To Our Store</h1>
+      <p className="my-3 px-52 text-black">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dolore
         ab vitae explicabo doloremque hic iure iusto distinctio non esse beatae
         vel ad reprehenderit harum nihil rerum, odio ut placeat!
@@ -50,7 +50,7 @@ export default function Product() {
         variants={card}
         initial={scroll ? "hidden" : ""}
         animate={scroll ? "visible" : ""}
-        className="gap-14 grid grid-cols-5 px-32 mt-8"
+        className="mt-8 grid grid-cols-5 gap-14 px-32"
       >
         {Category.map((category, index) => (
           <NavLink key={index}>
@@ -62,12 +62,12 @@ export default function Product() {
                 color: "#f99417",
               }}
               transition={{ type: "just", stiffness: 1000 }}
-              className="col-span-1 drop-shadow-md rounded-xl bg-white text-black my-auto py-8 cursor-pointer"
+              className="col-span-1 my-auto cursor-pointer rounded-xl bg-white py-8 text-black drop-shadow-md"
             >
               <img
                 src={category.src}
                 alt={category.alt}
-                className="w-5/12 mx-auto mb-6"
+                className="mx-auto mb-6 w-5/12"
               />
               <h1 className="text-2xl font-semibold">{category.alt}</h1>
             </motion.div>

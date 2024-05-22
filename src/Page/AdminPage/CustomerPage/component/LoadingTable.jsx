@@ -2,30 +2,30 @@ import { RotateLoader } from "react-spinners";
 export default function LoadingTable({ loading }) {
   return (
     <>
-      <table className="col-span-6 w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className="col-span-6 mb-6 mt-4 w-full  rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
             <tr>
-              <th className="text-start font-medium text-sm py-8 ps-8">
+              <th className="py-8 ps-8 text-start text-sm font-medium">
                 Full Name
               </th>
-              <th className="text-start font-medium text-sm pe-6 ">Email</th>
-              <th className="text-start font-medium text-sm pe-6 ">
+              <th className="pe-6 text-start text-sm font-medium ">Email</th>
+              <th className="pe-6 text-start text-sm font-medium ">
                 Phone Number
               </th>
-              <th className="text-start font-medium text-sm pe-6">
+              <th className="pe-6 text-start text-sm font-medium">
                 Date Of Birth
               </th>
-              <th className="text-center font-medium text-sm pe-6">Point</th>
-              <th className="text-center font-medium text-sm pe">
+              <th className="pe-6 text-center text-sm font-medium">Point</th>
+              <th className="pe text-center text-sm font-medium">
                 Nominal Balance
               </th>
-            </tr> 
+            </tr>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td className="py-12 col-span-5" colSpan={6} align="center">
+            <td className="col-span-5 py-12" colSpan={6} align="center">
               <RotateLoader
                 color="orange"
                 loading={loading}

@@ -64,7 +64,7 @@ export default function IngredientTable({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -89,15 +89,15 @@ export default function IngredientTable({ search, data, length }) {
 
   return (
     <>
-      <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className=" mb-6 mt-4 w-full  rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
-            <th className="text-start font-medium py-8 ps-8">
+            <th className="py-8 ps-8 text-start font-medium">
               Ingredient Name
             </th>
-            <th className="text-start font-medium pe-6 ">Qty</th>
-            <th className="text-start font-medium pe-6">Unit</th>
-            <th className="text-center font-medium pe-6">Action</th>
+            <th className="pe-6 text-start font-medium ">Qty</th>
+            <th className="pe-6 text-start font-medium">Unit</th>
+            <th className="pe-6 text-center font-medium">Action</th>
           </tr>
         </thead>
         <motion.tbody
@@ -119,16 +119,16 @@ export default function IngredientTable({ search, data, length }) {
                 className="border-t-2 border-gray-100  text-black"
                 key={item.id}
               >
-                <td className="ps-8 text-[1rem] py-6">
+                <td className="py-6 ps-8 text-[1rem]">
                   {item.ingredient_name}
                 </td>
-                <td className="font-medium text-start">{item.quantity}</td>
-                <td className="font-medium text-start">{item.unit}</td>
+                <td className="text-start font-medium">{item.quantity}</td>
+                <td className="text-start font-medium">{item.unit}</td>
                 <td className="font-medium ">
-                  <div className="flex justify-center me-2">
+                  <div className="me-2 flex justify-center">
                     <NavLink to={`/AdminDashboard/ingredient/${item.id}`}>
                       <Button
-                        className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
+                        className="me-2 bg-orange-500 px-4 text-[0.9rem] text-white"
                         onClick={() => handleLoadEdit(item.id)}
                       >
                         {load && idItemLoad == item.id ? (
@@ -142,7 +142,7 @@ export default function IngredientTable({ search, data, length }) {
                       </Button>
                     </NavLink>
                     <Button
-                      className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-[0.9rem]"
+                      className="border-orange-500 bg-transparent px-2 text-[0.9rem] text-orange-500 hover:text-white"
                       onClick={() => swalDelete(item)}
                     >
                       <FontAwesomeIcon icon={faTrash} className="me-2" />
@@ -159,7 +159,7 @@ export default function IngredientTable({ search, data, length }) {
               <Pagination
                 count={Math.ceil(length / ingredientPerPage)}
                 size="small"
-                className="flex justify-center mb-4"
+                className="mb-4 flex justify-center"
                 onChange={handleChange}
               />
             </td>

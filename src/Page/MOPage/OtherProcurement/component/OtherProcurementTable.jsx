@@ -67,7 +67,7 @@ export default function OtherProcurementTable({ search, data, length }) {
                 color: "#ffffff",
               },
               position: "top-center",
-            }
+            },
           );
         }
       });
@@ -77,13 +77,13 @@ export default function OtherProcurementTable({ search, data, length }) {
   }, []);
   return (
     <>
-      <table className=" w-full mt-4 mb-6  text-gray-500 bg-white rounded-2xl drop-shadow-md">
+      <table className=" mb-6 mt-4 w-full  rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
             <th className="text-center font-medium ">No</th>
-            <th className="text-start font-medium py-8 ">Procurement Date</th>
+            <th className="py-8 text-start font-medium ">Procurement Date</th>
             <th className="text-start font-medium  ">Item Name</th>
-            <th className="text-center font-medium pe-4 ">Quantity</th>
+            <th className="pe-4 text-center font-medium ">Quantity</th>
             <th className="text-start font-medium  ">Price</th>
             <th className="text-start font-medium  ">Total Price</th>
             <th className="text-center font-medium  ">Actions</th>
@@ -108,14 +108,14 @@ export default function OtherProcurementTable({ search, data, length }) {
                 className="border-t-2 border-gray-100  text-black"
                 key={item.id}
               >
-                <td className="font-medium py-6 px-6 text-center">
+                <td className="px-6 py-6 text-center font-medium">
                   {index + 1}
                 </td>
-                <td className="font-medium text-start">
+                <td className="text-start font-medium">
                   {item.procurement_date}
                 </td>
-                <td className="font-medium text-start"> {item.item_name}</td>
-                <td className="font-medium text-center pe-4">
+                <td className="text-start font-medium"> {item.item_name}</td>
+                <td className="pe-4 text-center font-medium">
                   {" "}
                   {item.quantity}
                 </td>
@@ -130,10 +130,10 @@ export default function OtherProcurementTable({ search, data, length }) {
                     : (item.total_price / 1000).toFixed(1) + "K"}
                 </td>
                 <td className="font-medium ">
-                  <div className="flex justify-center me-2">
+                  <div className="me-2 flex justify-center">
                     <NavLink to={`/MoDashboard/otherProcurements/${item.id}`}>
                       <Button
-                        className="bg-orange-500 text-white me-2 px-4 text-[0.9rem]"
+                        className="me-2 bg-orange-500 px-4 text-[0.9rem] text-white"
                         onClick={() => handleLoadEdit(item.id)}
                       >
                         {load && itemId == item.id ? (
@@ -147,7 +147,7 @@ export default function OtherProcurementTable({ search, data, length }) {
                       </Button>
                     </NavLink>
                     <Button
-                      className="bg-transparent border-orange-500 text-orange-500 hover:text-white px-2 text-[0.9rem]"
+                      className="border-orange-500 bg-transparent px-2 text-[0.9rem] text-orange-500 hover:text-white"
                       onClick={() => swalDelete(item)}
                     >
                       <FontAwesomeIcon icon={faTrash} className="me-2" />
@@ -164,7 +164,7 @@ export default function OtherProcurementTable({ search, data, length }) {
               <Pagination
                 count={Math.ceil(length / productPerPage)}
                 size="small"
-                className="flex justify-center mb-4"
+                className="mb-4 flex justify-center"
                 onChange={handleChange}
               />
             </td>
