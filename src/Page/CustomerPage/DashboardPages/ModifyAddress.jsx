@@ -6,14 +6,13 @@ import { Form } from "react-router-dom";
 import { FetchAllAddresses } from "../../../api/AddressApi.jsx";
 import { RotateLoader } from "react-spinners";
 import { useState } from "react";
-import { Modal, Box } from "@mui/material";
+import { Modal } from "@mui/material";
 import delivery from "../../../assets/delivery.json";
 import Lottie from "lottie-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AddAddress,
   EditAddress,
-  GetAddressById,
   DeleteAddress,
 } from "../../../api/AddressApi";
 import { BeatLoader } from "react-spinners";
@@ -361,6 +360,80 @@ export function EditAddressForm({ address }) {
   );
 }
 
+export function DeleteAddressButton({ address }) {
+  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
+  const openModal = () => {
+    setIsOpened(true);
+  };
+  const closeModal = () => {
+    setIsOpened(false);
+  };
+
+  const submit = async () => {
+    try {
+      setIsLoading(true);
+      const response = await DeleteAddress(address.id);
+      await queryClient.refetchQueries("addresses");
+      setIsLoading(false);
+      closeModal();
+      toast.success("The address has been deleted succesfully!");
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+      <Button
+        className="border-red-500 text-red-500 hover:text-white"
+        onClick={openModal}
+      >
+        Delete
+      </Button>
+      <Modal open={isOpened} onClose={closeModal}>
+        <div className="flex size-full items-center justify-center">
+          <div className="flex min-h-20 w-1/2 flex-col rounded-md bg-slate-100 p-8">
+            <span className="text-2xl font-bold text-orange-600">
+              Delete Address
+            </span>
+            <span className="text-black">
+              Are you sure to delete the address below? This action cannot be
+              undone.
+            </span>
+            <div className="py-1" />
+            <div className="flex flex-col rounded-lg border border-gray-300 bg-slate-200 p-4 text-slate-800 shadow-md">
+              <span className="text-lg font-bold">
+                {address.complete_address}
+              </span>
+              <span>
+                {address.subdistrict}, {address.city}
+              </span>
+              <span>{address.postal_code}</span>
+            </div>
+            <div className="py-2" />
+            <div className="flex flex-row">
+              <Button className="bg-red-500 text-white" onClick={submit}>
+                {isLoading ? (
+                  <BeatLoader color="white" loading={true} size={10} />
+                ) : (
+                  <span>Yes, do as I say!</span>
+                )}
+              </Button>
+              <div className="px-1" />
+              <Button className="text-slate-600" onClick={closeModal}>
+                Nope, go back
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
+  );
+}
+
 export function AddressTile({ address }) {
   return (
     <div className="flex flex-row items-start justify-between rounded-lg border border-slate-400 bg-gray-100 p-4 text-black shadow-md">
@@ -374,9 +447,7 @@ export function AddressTile({ address }) {
       <div className="flex flex-col text-white">
         <EditAddressForm address={address} />
         <div className="py-1" />
-        <Button className="border-red-500 text-red-500 hover:text-white">
-          Delete
-        </Button>
+        <DeleteAddressButton address={address} />
       </div>
     </div>
   );
