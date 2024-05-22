@@ -61,7 +61,7 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="text-black font-normal">
+              <NavLink to="/about" className="text-black font-normal">
                 About
               </NavLink>
             </li>
@@ -77,7 +77,7 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="text-black font-normal">
+              <NavLink to="/contact" className="text-black font-normal">
                 Contact
               </NavLink>
             </li>

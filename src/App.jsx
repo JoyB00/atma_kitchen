@@ -13,7 +13,9 @@ import LoadingPage from "./Component/LoadingPage";
 import Register from "./Page/Register";
 import RootLayout from "./Root/Main/Root";
 import Home from "./Page/Home";
+import About from "./Page/About";
 import Menu from "./Page/Menu";
+import Contact from "./Page/Contact";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -143,11 +145,23 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: "about",
+        element: (
+            <About />
+        ),
+      },
+      {
         path: "menu",
         element: (
           <ProtectedRoot role_id={4}>
             <Menu />,
           </ProtectedRoot>
+        ),
+      },
+      {
+        path: "contact",
+        element: (
+            <Contact />
         ),
       },
       {

@@ -5,8 +5,8 @@ import Input from "../../../Component/Input.jsx";
 import InputDate from "../../../Component/InputDate.jsx";
 import { motion } from "framer-motion";
 import Button from "../../../Component/Button.jsx";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { GetCustomerById, UpdateCustomer } from "../../../api/CustomerApi.jsx";
 export default function EditCustomerProfile() {
   return (
     <>
@@ -32,65 +32,83 @@ export function EditCustomerProfileContent() {
 }
 
 export function EditForm() {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phoneNumber: "",
+    gender: "",
+    dateOfBirth: "",
+  });
+
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      try {
+        const customerData = await GetCustomerById(); 
+        setFormData({
+          fullName: customerData.fullName,
+          phoneNumber: customerData.phoneNumber,
+          gender: customerData.gender,
+          dateOfBirth: customerData.dateOfBirth,
+        });
+      } catch (error) {
+        console.log("Error fetching customer data: ", error);
+      }
+    };
+    fetchCustomerData();
+  }, []);
+
   const handleChange = (event) => {
-    // console.log(`${event.target.name} : ${event.target.value}`);
-    setData({ ...data, [event.target.name]: event.target.value });
-  };
-  const gender = ["Male", "Female", "Prefer not to say"];
-  let animate = {
-    initial: { opacity: 0, y: -100 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-  };
-  const editProfile = () => {};
-  const navigate = useNavigate();
-  const cancel = (event) => {
-    event.preventDefault();
-    navigate("/CustomerDashboard");
+    setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await UpdateCustomer(formData); 
+      console.log("Customer data updated successfully!");
+    } catch (error) {
+      console.log("Error updating customer data: ", error);
+    }
+  };
+
+  const genderOptions = ["Male", "Female", "Prefer not to say"];
+
   return (
-    
-    <Form onSubmit={editProfile} method="post">
+    <Form onSubmit={handleSubmit} method="post">
       <Input
         onChange={handleChange}
-        withAnimate
-        label="Full Name"
-        id="fullName"
+        value={formData.fullName}
+        name="fullName"
         type="text"
         placeholder="Full Name"
       />
       <Input
         onChange={handleChange}
-        withAnimate
-        label="PhoneNumber"
-        id="phoneNumber"
-        type="Number"
+        value={formData.phoneNumber}
+        name="phoneNumber"
+        type="number"
         placeholder="Phone Number"
       />
-      <div className="py-1" />
-      <div className="grid grid-cols-2 gap-2">
-        <div className="col-span-1">
-          <motion.select
-            {...animate}
-            className="block w-full text-black border-0 py-3.5 px-3 shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm rounded-2xl"
-            onChange={handleChange}
-            name="category_id"
-            id="category_id"
-            defaultValue={"Prefer not to say"}
-          >
-            {gender.map((gender) => (
-              <option value={gender} key={gender}>
-                {gender}
-              </option>
-            ))}
-          </motion.select>
+  <div className="py-1" />
+    <div className="grid grid-cols-2 gap-2">
+      <div className="col-span-1">
+      <motion.select
+        onChange={handleChange}
+        value={formData.gender}
+        name="gender"
+      >
+        {genderOptions.map((gender) => (
+          <option value={gender} key={gender}>
+            {gender}
+          </option>
+        ))}
+        </motion.select>
         </div>
         <div className="col-span-1 my-auto">
-          <InputDate
-            id="dateOfBirth"
-            name="dateOfBirth"
+          <Input
             onChange={handleChange}
+            value={formData.dateOfBirth}
+            name="dateOfBirth"
+            type="date"
             placeholder="Date of Birth"
           />
         </div>
@@ -101,9 +119,6 @@ export function EditForm() {
           Save changes
         </Button>
         <div className="px-1" />
-        <Button className="" withoutAnimate onClick={cancel}>
-          Cancel
-        </Button>
       </div>
     </Form>
   );
