@@ -1,6 +1,7 @@
 import useAxios from ".";
 
 const GetTokenMidtrans = async (data) => {
+  console.log(data);
   try {
     const response = await useAxios.post("/payment", data, {
       headers: {
