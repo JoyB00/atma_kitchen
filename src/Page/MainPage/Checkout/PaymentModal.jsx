@@ -22,7 +22,7 @@ const DELIVERY_METHOD = [
     icon: deliveryIcon,
   },
 ];
-export default function ModalDelivery({ open, setOpen, id, transaction }) {
+export default function ModalPayment({ open, setOpen, id, transaction }) {
   const initialState = id
     ? {
         id: id,
@@ -170,92 +170,37 @@ export default function ModalDelivery({ open, setOpen, id, transaction }) {
                 htmlFor="delivery_method"
                 className="ps-2 text-xl font-semibold text-white"
               >
-                Delivery Method
+                Payment
               </label>
             </div>
-            <div className=" p-5">
-              <div className="mt-2 grid grid-cols-2 gap-x-4">
-                {DELIVERY_METHOD.map((delivery) => {
-                  return (
-                    <label
-                      key={delivery.id}
-                      className={` relative col-span-1 w-full cursor-pointer rounded-2xl ${data.delivery_method === delivery.delivery_method ? "border-orange-500 bg-orange-200" : "border-gray-100"} border-2  p-5`}
-                      htmlFor={delivery.id}
-                    >
-                      <input
-                        onClick={handleDeliveryMethod}
-                        id={delivery.id}
-                        name={delivery.id}
-                        type="radio"
-                        value={delivery.delivery_method}
-                        className="hidden h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                      />
-                      {data.delivery_method === delivery.delivery_method && (
-                        <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 transform">
-                          <FontAwesomeIcon
-                            icon={faCheckCircle}
-                            className="text-orange-500"
-                            size="xl"
-                          />
-                        </div>
-                      )}
-                      <img
-                        src={delivery.icon}
-                        alt="delivery"
-                        className="mx-auto w-2/3"
-                      />
-                      <p className="text-center text-lg font-semibold text-black">
-                        {delivery.delivery_method}
-                      </p>
-                    </label>
-                  );
-                })}
+            <div className="p-5 text-black">
+              <p className="font-semibold">Payment Methods</p>
+              <div className="item-center flex justify-between py-2">
+                <label htmlFor="COD">COD (Cash On Delivery)</label>
+                <input
+                  name="paymentMethod"
+                  id="COD"
+                  type="radio"
+                  className=" h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                />
               </div>
-              {data.delivery_method === "Delivery Courier" && (
-                <motion.select
-                  {...animate}
-                  className="mt-6 w-full rounded-3xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                  onChange={handleAddress}
-                  name="category"
-                  id="category"
-                  value={
-                    data.recipient_address ? data.recipient_address : "default"
-                  }
-                >
-                  <option value="default" disabled>
-                    Select Your Address
-                  </option>
-                  {transaction.transaction.customer.addresses.map((address) => {
-                    return (
-                      <option
-                        key={address.id}
-                        value={
-                          address.complete_address +
-                          ", " +
-                          address.subdistrict +
-                          ", " +
-                          address.city +
-                          ", " +
-                          address.postal_code +
-                          ", " +
-                          transaction.transaction.customer.users.phoneNumber
-                        }
-                      >
-                        {address.complete_address +
-                          ", " +
-                          address.subdistrict +
-                          ", " +
-                          address.city +
-                          ", " +
-                          address.postal_code +
-                          ", " +
-                          transaction.transaction.customer.users.phoneNumber}
-                      </option>
-                    );
-                  })}
-                </motion.select>
-              )}
+              <div className="item-center flex justify-between py-2">
+                <div className="">
+                  <label htmlFor="E-Money">
+                    <p>E-Money </p>
+                    <p className="text-sm text-gray-500">BCA : 501230313402</p>
+                    <p className="text-sm text-gray-500">Dana : 08912342123</p>
+                  </label>
+                </div>
+                <input
+                  name="paymentMethod"
+                  id="E-Money"
+                  type="radio"
+                  className=" h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                />
+              </div>
             </div>
+
             <div className="flex w-full justify-end gap-x-2 rounded-b-xl bg-gray-100 p-4">
               <Button
                 className="bg-orange-500 text-white"
