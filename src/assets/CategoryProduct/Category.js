@@ -5,6 +5,7 @@ import Entrusted from "../../assets/CategoryProduct/package_12805571.png";
 import Hampers from "../../assets/CategoryProduct/picnic-basket_4167229.png";
 
 export default [
+  
   { src: Cake, alt: "Cake" },
   { src: Bread, alt: "Bread" },
   { src: Drink, alt: "Drink" },

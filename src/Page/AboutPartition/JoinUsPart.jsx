@@ -44,7 +44,7 @@ export default function What() {
             effect="blur"
             src={Chef}
             alt="bestseller"
-          className="drop-shadow-md slow-motion"/>
+          className="drop-shadow-md slow-motion w-3/4 h3/4"/>
       </div>
       </div>
       </div>

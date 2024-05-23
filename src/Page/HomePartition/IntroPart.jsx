@@ -1,3 +1,5 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from "../../Component/Button";
 import Brownies from "../../assets/HomeAssets/brownies.png";
 import { motion } from "framer-motion";
@@ -7,7 +9,13 @@ import {
 } from "react-lazy-load-image-component";
 
 export default function Intro() {
+  const navigate = useNavigate();
+
+  const About = () => {
+    navigate('/about');
+  };
   return (
+    
     <div className=" flex bg-gradient-to-tr from-transparent via-transparent to-red-100 py-36 ps-24">
       <LazyLoadComponent>
         <motion.div
@@ -20,15 +28,12 @@ export default function Intro() {
             Fresh Baked Cake Everyday !
           </h1>
           <p className="mb-7 text-lg">
-            {/* Welcome to "Atma Kitchen"! We are a place where deliciousness is met
-          with joy. */}
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti
-            ipsum atque fugiat, eius unde numquam laudantium? Mollitia ipsa
-            magni rem. Est reprehenderit sapiente commodi fugiat consequatur.
-            Vitae omnis reprehenderit fuga.
+          Welcome to "Atma Kitchen"! We are a place where deliciousness is met
+          with joy. 
+          At Atma Kitchen, we believe that food should be a celebration of life, an experience that nourishes not just the body, but the soul. Our bakery is a haven for those who seek the highest quality, handcrafted delights made with love and a touch of magic.
           </p>
           <div className="flex ">
-            <Button className="me-2 rounded-3xl bg-orange-500 text-white">
+            <Button className="me-2 rounded-3xl bg-orange-500 text-white" onClick={About}>
               Read More
             </Button>
             <Button className="ms-2 rounded-3xl border-2  border-orange-500  bg-transparent text-orange-500 hover:text-white">

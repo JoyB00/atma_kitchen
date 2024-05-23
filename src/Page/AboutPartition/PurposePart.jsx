@@ -23,12 +23,12 @@ export default function Purpose() {
         `}
       </style>
       <div className="h-screen flex bg-gradient-to-bl to-blue-100 via-transparent from-transparent py-24">
-        <div className="w-1/2 text-black flex justify-start">
+        <div className="w-1/2 text-black flex justify-start pl-7">
           <LazyLoadImage
             effect="blur"
             src={Chef}
             alt=""
-            className="drop-shadow-md slow-motion"
+            className="drop-shadow-md slow-motion w-3/4 h3/4"
           />
         </div>
         <div className="w-1/2 text-black text-start pe-44 py-16">

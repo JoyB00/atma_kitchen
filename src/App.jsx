@@ -270,12 +270,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "contact",
-        element: (
-            <Contact />
-        ),
-      },
-      {
         path: "AdminDashboard",
         element: (
           <ProtectedRoot role_id={2}>

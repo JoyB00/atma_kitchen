@@ -36,10 +36,7 @@ export default function FeaturedProduct({ data, loading }) {
           <div className=" px-52 text-center ">
             <h1 className="font-semibold text-black">Our Featured Product</h1>
             <p className="mt-2 text-black ">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
-              dolore ab vitae explicabo doloremque hic iure iusto distinctio non
-              esse beatae vel ad reprehenderit harum nihil rerum, odio ut
-              placeat!
+            At Atma Kitchen, we take pride in crafting delightful and unique baked goods that tantalize the taste buds and warm the soul. Our featured product this month is the Heavenly Lapis Legit Traditional Cake and much more.
             </p>
           </div>
           <CarouselGrid>
