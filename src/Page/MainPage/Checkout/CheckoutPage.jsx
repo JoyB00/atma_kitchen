@@ -21,6 +21,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BeatLoader } from "react-spinners";
 import { Slider } from "@mui/material";
 import Input from "../../../Component/Input";
+import { GetTokenMidtrans } from "../../../api/MidtransTokenizer";
 
 export default function CheckoutPage() {
   const orderDetail = useRouteLoaderData("order-detail");
@@ -29,6 +30,15 @@ export default function CheckoutPage() {
   const [openModalPayment, setOpenModalPayment] = useState(false);
   const [point, setPoint] = useState(0);
   const [clickPoint, setClickPoint] = useState(false);
+  const [dataPayment, setDataPayment] = useState({
+    id: orderDetail.transaction.id,
+    amount: 0,
+    first_name: orderDetail.transaction.customer.users.fullName,
+    last_name: orderDetail.transaction.customer.users.fullName,
+    email: orderDetail.transaction.customer.users.email,
+    phone: orderDetail.transaction.customer.users.phoneNumber,
+    details: orderDetail.details,
+  });
   const [data, setData] = useState({
     point: 0,
     nominal_point: 0,
@@ -56,6 +66,26 @@ export default function CheckoutPage() {
       }
     });
   };
+  const handlePayment = async (event) => {
+    event.preventDefault();
+
+    const response = await GetTokenMidtrans(dataPayment);
+    const { snapToken } = response;
+    window.snap.pay(snapToken, {
+      onSuccess: (result) => {
+        console.log("Success:", result);
+      },
+      onPending: (result) => {
+        console.log("Pending:", result);
+      },
+      onError: (result) => {
+        console.log("Error:", result);
+      },
+      onClose: () => {
+        console.log("Customer closed the popup without finishing the payment");
+      },
+    });
+  };
 
   useEffect(() => {
     if (!orders.isFetching) {
@@ -68,13 +98,22 @@ export default function CheckoutPage() {
         ),
         point_earned: orders.data.getPoint,
       });
+      setDataPayment({
+        ...dataPayment,
+        amount: parseFloat(
+          orderDetail.transaction.total_price -
+            data.nominal_point +
+            orders.data.transaction.delivery.shipping_cost,
+        ),
+      });
     }
+    console.log("payment", dataPayment);
   }, [data.point, orders.data]);
 
   return (
     <>
       <div className="flex h-screen w-full flex-col bg-transparent">
-        {console.log(data.total_price)}
+        {/* {console.log(data.total_price)} */}
         <Navbar />
         <div className="px-12 pt-32">
           <div className=" grid grid-cols-3 rounded-3xl border-transparent bg-gradient-to-t from-orange-400 to-orange-500 ps-6 drop-shadow-md">
@@ -314,7 +353,7 @@ export default function CheckoutPage() {
                     className={`mt-4 w-full bg-orange-500 text-white ${!orders.data.transaction.delivery_id && "opacity-20"}`}
                     withoutAnimate={!orders.data.transaction.delivery_id}
                     disabled={!orders.data.transaction.delivery_id}
-                    onClick={() => setOpenModalPayment(true)}
+                    onClick={handlePayment}
                   >
                     Pay Now
                   </Button>
