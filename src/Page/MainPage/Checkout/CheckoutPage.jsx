@@ -8,7 +8,10 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../../Component/Button";
-import { GetAuthCustomerTransactions } from "../../../api/TransactionApi";
+import {
+  GetAuthCustomerTransactions,
+  PaymentCustomer,
+} from "../../../api/TransactionApi";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { getPicture } from "../../../api";
@@ -22,14 +25,15 @@ import { BeatLoader } from "react-spinners";
 import { Slider } from "@mui/material";
 import Input from "../../../Component/Input";
 import { GetTokenMidtrans } from "../../../api/MidtransTokenizer";
+import { motion } from "framer-motion";
 
 export default function CheckoutPage() {
+  let animate = {
+    initial: { opacity: 0, y: -100 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
   const orderDetail = useRouteLoaderData("order-detail");
-  const user = JSON.parse(sessionStorage.getItem("user"));
-  const [openModal, setOpenModal] = useState(false);
-  const [openModalPayment, setOpenModalPayment] = useState(false);
-  const [point, setPoint] = useState(0);
-  const [clickPoint, setClickPoint] = useState(false);
   const [dataPayment, setDataPayment] = useState({
     id: orderDetail.transaction.id,
     amount: 0,
@@ -39,7 +43,9 @@ export default function CheckoutPage() {
     phone: orderDetail.transaction.customer.users.phoneNumber,
     details: orderDetail.details,
   });
+
   const [data, setData] = useState({
+    id: orderDetail.transaction.id,
     point: 0,
     nominal_point: 0,
     point_earned: 0,
@@ -47,7 +53,14 @@ export default function CheckoutPage() {
       ? orderDetail.transaction.total_price +
         orderDetail.transaction.delivery.shipping_cost
       : orderDetail.transaction.total_price,
+    payment_method: null,
   });
+
+  const [openModal, setOpenModal] = useState(false);
+  const [openModalPayment, setOpenModalPayment] = useState(false);
+  const [point, setPoint] = useState(0);
+  const [clickPoint, setClickPoint] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const orders = useQuery({
     queryKey: ["orders"],
@@ -66,54 +79,110 @@ export default function CheckoutPage() {
       }
     });
   };
-  const handlePayment = async (event) => {
-    event.preventDefault();
 
-    const response = await GetTokenMidtrans(dataPayment);
-    const { snapToken } = response;
-    window.snap.pay(snapToken, {
-      onSuccess: (result) => {
-        console.log("Success:", result);
+  const handlePaymentCustomer = (data) => {
+    toast.promise(
+      PaymentCustomer(data)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        }),
+      {
+        loading: "Loading",
+        success: "Your Payment already success",
+        error: (err) => err.message,
       },
-      onPending: (result) => {
-        console.log("Pending:", result);
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
       },
-      onError: (result) => {
-        console.log("Error:", result);
-      },
-      onClose: () => {
-        console.log("Customer closed the popup without finishing the payment");
-      },
-    });
+    );
+  };
+
+  const handlePaymentCash = () => {
+    console.log("cash");
+    if (!data.payment_method) {
+      toast.error("Choose Your Payment Method", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    }
+  };
+
+  const handlePaymentEMoney = async (event, data) => {
+    event.preventDefault();
+    if (
+      orders.data.transaction.delivery.delivery_method === "Delivery Courier" &&
+      !orders.data.transaction.delivery.shipping_cost
+    ) {
+      toast.error("Wait for confirmation of shipping costs", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    } else {
+      setLoadingButton(true);
+      const response = await GetTokenMidtrans(dataPayment);
+      setLoadingButton(false);
+      const { snapToken } = response;
+      window.snap.pay(snapToken, {
+        onSuccess: (result) => {
+          console.log("Success:", result);
+          handlePaymentCustomer(data);
+        },
+        onPending: (result) => {
+          console.log("Pending:", result);
+        },
+        onError: (result) => {
+          console.log("Error:", result);
+        },
+        onClose: () => {
+          console.log(
+            "Customer closed the popup without finishing the payment",
+          );
+        },
+      });
+    }
   };
 
   useEffect(() => {
     if (!orders.isFetching) {
-      setData({
-        ...data,
-        total_price: parseFloat(
-          orderDetail.transaction.total_price -
-            data.nominal_point +
-            orders.data.transaction.delivery.shipping_cost,
-        ),
-        point_earned: orders.data.getPoint,
-      });
-      setDataPayment({
-        ...dataPayment,
-        amount: parseFloat(
-          orderDetail.transaction.total_price -
-            data.nominal_point +
-            orders.data.transaction.delivery.shipping_cost,
-        ),
-      });
+      if (orders.data.transaction.delivery_id) {
+        setData({
+          ...data,
+          total_price: parseFloat(
+            orderDetail.transaction.total_price -
+              data.nominal_point +
+              orders.data.transaction.delivery.shipping_cost,
+          ),
+          point_earned: orders.data.getPoint,
+        });
+        setDataPayment({
+          ...dataPayment,
+          amount: parseFloat(
+            orderDetail.transaction.total_price -
+              data.nominal_point +
+              orders.data.transaction.delivery.shipping_cost,
+          ),
+        });
+      }
     }
-    console.log("payment", dataPayment);
   }, [data.point, orders.data]);
 
   return (
     <>
+      {console.log(data)}
       <div className="flex h-screen w-full flex-col bg-transparent">
-        {/* {console.log(data.total_price)} */}
         <Navbar />
         <div className="px-12 pt-32">
           <div className=" grid grid-cols-3 rounded-3xl border-transparent bg-gradient-to-t from-orange-400 to-orange-500 ps-6 drop-shadow-md">
@@ -140,6 +209,7 @@ export default function CheckoutPage() {
             </>
           ) : (
             <div className="grid grid-cols-12 gap-x-16 text-orange-500">
+              {console.log("payment", orders.data.transaction.payment_method)}
               <div className="col-span-8 text-start">
                 {orders.data.transaction.delivery_id && (
                   <div
@@ -185,7 +255,7 @@ export default function CheckoutPage() {
                   <tbody className="text-black">
                     {orders.data.details.map((item) => {
                       return (
-                        <tr className={item.id}>
+                        <tr key={item.id}>
                           <td className="py-6 ps-6 font-medium ">
                             <div className="flex items-center ">
                               <LazyLoadImage
@@ -246,7 +316,7 @@ export default function CheckoutPage() {
                     <>
                       <div className={` flex  justify-between pb-2`}>
                         <p>Shipping Cost</p>
-                        <p>
+                        <div>
                           {" "}
                           {!orders.data.transaction.delivery.distance &&
                           orders.data.transaction.delivery.delivery_method ===
@@ -262,7 +332,7 @@ export default function CheckoutPage() {
                               )}
                             </p>
                           )}
-                        </p>
+                        </div>
                       </div>
                       <div
                         className={`flex justify-between pb-2 ${point === 0 && "hidden"}`}
@@ -285,7 +355,7 @@ export default function CheckoutPage() {
                       </div>
                       <hr />
                       <Button
-                        className=" my-4 w-full border-orange-500 bg-orange-200 text-start font-normal hover:border-orange-500"
+                        className=" mt-4 w-full border-orange-500 bg-orange-200 text-start font-normal hover:border-orange-500"
                         withoutAnimate
                         onClick={() => setClickPoint((prev) => !prev)}
                       >
@@ -304,8 +374,9 @@ export default function CheckoutPage() {
                           />
                         </div>
                       </Button>
+
                       {clickPoint && (
-                        <>
+                        <div className="pt-4">
                           <label htmlFor="point">
                             Your Points (
                             {orders.data.transaction.customer.point})
@@ -345,17 +416,54 @@ export default function CheckoutPage() {
                               Save
                             </Button>
                           </div>
-                        </>
+                        </div>
                       )}
                     </>
                   )}
+                  <div className="pt-4">
+                    <label htmlFor="payment_method">
+                      Choose Payment Methods
+                    </label>
+                    <motion.select
+                      {...animate}
+                      className="mt-2 w-full rounded-3xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                      onChange={(event) =>
+                        setData({ ...data, payment_method: event.target.value })
+                      }
+                      name="payment_method"
+                      id="payment_method"
+                      defaultValue={
+                        orders.data.transaction.payment_method
+                          ? orders.data.transaction.payment_method
+                          : "default"
+                      }
+                    >
+                      <option value="default" disabled>
+                        Choose your Payment Method
+                      </option>
+                      <option value='"Cash"'>Cash</option>
+                      <option value='"E-Money"'>E-Money</option>
+                    </motion.select>
+                  </div>
                   <Button
-                    className={`mt-4 w-full bg-orange-500 text-white ${!orders.data.transaction.delivery_id && "opacity-20"}`}
+                    className={`mt-4 w-full bg-orange-500 text-white ${
+                      !orders.data.transaction.delivery_id ||
+                      orders.data.transaction.status !== "notPaid"
+                        ? "opacity-20"
+                        : undefined
+                    }`}
                     withoutAnimate={!orders.data.transaction.delivery_id}
-                    disabled={!orders.data.transaction.delivery_id}
-                    onClick={handlePayment}
+                    disabled={
+                      !orders.data.transaction.delivery_id ||
+                      orders.data.transaction.status !== "notPaid"
+                    }
+                    onClick={
+                      data.payment_method === '"E-Money"'
+                        ? (event) => handlePaymentEMoney(event, data)
+                        : handlePaymentCash
+                    }
                   >
-                    Pay Now
+                    {loadingButton ? "Loading..." : "Pay Now"}
                   </Button>
                 </div>
               </div>
