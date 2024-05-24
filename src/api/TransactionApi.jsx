@@ -57,9 +57,24 @@ const StoreTransaction = async (data) => {
   }
 };
 
+const PaymentCustomer = async (data) => {
+  try {
+    const response = await useAxios.put(`/payment/${data.id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export {
   GetCustomerTransactions,
   GetAuthCustomerTransactions,
   GetDetailTransaction,
   StoreTransaction,
+  PaymentCustomer,
 };
