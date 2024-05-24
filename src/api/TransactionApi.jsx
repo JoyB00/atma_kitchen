@@ -70,6 +70,19 @@ const PaymentCustomer = async (data) => {
     throw error.response.data;
   }
 };
+const StorePaymentEvidence = async (data) => {
+  try {
+    const response = await useAxios.post(`/payment/evidence/${data.id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
 
 export {
   GetCustomerTransactions,
@@ -77,4 +90,5 @@ export {
   GetDetailTransaction,
   StoreTransaction,
   PaymentCustomer,
+  StorePaymentEvidence,
 };

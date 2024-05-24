@@ -6,11 +6,14 @@ import {
   faChevronRight,
   faCoins,
   faLocationDot,
+  faPencil,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "../../../Component/Button";
 import {
   GetAuthCustomerTransactions,
   PaymentCustomer,
+  StorePaymentEvidence,
 } from "../../../api/TransactionApi";
 import { redirect, useRouteLoaderData } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -20,12 +23,13 @@ import toast from "react-hot-toast";
 import ModalDelivery from "./DeliveryModal";
 import ModalPayment from "./PaymentModal";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BeatLoader } from "react-spinners";
 import { Slider } from "@mui/material";
 import Input from "../../../Component/Input";
 import { GetTokenMidtrans } from "../../../api/MidtransTokenizer";
 import { motion } from "framer-motion";
+import FileUploader from "../../../Component/FileUploader";
 
 export default function CheckoutPage() {
   let animate = {
@@ -56,11 +60,16 @@ export default function CheckoutPage() {
     payment_method: null,
   });
 
+  const queryClient = useQueryClient();
   const [openModal, setOpenModal] = useState(false);
   const [openModalPayment, setOpenModalPayment] = useState(false);
   const [point, setPoint] = useState(0);
   const [clickPoint, setClickPoint] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
+  const [picture, setPicture] = useState({
+    id: orderDetail.transaction.id,
+    payment_evidence: null,
+  });
 
   const orders = useQuery({
     queryKey: ["orders"],
@@ -85,9 +94,10 @@ export default function CheckoutPage() {
       PaymentCustomer(data)
         .then((res) => {
           console.log(res);
+          queryClient.invalidateQueries(["orders"]);
         })
         .catch((err) => {
-          console.log(err);
+          throw err.message;
         }),
       {
         loading: "Loading",
@@ -155,6 +165,49 @@ export default function CheckoutPage() {
     }
   };
 
+  const handlePicture = (event) => {
+    event.preventDefault();
+    setPicture({ ...picture, payment_evidence: event.target.files[0] });
+  };
+  const removePicture = () => {
+    setPicture({ ...picture, payment_evidence: null });
+  };
+  const handleStorePaymentEvidence = (data) => {
+    if (!data.payment_evidence) {
+      toast.error("Please upload payment evidence", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    } else {
+      toast.promise(
+        StorePaymentEvidence(data)
+          .then((res) => {
+            console.log(res);
+            queryClient.invalidateQueries(["orders"]);
+            orders.refetch();
+          })
+          .catch((err) => {
+            throw err.message;
+          }),
+        {
+          loading: "Loading",
+          success: "Your payment evidence has been successfully sent",
+          error: (err) => err,
+        },
+        {
+          style: {
+            backgroundColor: "#000000",
+            color: "#ffffff",
+          },
+          position: "bottom-right",
+        },
+      );
+    }
+  };
+
   useEffect(() => {
     if (!orders.isFetching) {
       if (orders.data.transaction.delivery_id) {
@@ -181,7 +234,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {console.log(data)}
+      {console.log(picture)}
       <div className="flex h-screen w-full flex-col bg-transparent">
         <Navbar />
         <div className="px-12 pt-32">
@@ -236,7 +289,15 @@ export default function CheckoutPage() {
                       </>
                     )}
                     <Button
-                      className="mt-3 border-orange-500 text-orange-500 hover:text-white"
+                      className={`mt-3 border-orange-500 text-orange-500 hover:text-white ${
+                        (orders.data.transaction.delivery.delivery_method ===
+                          "Delivery Courier" &&
+                          orders.data.transaction.delivery.shipping_cost !==
+                            null) ||
+                        orders.data.transaction.status !== "notPaid"
+                          ? "hidden"
+                          : undefined
+                      }`}
                       onClick={() => setOpenModal(true)}
                     >
                       Change Delivery Method
@@ -301,170 +362,268 @@ export default function CheckoutPage() {
               </div>
               <div className="col-span-4">
                 <div className=" mt-4 rounded-2xl border-2 border-gray-200 p-5 text-start text-black">
-                  <p className="pb-4 font-semibold">Order Details</p>
-                  <div className="flex justify-between pb-2">
-                    <p>Sub Total</p>
-                    <p>{formatCurrency(orders.data.transaction.total_price)}</p>
-                  </div>
-                  <Button
-                    className={`mt-4 w-full border-orange-500 text-orange-500 hover:text-white ${orders.data.transaction.delivery_id && "hidden"}`}
-                    onClick={() => setOpenModal(true)}
+                  <div
+                    className={`${orders.data.transaction.status !== "notPaid" && "hidden"}`}
                   >
-                    Choose Delivery Method
-                  </Button>
-                  {orders.data.transaction.delivery_id && (
-                    <>
-                      <div className={` flex  justify-between pb-2`}>
-                        <p>Shipping Cost</p>
-                        <div>
-                          {" "}
-                          {!orders.data.transaction.delivery.distance &&
-                          orders.data.transaction.delivery.delivery_method ===
-                            "Delivery Courier" ? (
-                            <p className="text-gray-300">
-                              Waiting Confirmation...
-                            </p>
-                          ) : (
-                            <p className="text-red-500">
-                              +
-                              {formatCurrency(
-                                orders.data.transaction.delivery.shipping_cost,
-                              )}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={`flex justify-between pb-2 ${point === 0 && "hidden"}`}
-                      >
-                        <p>Potongan {data.point} Poin</p>
-                        <p className="text-green-500">
-                          -{formatCurrency(data.nominal_point)}
-                        </p>
-                      </div>
-                      <hr />
-                      <div
-                        className={`flex justify-between pb-2 pt-4 font-semibold`}
-                      >
-                        <p>Total</p>
-                        <p>{formatCurrency(data.total_price)}</p>
-                      </div>
-                      <div className={`flex justify-between pb-4 `}>
-                        <p>Points Earned</p>
-                        <p>{data.point_earned} points</p>
-                      </div>
-                      <hr />
-                      <Button
-                        className=" mt-4 w-full border-orange-500 bg-orange-200 text-start font-normal hover:border-orange-500"
-                        withoutAnimate
-                        onClick={() => setClickPoint((prev) => !prev)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <FontAwesomeIcon
-                              icon={faCoins}
-                              className="pe-4 text-orange-700"
-                              size="xl"
-                            />
-                            <p>Use Your Point </p>
+                    <p className="pb-4 font-semibold">Order Details</p>
+                    <div className="flex justify-between pb-2">
+                      <p>Sub Total</p>
+                      <p>
+                        {formatCurrency(orders.data.transaction.total_price)}
+                      </p>
+                    </div>
+                    <Button
+                      className={`mt-4 w-full border-orange-500 text-orange-500 hover:text-white ${orders.data.transaction.delivery_id && "hidden"}`}
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Choose Delivery Method
+                    </Button>
+                    {orders.data.transaction.delivery_id && (
+                      <>
+                        <div className={` flex  justify-between pb-2`}>
+                          <p>Shipping Cost</p>
+                          <div>
+                            {" "}
+                            {!orders.data.transaction.delivery.distance &&
+                            orders.data.transaction.delivery.delivery_method ===
+                              "Delivery Courier" ? (
+                              <p className="text-gray-300">
+                                Waiting Confirmation...
+                              </p>
+                            ) : (
+                              <p className="text-red-500">
+                                +
+                                {formatCurrency(
+                                  orders.data.transaction.delivery
+                                    .shipping_cost,
+                                )}
+                              </p>
+                            )}
                           </div>
-                          <FontAwesomeIcon
-                            icon={faChevronRight}
-                            className="text-orange-700"
-                          />
                         </div>
-                      </Button>
-
-                      {clickPoint && (
-                        <div className="pt-4">
-                          <label htmlFor="point">
-                            Your Points (
-                            {orders.data.transaction.customer.point})
-                          </label>
-                          <div className="flex items-center justify-between gap-x-4 ps-2">
-                            <Slider
-                              onChange={handleSliderPoint}
-                              value={parseInt(point)}
-                              aria-label="Small"
-                              valueLabelDisplay="auto"
-                              max={orders.data.transaction.customer.point}
-                              min={0}
-                            />
-                            <div className="w-1/3">
-                              <Input
-                                type="number"
-                                id="point"
-                                onChange={handlePointOnInput}
-                                className=" rounded-2xl border-2 p-2 text-center"
-                                value={point}
-                                textCenter
+                        <div
+                          className={`flex justify-between pb-2 ${point === 0 && "hidden"}`}
+                        >
+                          <p>Potongan {data.point} Poin</p>
+                          <p className="text-green-500">
+                            -{formatCurrency(data.nominal_point)}
+                          </p>
+                        </div>
+                        <hr />
+                        <div
+                          className={`flex justify-between pb-2 pt-4 font-semibold`}
+                        >
+                          <p>Total</p>
+                          <p>{formatCurrency(data.total_price)}</p>
+                        </div>
+                        <div className={`flex justify-between pb-4 `}>
+                          <p>Points Earned</p>
+                          <p>{data.point_earned} points</p>
+                        </div>
+                        <hr />
+                        <Button
+                          className=" mt-4 w-full border-orange-500 bg-orange-200 text-start font-normal hover:border-orange-500"
+                          withoutAnimate
+                          onClick={() => setClickPoint((prev) => !prev)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                              <FontAwesomeIcon
+                                icon={faCoins}
+                                className="pe-4 text-orange-700"
+                                size="xl"
                               />
+                              <p>Use Your Point </p>
                             </div>
+                            <FontAwesomeIcon
+                              icon={faChevronRight}
+                              className="text-orange-700"
+                            />
+                          </div>
+                        </Button>
 
+                        {clickPoint && (
+                          <div className="pt-4">
+                            <label htmlFor="point">
+                              Your Points (
+                              {orders.data.transaction.customer.point})
+                            </label>
+                            <div className="flex items-center justify-between gap-x-4 ps-2">
+                              <Slider
+                                onChange={handleSliderPoint}
+                                value={parseInt(point)}
+                                aria-label="Small"
+                                valueLabelDisplay="auto"
+                                max={orders.data.transaction.customer.point}
+                                min={0}
+                              />
+                              <div className="w-1/3">
+                                <Input
+                                  type="number"
+                                  id="point"
+                                  onChange={handlePointOnInput}
+                                  className=" rounded-2xl border-2 p-2 text-center"
+                                  value={point}
+                                  textCenter
+                                />
+                              </div>
+
+                              <Button
+                                className="text-orange-500"
+                                withoutAnimate
+                                onClick={() => {
+                                  setClickPoint(false);
+                                  setData({
+                                    ...data,
+                                    point: point,
+                                    nominal_point: point * 100,
+                                  });
+                                }}
+                              >
+                                Save
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                    <div className="pt-4">
+                      <label htmlFor="payment_method">
+                        Choose Payment Methods
+                      </label>
+                      <motion.select
+                        {...animate}
+                        className="mt-2 w-full rounded-3xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
+                        onChange={(event) =>
+                          setData({
+                            ...data,
+                            payment_method: event.target.value,
+                          })
+                        }
+                        name="payment_method"
+                        id="payment_method"
+                        defaultValue={
+                          orders.data.transaction.payment_method
+                            ? orders.data.transaction.payment_method
+                            : "default"
+                        }
+                      >
+                        <option value="default" disabled>
+                          Choose your Payment Method
+                        </option>
+                        <option value='"Cash"'>Cash</option>
+                        <option value='"E-Money"'>E-Money</option>
+                      </motion.select>
+                    </div>
+                    <Button
+                      className={`mt-4 w-full bg-orange-500 text-white ${
+                        !orders.data.transaction.delivery_id ||
+                        orders.data.transaction.status !== "notPaid"
+                          ? "opacity-20"
+                          : undefined
+                      }`}
+                      withoutAnimate={!orders.data.transaction.delivery_id}
+                      disabled={
+                        !orders.data.transaction.delivery_id ||
+                        orders.data.transaction.status !== "notPaid"
+                      }
+                      onClick={
+                        data.payment_method === '"E-Money"'
+                          ? (event) => handlePaymentEMoney(event, data)
+                          : handlePaymentCash
+                      }
+                    >
+                      {loadingButton ? "Loading..." : "Pay Now"}
+                    </Button>
+                  </div>
+
+                  {/* when already paid */}
+                  {orders.data.transaction.status !== "notPaid" && (
+                    <div>
+                      <p
+                        className={`text-sm font-semibold text-red-500 ${orders.data.transaction.payment_evidence && "hidden"}`}
+                      >
+                        <i>
+                          *Could you please send over the proof of payment as
+                          soon as possible? This will help us process the
+                          transaction promptly. Thanks a bunch!{" "}
+                        </i>
+                      </p>
+                      {picture.payment_evidence ||
+                      orders.data.transaction.payment_evidence ? (
+                        <div className="mt-2  rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
+                          <div className="flex h-36 justify-center ">
+                            <img
+                              src={
+                                picture || !orders.data.transaction
+                                  ? URL.createObjectURL(
+                                      picture.payment_evidence,
+                                    )
+                                  : getPicture(
+                                      hampersData.hampers_picture,
+                                      "hampers",
+                                    )
+                              }
+                              alt="hampers picture"
+                              className="h-36 object-cover"
+                            />
+                          </div>
+                          <div className="flex justify-center">
                             <Button
-                              className="text-orange-500"
-                              withoutAnimate
-                              onClick={() => {
-                                setClickPoint(false);
-                                setData({
-                                  ...data,
-                                  point: point,
-                                  nominal_point: point * 100,
-                                });
-                              }}
+                              className={`me-2 mt-4 bg-transparent text-orange-500 hover:text-white ${orders.data.transaction.payment_evidence && "hidden"} `}
+                              type="button"
+                              onClick={() =>
+                                document
+                                  .getElementById("payment_evidence")
+                                  .click()
+                              }
                             >
-                              Save
+                              <FontAwesomeIcon
+                                icon={faPencil}
+                                className="me-1"
+                              />{" "}
+                              Change
+                            </Button>
+                            <Button
+                              className={`me-2 mt-4 bg-transparent text-orange-500 hover:text-white ${orders.data.transaction.payment_evidence && "hidden"}`}
+                              type="button"
+                              onClick={removePicture}
+                            >
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                className="me-1"
+                              />{" "}
+                              Delete
                             </Button>
                           </div>
                         </div>
+                      ) : (
+                        <></>
                       )}
-                    </>
+                      <div
+                        className={`${
+                          picture.payment_evidence ||
+                          orders.data.transaction.payment_evidence
+                            ? "hidden"
+                            : ""
+                        } `}
+                      >
+                        <FileUploader
+                          id="payment_evidence"
+                          onChange={handlePicture}
+                        />
+                      </div>
+                      <Button
+                        className={`mt-2 w-full bg-green-500 text-white ${orders.data.transaction.payment_evidence && "hidden"}`}
+                        onClick={() => handleStorePaymentEvidence(picture)}
+                      >
+                        Send
+                      </Button>
+                      <Button className=" mt-2 w-full border-blue-500 text-blue-500 hover:text-white">
+                        Show Nota
+                      </Button>
+                    </div>
                   )}
-                  <div className="pt-4">
-                    <label htmlFor="payment_method">
-                      Choose Payment Methods
-                    </label>
-                    <motion.select
-                      {...animate}
-                      className="mt-2 w-full rounded-3xl border-0 px-3 py-3 text-sm text-black shadow-sm ring-1 ring-inset ring-gray-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-                      onChange={(event) =>
-                        setData({ ...data, payment_method: event.target.value })
-                      }
-                      name="payment_method"
-                      id="payment_method"
-                      defaultValue={
-                        orders.data.transaction.payment_method
-                          ? orders.data.transaction.payment_method
-                          : "default"
-                      }
-                    >
-                      <option value="default" disabled>
-                        Choose your Payment Method
-                      </option>
-                      <option value='"Cash"'>Cash</option>
-                      <option value='"E-Money"'>E-Money</option>
-                    </motion.select>
-                  </div>
-                  <Button
-                    className={`mt-4 w-full bg-orange-500 text-white ${
-                      !orders.data.transaction.delivery_id ||
-                      orders.data.transaction.status !== "notPaid"
-                        ? "opacity-20"
-                        : undefined
-                    }`}
-                    withoutAnimate={!orders.data.transaction.delivery_id}
-                    disabled={
-                      !orders.data.transaction.delivery_id ||
-                      orders.data.transaction.status !== "notPaid"
-                    }
-                    onClick={
-                      data.payment_method === '"E-Money"'
-                        ? (event) => handlePaymentEMoney(event, data)
-                        : handlePaymentCash
-                    }
-                  >
-                    {loadingButton ? "Loading..." : "Pay Now"}
-                  </Button>
                 </div>
               </div>
             </div>
