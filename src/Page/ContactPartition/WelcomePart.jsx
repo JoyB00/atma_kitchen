@@ -1,5 +1,4 @@
 import React from 'react';
-import Dendy from "../../assets/ContactAsset/dendy.png";
 import Insta from "../../assets/ContactAsset/instagram.png";
 import FB from "../../assets/ContactAsset/facebook.png";
 import Tweet from "../../assets/ContactAsset/twitter.png";
