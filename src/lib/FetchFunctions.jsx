@@ -11,6 +11,7 @@ import {
   GetDetailTransaction,
 } from "../api/TransactionApi";
 import { FetchAllAddresses } from "../api/AddressApi";
+import { fetchAllInputDistance } from "../api/DeliveryApi.jsx";
 
 const fetchCategories = async () => {
   try {
@@ -124,6 +125,16 @@ const fetchAddresses = async () => {
 };
 const allAddresses = atom(fetchAddresses);
 
+const fetchInputDistance = async () => {
+  try {
+    const response = await fetchAllInputDistance();
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+const allInputDistance = atom(fetchInputDistance);
+
 export {
   allIngredients,
   allCategories,
@@ -135,4 +146,5 @@ export {
   loggedInCustomer,
   customerOrderHistory,
   allAddresses,
+  allInputDistance,
 };
