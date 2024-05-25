@@ -15,10 +15,7 @@ export default function BestSeller() {
           </Badge>
         </p>
         <div className="my-2 w-4/5">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae,
-          sapiente cumque accusantium error, aliquid totam magnam autem hic
-          incidunt alias adipisci excepturi nam iusto possimus repellat, iste
-          nihil veniam et.
+        At Atma Kitchen, we are proud to present our best-selling delicacy, the <strong> Lapis Legit Traditional Cake</strong>. Known for its intricate layers and rich flavor, this traditional Indonesian cake is a timeless favorite that has captured the hearts of many.
         </div>
         <Button className="me-2 mt-4 rounded-xl border-2 border-orange-500 bg-transparent text-orange-500 hover:text-white">
           Add To Cart

@@ -17,6 +17,7 @@ import Home from "./Page/Home";
 
 // Menu
 import RootMenuPage from "./Root/Main/Menu/RootMenuPage";
+import About from "./Page/About";
 import Menu from "./Page/Menu";
 import { DetailMenu } from "./Page/MainPage/Menu/DetailMenu";
 import { loader as loadDetailMenu } from "./Page/MainPage/Menu/DetailMenu";
@@ -34,7 +35,8 @@ import CartPage from "./Page/MainPage/Cart/CartPage";
 // checkout
 import RootCheckout from "./Root/Main/Checkout/RootCheckout";
 import CheckoutPage from "./Page/MainPage/Checkout/CheckoutPage";
-import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";
+import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";import Contact from "./Page/Contact";
+
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
 import ForgotPassword from "./Page/ChangePasswordCustomer/ForgotPassword";
@@ -176,6 +178,12 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: "about",
+        element: (
+            <About />
+        ),
+      },
+      {
         path: "menu",
         element: (
           <ProtectedRoot role_id={4}>
@@ -254,6 +262,12 @@ const router = createBrowserRouter([
             element: <CheckoutPage />,
           },
         ],
+      },
+      {
+        path: "contact",
+        element: (
+            <Contact />
+        ),
       },
       {
         path: "AdminDashboard",

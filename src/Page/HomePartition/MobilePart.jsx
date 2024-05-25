@@ -15,9 +15,7 @@ export default function MobilePart() {
           Atma Kitchen is now on Mobile
         </h1>
         <p className="me-36 mt-6">
-          It's a long established fact that a reader will be distracted by the
-          readable content of a page when looking at it's layout. The Point of
-          Using Lorem Ipsum
+        We are thrilled to announce that Atma Kitchen is now available on mobile! With our new app, you can enjoy the deliciousness of our bakery at your fingertips, anytime and anywhere.
         </p>
         <div className="mt-6 flex justify-start">
           <NavLink

@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 export default function Button({
   children,
   withoutAnimate,
   hoverColor,
+  onClick,
   ...props
 }) {
   let setting = {};
@@ -17,7 +19,7 @@ export default function Button({
   }
 
   return (
-    <motion.button {...setting} {...props}>
+    <motion.button {...setting} onClick={onClick} {...props}>
       {children}
     </motion.button>
   );

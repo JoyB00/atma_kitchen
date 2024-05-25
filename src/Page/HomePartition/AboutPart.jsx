@@ -1,7 +1,13 @@
 import Drink from "../../assets/HomeAssets/Coffee.png";
 import Button from "../../Component/Button";
+import { useNavigate } from 'react-router-dom';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 export default function AboutPart() {
+  const navigate = useNavigate();
+
+  const About = () => {
+    navigate('/about');
+  };
   return (
     <div className="h-full flex bg-gradient-to-bl to-orange-50 via-transparent from-transparent py-24">
       <div className="w-1/2 text-black flex justify-start">
@@ -16,18 +22,9 @@ export default function AboutPart() {
         <h1 className="font-semibold">About</h1>
         <h1 className="mb-2 font-semibold">Atma Kitchen</h1>
         <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident
-          recusandae rerum nam nisi sed ad corporis aliquid, ratione iure a
-          obcaecati distinctio cum nesciunt ab dolorum quibusdam pariatur maxime
-          ea. Optio voluptas voluptatum impedit id eos deleniti sunt soluta quis
-          nam sint! Quam cumque consequatur corrupti aperiam explicabo rerum,
-          nisi omnis nihil ipsam tenetur pariatur alias dignissimos quibusdam
-          unde nobis. Quas eveniet, possimus commodi deleniti cumque facere
-          officiis rem eligendi autem. Unde ea saepe dolores odit doloremque
-          ullam tenetur eum? Cumque ea, doloribus fugiat nihil doloremque
-          molestiae incidunt. Ab, ea?
+        Atma Kitchen – Where every creation is made with Heart and Soul. We are a legit bakery where passion meets precision, and every creation tells a story. Founded on the principles of quality, creativity, and community, Atma Kitchen offers a delightful array of cakes, pastries, and baked goods that cater to all tastes and occasions.
         </p>
-        <Button className="me-2 mt-7 rounded-xl bg-orange-500 text-white">
+        <Button className="me-2 mt-7 rounded-xl bg-orange-500 text-white" onClick={About}>
           Read More
         </Button>
       </div>

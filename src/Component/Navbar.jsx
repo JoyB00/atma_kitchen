@@ -83,12 +83,12 @@ export default function Navbar() {
             </li>
 
             <li className="col-span-1">
-              <NavLink to="" className="font-normal text-black">
+              <NavLink to="/about" className="font-normal text-black">
                 About
               </NavLink>
             </li>
             <li className="col-span-1">
-              <NavLink to="" className="font-normal text-black">
+              <NavLink to="/contact" className="font-normal text-black">
                 Contact
               </NavLink>
             </li>

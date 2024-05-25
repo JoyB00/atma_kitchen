@@ -1,15 +1,17 @@
+import React, { useEffect, useState } from "react";
 import Navbar from "../Component/Navbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import defaultImage from "../assets/ProductAsset/lapis leggite.jpg";
 import Input from "../Component/Input";
 import CardProduct from "../Component/Card";
 import Footer from "../Component/Footer";
 import { Pagination } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
 import { FetchAllProducts } from "../api/ProductApi";
 import { RotateLoader } from "react-spinners";
 import { getPicture } from "../api";
+import Category from "../assets/CategoryProduct/Category";
+
 export default function Menu() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
@@ -18,60 +20,74 @@ export default function Menu() {
   const [isPending, setIsPending] = useState(false);
   const [filterSelected, setFilterSelected] = useState("all");
   const [sortSelected, setSortSelected] = useState("default");
-  let animate = {
+  const location = useLocation();
+
+  const animate = {
     initial: { opacity: 0, y: -100 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
   };
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const category = queryParams.get("category") || "all";
+    setFilterSelected(category);
+  }, [location]);
+
+  useEffect(() => {
+    setIsPending(true);
+    FetchAllProducts()
+      .then((res) => {
+        setProducts(res);
+        setIsPending(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    handleSortByCategory(filterSelected);
+  }, [products, filterSelected]);
+
   const handleChange = (e, p) => {
     setPage(p);
   };
+
   const handleSearch = (event) => {
     setPage(1);
     setSearch(event.target.value);
     const filteredItem = products.filter(
       (item) =>
-        item.product_name
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase()) ||
-        item.categories.category_name
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase()),
+        item.product_name.toLowerCase().includes(event.target.value.toLowerCase()) ||
+        item.categories.category_name.toLowerCase().includes(event.target.value.toLowerCase())
     );
     setFilteredProduct(filteredItem);
   };
 
-  const handleSortByCategory = (event) => {
-    setPage(1);
-    setFilterSelected(event.target.id);
-    setSortSelected("default");
-
+  const handleSortByCategory = (categoryId) => {
     const filteredItem = products.filter(
       (item) =>
-        item.categories.category_name === event.target.id ||
-        event.target.id === "all",
+        item.categories.category_name === categoryId ||
+        categoryId === "all"
     );
     setFilteredProduct(filteredItem);
-    filteredProduct.sort;
   };
 
   const handleSortByAscDsc = (event) => {
     setPage(1);
     setSortSelected(event.target.value);
+    let sortedProducts = [...filteredProduct];
+
     if (event.target.value === "ascending") {
-      const ascSort = [...filteredProduct].sort((a, b) =>
-        a.product_name.toLowerCase() < b.product_name.toLowerCase() ? -1 : 1,
-      );
-      setFilteredProduct(ascSort);
+      sortedProducts.sort((a, b) => a.product_name.localeCompare(b.product_name));
     } else if (event.target.value === "descending") {
-      const dscSort = [...filteredProduct].sort((a, b) =>
-        a.product_name.toLowerCase() > b.product_name.toLowerCase() ? -1 : 1,
-      );
-      setFilteredProduct(dscSort);
+      sortedProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
     } else {
-      setFilteredProduct(products);
+      sortedProducts = filteredProduct;
     }
+
+    setFilteredProduct(sortedProducts);
   };
 
   const productPerPage = 9;
@@ -81,35 +97,15 @@ export default function Menu() {
   const card = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delayChildren: 0.1,
-        staggerChildren: 0.2,
-      },
+      opacity: 1, scale: 1, transition: { delayChildren: 0.1, staggerChildren: 0.2 }
     },
   };
 
   const productItem = {
     hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-    },
+    visible: { y: 0, opacity: 1 },
   };
 
-  useEffect(() => {
-    setIsPending(true);
-    FetchAllProducts()
-      .then((res) => {
-        setProducts(res);
-        setFilteredProduct(res);
-        setIsPending(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
   return (
     <AnimatePresence>
       <div className="h-screen w-full bg-transparent">
@@ -154,90 +150,46 @@ export default function Menu() {
             />
           </div>
         </div>
-        <div className=" grid grid-cols-5 gap-x-3 gap-y-6 px-12">
-          <div className=" col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black ">
-            <h2 className="px-4 pt-4 font-semibold">Filtered By Category</h2>
-            <ul className="px-8 pb-6 pt-3 text-black ">
-              <li className="pt-2">
-                <NavLink
+        <div className="grid grid-cols-5 gap-x-3 gap-y-6 px-12">
+          <div className="col-span-1">
+            <motion.ul
+              initial="hidden"
+              animate="visible"
+              variants={card}
+              className="sticky top-36 mx-auto flex w-full flex-col space-y-5 rounded-xl bg-transparent shadow-none"
+            >
+              <motion.li
+                key="all"
+                variants={productItem}
+                transition={{ type: "spring" }}
+                className={`${
+                  filterSelected === "all" ? "text-orange-500" : "text-black"
+                } cursor-pointer hover:text-orange-500`}
+                onClick={() => handleSortByCategory("all")}
+              >
+                All
+              </motion.li>
+              {Category.map((item) => (
+                <motion.li
+                  key={item.alt}
+                  variants={productItem}
+                  transition={{ type: "spring" }}
                   className={`${
-                    filterSelected === "all" ? "text-orange-500" : "text-black"
-                  }`}
-                  id="all"
-                  onClick={handleSortByCategory}
-                >
-                  All
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Cake" ? "text-orange-500" : "text-black"
-                  }`}
-                  id="Cake"
-                  onClick={handleSortByCategory}
-                >
-                  Cake
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Bread"
+                    filterSelected === item.alt
                       ? "text-orange-500"
                       : "text-black"
-                  }`}
-                  id="Bread"
-                  onClick={handleSortByCategory}
+                  } cursor-pointer hover:text-orange-500`}
+                  onClick={() => handleSortByCategory(item.alt)}
                 >
-                  Bread
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Drink"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Drink"
-                  onClick={handleSortByCategory}
-                >
-                  Drink
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Titipan"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Titipan"
-                  onClick={handleSortByCategory}
-                >
-                  Entrusted
-                </NavLink>
-              </li>
-            </ul>
+                  {item.alt}
+                </motion.li>
+              ))}
+            </motion.ul>
           </div>
-          <div className="col-span-4">
+          <div className="col-span-4 h-screen">
             {isPending ? (
-              <div className="h-screen w-full bg-transparent">
-                <RotateLoader
-                  color="orange"
-                  loading={isPending}
-                  cssOverride={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    borderColor: "red",
-                  }}
-                  size={100}
-                  aria-label="Loading Spinner"
-                  data-testid="loader"
-                />
+              <div className="flex h-screen items-center justify-center">
+                <RotateLoader color="#F99417" />
               </div>
             ) : (
               <>
@@ -245,10 +197,10 @@ export default function Menu() {
                   variants={card}
                   initial="hidden"
                   animate="visible"
-                  className="grid grid-cols-3 gap-4 rounded-xl"
+                  className="grid w-full grid-cols-3 gap-6"
                 >
                   {filteredProduct.length === 0 ? (
-                    <div className="col-span-3 flex h-screen items-center justify-center bg-orange-50 ">
+                    <div className="col-span-3 flex h-screen items-center justify-center bg-orange-50">
                       <p className="text-black">Product Not Found</p>
                     </div>
                   ) : (
@@ -278,8 +230,7 @@ export default function Menu() {
                             price={
                               product.product_price <= 999
                                 ? product.product_price
-                                : (product.product_price / 1000).toFixed(1) +
-                                  "K"
+                                : (product.product_price / 1000).toFixed(1) + "K"
                             }
                             title={product.product_name}
                           />
@@ -297,7 +248,7 @@ export default function Menu() {
             )}
           </div>
         </div>
-        <div className="from-cyan-100 via-transparent md:pt-12 ">
+        <div className="from-cyan-100 via-transparent md:pt-12">
           <Footer />
         </div>
       </div>

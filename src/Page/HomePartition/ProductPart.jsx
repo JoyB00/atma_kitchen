@@ -42,38 +42,37 @@ export default function Product() {
     <div className="bg-red-50/40 py-24">
       <h1 className="font-semibold text-black">Welcome To Our Store</h1>
       <p className="my-3 px-52 text-black">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dolore
-        ab vitae explicabo doloremque hic iure iusto distinctio non esse beatae
-        vel ad reprehenderit harum nihil rerum, odio ut placeat!
+      Every item at Atma Kitchen is made with the utmost care and attention to detail. Our bakers are passionate about their craft, using only the finest ingredients to create baked goods that are not only delicious but also made with love. From our flaky croissants and hearty artisan breads to our exquisite cakes and delicate pastries, each creation is a testament to our commitment to quality and flavor.
       </p>
       <motion.ul
-        variants={card}
-        initial={scroll ? "hidden" : ""}
-        animate={scroll ? "visible" : ""}
-        className="mt-8 grid grid-cols-5 gap-14 px-32"
-      >
-        {Category.map((category, index) => (
-          <NavLink key={index}>
-            <motion.div
-              variants={productItem}
-              whileHover={{
-                scale: 1.02,
-                boxShadow: "5px 5px ",
-                color: "#f99417",
-              }}
-              transition={{ type: "just", stiffness: 1000 }}
-              className="col-span-1 my-auto cursor-pointer rounded-xl bg-white py-8 text-black drop-shadow-md"
-            >
-              <img
-                src={category.src}
-                alt={category.alt}
-                className="mx-auto mb-6 w-5/12"
-              />
-              <h1 className="text-2xl font-semibold">{category.alt}</h1>
-            </motion.div>
-          </NavLink>
-        ))}
-      </motion.ul>
+      variants={card}
+      initial={scroll ? "hidden" : ""}
+      animate={scroll ? "visible" : ""}
+      className="mt-8 grid grid-cols-5 gap-14 px-32"
+    >
+      {Category.map((category, index) => (
+        <NavLink key={index} to={`/menu?category=${category.alt}`}>
+          <motion.div
+            variants={productItem}
+            whileHover={{
+              scale: 1.02,
+              boxShadow: "5px 5px ",
+              color: "#f99417",
+            }}
+            transition={{ type: "just", stiffness: 1000 }}
+            className="col-span-1 my-auto cursor-pointer rounded-xl bg-white py-8 text-black drop-shadow-md"
+          >
+            <img
+              src={category.src}
+              alt={category.alt}
+              className="mx-auto mb-6 w-5/12"
+            />
+            <h1 className="text-2xl font-semibold">{category.alt}</h1>
+          </motion.div>
+        </NavLink>
+      ))}
+    </motion.ul>
+     
     </div>
   );
 }

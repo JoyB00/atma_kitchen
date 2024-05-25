@@ -46,6 +46,7 @@ export default function Home() {
       <About />
       <FeaturedProduct data={data} loading={isPending} />
       <BestSeller />
+
       <MobilePart />
       <Footer />
     </div>
