@@ -43,8 +43,9 @@ export function DetailHampersMenu() {
   });
   const [limit, setLimit] = useState(0);
   const handleChangeDate = (event) => {
-    const selectedDate = event.target.value;
+    const selectedDate = event.target.value.slice(0, 10);
     let newLimit = hampers.details[0].product.daily_stock;
+    // console.log("tanggal", selectedDate);
 
     hampers.details.forEach((item, index) => {
       if (item.product) {
