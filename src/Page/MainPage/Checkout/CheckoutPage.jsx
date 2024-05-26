@@ -21,7 +21,7 @@ import { getPicture } from "../../../api";
 import { formatCurrency } from "../../../lib/FormatCurrency";
 import toast from "react-hot-toast";
 import ModalDelivery from "./DeliveryModal";
-import ModalPayment from "./PaymentModal";
+import ModalNota from "./PaymentModal";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BeatLoader } from "react-spinners";
@@ -62,7 +62,7 @@ export default function CheckoutPage() {
 
   const queryClient = useQueryClient();
   const [openModal, setOpenModal] = useState(false);
-  const [openModalPayment, setOpenModalPayment] = useState(false);
+  const [openModalNota, setOpenModalNota] = useState(false);
   const [point, setPoint] = useState(0);
   const [clickPoint, setClickPoint] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
@@ -553,15 +553,17 @@ export default function CheckoutPage() {
                       orders.data.transaction.payment_evidence ? (
                         <div className="mt-2  rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
                           <div className="flex h-36 justify-center ">
-                            <img
+                            <LazyLoadImage
+                              effect="blur"
                               src={
-                                picture || !orders.data.transaction
+                                picture.payment_evidence ||
+                                !orders.data.transaction
                                   ? URL.createObjectURL(
                                       picture.payment_evidence,
                                     )
                                   : getPicture(
-                                      hampersData.hampers_picture,
-                                      "hampers",
+                                      orders.data.transaction.payment_evidence,
+                                      "payment_evidence",
                                     )
                               }
                               alt="hampers picture"
@@ -619,7 +621,10 @@ export default function CheckoutPage() {
                       >
                         Send
                       </Button>
-                      <Button className=" mt-2 w-full border-blue-500 text-blue-500 hover:text-white">
+                      <Button
+                        className=" mt-2 w-full border-blue-500 text-blue-500 hover:text-white"
+                        onClick={() => setOpenModalNota(true)}
+                      >
                         Show Nota
                       </Button>
                     </div>
@@ -643,9 +648,9 @@ export default function CheckoutPage() {
             transaction={orders.data}
             id={orders.data.transaction.delivery_id}
           />
-          <ModalPayment
-            open={openModalPayment}
-            setOpen={setOpenModalPayment}
+          <ModalNota
+            open={openModalNota}
+            setOpen={setOpenModalNota}
             transaction={orders.data}
             id={orders.data.transaction.delivery_id}
           />

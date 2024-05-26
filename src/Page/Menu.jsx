@@ -213,8 +213,8 @@ export default function Menu() {
                       ? "text-orange-500"
                       : "text-black"
                   }`}
-                  id="Titipan"
-                  onClick={handleSortByCategory}
+                  id="Entrusted"
+                  onClick={handleSortByCategory}  
                 >
                   Entrusted
                 </NavLink>
