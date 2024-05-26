@@ -5,10 +5,6 @@ import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Badge from "../../../../Component/Badge";
 import { faGifts } from "@fortawesome/free-solid-svg-icons";
-import { getPicture } from "../../../../api";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useAtom } from "jotai";
-import { BeatLoader } from "react-spinners";
 import ModalDetailTransaction from "./ModalDetailTransaction";
 
 export default function OrderHistoryTable({ data, search, length }) {

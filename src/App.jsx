@@ -35,7 +35,8 @@ import CartPage from "./Page/MainPage/Cart/CartPage";
 // checkout
 import RootCheckout from "./Root/Main/Checkout/RootCheckout";
 import CheckoutPage from "./Page/MainPage/Checkout/CheckoutPage";
-import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";import Contact from "./Page/Contact";
+import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";
+import Contact from "./Page/Contact";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -102,6 +103,7 @@ import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomer
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
 import ModifyAddressPage from "./Page/CustomerPage/DashboardPages/ModifyAddress";
+import { loader as loaderCustomer } from "./Page/CustomerPage/DashboardPages/OrderHistory";
 
 // Root Consignor
 import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
@@ -179,9 +181,7 @@ const router = createBrowserRouter([
       },
       {
         path: "about",
-        element: (
-            <About />
-        ),
+        element: <About />,
       },
       {
         path: "menu",
@@ -265,9 +265,7 @@ const router = createBrowserRouter([
       },
       {
         path: "contact",
-        element: (
-            <Contact />
-        ),
+        element: <Contact />,
       },
       {
         path: "AdminDashboard",
@@ -584,7 +582,9 @@ const router = createBrowserRouter([
           },
           {
             path: "OrderHistory",
+            id: "customer",
             element: <OrderHistory />,
+            loader: loaderCustomer,
           },
           {
             path: "Addresses",
