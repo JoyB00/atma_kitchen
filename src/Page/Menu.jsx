@@ -59,8 +59,12 @@ export default function Menu() {
     setSearch(event.target.value);
     const filteredItem = products.filter(
       (item) =>
-        item.product_name.toLowerCase().includes(event.target.value.toLowerCase()) ||
-        item.categories.category_name.toLowerCase().includes(event.target.value.toLowerCase())
+        item.product_name
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()) ||
+        item.categories.category_name
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()),
     );
     setFilteredProduct(filteredItem);
   };
@@ -68,8 +72,7 @@ export default function Menu() {
   const handleSortByCategory = (categoryId) => {
     const filteredItem = products.filter(
       (item) =>
-        item.categories.category_name === categoryId ||
-        categoryId === "all"
+        item.categories.category_name === categoryId || categoryId === "all",
     );
     setFilteredProduct(filteredItem);
   };
@@ -80,9 +83,13 @@ export default function Menu() {
     let sortedProducts = [...filteredProduct];
 
     if (event.target.value === "ascending") {
-      sortedProducts.sort((a, b) => a.product_name.localeCompare(b.product_name));
+      sortedProducts.sort((a, b) =>
+        a.product_name.localeCompare(b.product_name),
+      );
     } else if (event.target.value === "descending") {
-      sortedProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
+      sortedProducts.sort((a, b) =>
+        b.product_name.localeCompare(a.product_name),
+      );
     } else {
       sortedProducts = filteredProduct;
     }
@@ -97,7 +104,9 @@ export default function Menu() {
   const card = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
-      opacity: 1, scale: 1, transition: { delayChildren: 0.1, staggerChildren: 0.2 }
+      opacity: 1,
+      scale: 1,
+      transition: { delayChildren: 0.1, staggerChildren: 0.2 },
     },
   };
 
@@ -230,7 +239,8 @@ export default function Menu() {
                             price={
                               product.product_price <= 999
                                 ? product.product_price
-                                : (product.product_price / 1000).toFixed(1) + "K"
+                                : (product.product_price / 1000).toFixed(1) +
+                                  "K"
                             }
                             title={product.product_name}
                           />
