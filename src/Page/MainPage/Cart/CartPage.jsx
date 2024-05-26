@@ -127,6 +127,7 @@ export default function CartPage() {
           total += element.total_price;
         });
         setTotal(total);
+        updatedCart.total = total;
 
         setCarts((prevCarts) =>
           prevCarts.map((cart) =>

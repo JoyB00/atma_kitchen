@@ -124,6 +124,29 @@ export default function CheckoutPage() {
         },
         position: "bottom-right",
       });
+    } else {
+      toast.promise(
+        PaymentCustomer(data)
+          .then((res) => {
+            console.log(res);
+            queryClient.invalidateQueries(["orders"]);
+          })
+          .catch((err) => {
+            throw err.message;
+          }),
+        {
+          loading: "Loading",
+          success: "Your Payment already success",
+          error: (err) => err,
+        },
+        {
+          style: {
+            backgroundColor: "#000000",
+            color: "#ffffff",
+          },
+          position: "bottom-right",
+        },
+      );
     }
   };
 
@@ -272,6 +295,10 @@ export default function CheckoutPage() {
                       DELIVERY METHOD :{" "}
                       {orders.data.transaction.delivery.delivery_method}
                     </p>
+                    <p className="pt-2  text-sm text-gray-500">
+                      Pick Up Date :{" "}
+                      {orders.data.transaction.pickup_date.slice(0, 10)}
+                    </p>
                     {orders.data.transaction.delivery.delivery_method ===
                       "Delivery Courier" && (
                       <>
@@ -294,7 +321,8 @@ export default function CheckoutPage() {
                           "Delivery Courier" &&
                           orders.data.transaction.delivery.shipping_cost !==
                             null) ||
-                        orders.data.transaction.status !== "notPaid"
+                        orders.data.transaction.status !== "notPaid" ||
+                        orders.data.transaction.payment_method === '"Cash"'
                           ? "hidden"
                           : undefined
                       }`}
@@ -363,7 +391,7 @@ export default function CheckoutPage() {
               <div className="col-span-4">
                 <div className=" mt-4 rounded-2xl border-2 border-gray-200 p-5 text-start text-black">
                   <div
-                    className={`${orders.data.transaction.status !== "notPaid" && "hidden"}`}
+                    className={`${orders.data.transaction.status !== "notPaid" || orders.data.transaction.payment_method === '"Cash"' ? "hidden" : undefined}`}
                   >
                     <p className="pb-4 font-semibold">Order Details</p>
                     <div className="flex justify-between pb-2">
@@ -538,10 +566,11 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* when already paid */}
-                  {orders.data.transaction.status !== "notPaid" && (
+                  {orders.data.transaction.status !== "notPaid" ||
+                  orders.data.transaction.payment_method === '"E-Money"' ? (
                     <div>
                       <p
-                        className={`text-sm font-semibold text-red-500 ${orders.data.transaction.payment_evidence && "hidden"}`}
+                        className={`text-sm font-semibold text-red-500 ${orders.data.transaction.payment_evidence || orders.data.transaction.payment_method === '"Cash"' ? "hidden" : undefined}`}
                       >
                         <i>
                           *Could you please send over the proof of payment as
@@ -624,6 +653,24 @@ export default function CheckoutPage() {
                       <Button
                         className=" mt-2 w-full border-blue-500 text-blue-500 hover:text-white"
                         onClick={() => setOpenModalNota(true)}
+                      >
+                        Show Nota
+                      </Button>
+                    </div>
+                  ) : undefined}
+
+                  {orders.data.transaction.payment_method === '"Cash"' && (
+                    <div>
+                      <p>Waiting For Admin Confirmation</p>
+                      <Button
+                        className={` mt-2 w-full border-blue-500 text-blue-500  ${orders.data.transaction.status !== "alreadyPaid" ? "opacity-20" : "hover:text-white"}`}
+                        onClick={() => setOpenModalNota(true)}
+                        disabled={
+                          orders.data.transaction.status !== "alreadyPaid"
+                        }
+                        withoutAnimate={
+                          orders.data.transaction.status === "notPaid"
+                        }
                       >
                         Show Nota
                       </Button>

@@ -17,6 +17,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AddCartItem } from "../../../api/CartApi";
 import toast from "react-hot-toast";
 import { formatCurrency } from "../../../lib/FormatCurrency";
+import { StoreBuyNow } from "../../../api/TransactionApi";
+import { useNavigate } from "react-router-dom";
 
 export function DetailMenu() {
   const menu = useRouteLoaderData("detail-menu");
@@ -36,6 +38,12 @@ export function DetailMenu() {
     order_date: "",
     total_price: menu.product.product_price,
   });
+
+  const [buyNowData, setBuyNowData] = useState({
+    order_date: null,
+    total: 0,
+    data: [],
+  });
   const [currentStock, setCurrentStock] = useState(0);
   const handleChangeDate = (event) => {
     const temp = menu.allLimit.find(
@@ -49,6 +57,16 @@ export function DetailMenu() {
         order_date: event.target.value,
         quantity: 1,
       });
+      setBuyNowData({
+        ...buyNowData,
+        order_date: event.target.value,
+        data: {
+          ...data,
+          limit_item: temp.limit_amount,
+          order_date: event.target.value,
+          quantity: 1,
+        },
+      });
     } else {
       if (data.status_item === "Ready") {
         setCurrentStock(menu.product.ready_stock);
@@ -58,6 +76,16 @@ export function DetailMenu() {
           order_date: event.target.value,
           quantity: 1,
         });
+        setBuyNowData({
+          ...buyNowData,
+          order_date: event.target.value,
+          data: {
+            ...data,
+            limit_item: menu.product.ready_stock,
+            order_date: event.target.value,
+            quantity: 1,
+          },
+        });
       } else {
         setCurrentStock(menu.product.daily_stock);
         setData({
@@ -66,11 +94,25 @@ export function DetailMenu() {
           order_date: event.target.value,
           quantity: 1,
         });
+        setBuyNowData({
+          ...buyNowData,
+          order_date: event.target.value,
+          data: {
+            ...data,
+            limit_item: menu.product.daily_stock,
+            order_date: event.target.value,
+            quantity: 1,
+          },
+        });
       }
     }
   };
   useEffect(() => {
     setData({ ...data, status_item: value, quantity: 1 });
+    setBuyNowData({
+      ...buyNowData,
+      data: { ...data, status_item: value, quantity: 1 },
+    });
   }, [value]);
   return (
     <div className="flex min-h-screen w-full flex-col bg-transparent">
@@ -139,6 +181,8 @@ export function DetailMenu() {
               menu={menu}
               data={data}
               setData={setData}
+              buyNowData={buyNowData}
+              setBuyNowData={setBuyNowData}
               currentStock={currentStock}
             />
             <ReadyStock
@@ -146,6 +190,8 @@ export function DetailMenu() {
               menu={menu}
               data={data}
               setData={setData}
+              buyNowData={buyNowData}
+              setBuyNowData={setBuyNowData}
               currentStock={menu.product.ready_stock}
             />
           </div>
@@ -158,8 +204,17 @@ export function DetailMenu() {
   );
 }
 
-export function PreOrder({ value, menu, data, setData, currentStock }) {
+export function PreOrder({
+  value,
+  menu,
+  data,
+  setData,
+  buyNowData,
+  setBuyNowData,
+  currentStock,
+}) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const addToCart = useMutation({
     mutationFn: (data) => {
       return AddCartItem(data);
@@ -193,21 +248,61 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
 
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
-      setData({ ...data, quantity: data.quantity + 1 });
+      const updateQuantity = data.quantity + 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     } else if (type === "decrement" && data.quantity - 1 > 0) {
-      setData({ ...data, quantity: data.quantity - 1 });
+      const updateQuantity = data.quantity - 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     }
   };
 
+  const handleBuyNow = (data) => {
+    toast.promise(
+      StoreBuyNow(data)
+        .then((res) => {
+          queryClient.invalidateQueries(["carts"]);
+          navigate(`/checkout/${res.transaction.id}`);
+        })
+        .catch((err) => {
+          throw err.message;
+        }),
+      {
+        loading: "Loading",
+        success: "Your file has successful Added",
+        error: (err) => err,
+      },
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      },
+    );
+  };
+
   useEffect(() => {
+    const newTotalPrice = parseInt(menu.product.product_price * data.quantity);
     setData({
       ...data,
-      total_price: parseInt(menu.product.product_price * data.quantity),
+      total_price: newTotalPrice,
+    });
+    setBuyNowData({
+      ...buyNowData,
+      data: { ...data, total_price: newTotalPrice },
+      total: newTotalPrice,
     });
   }, [data.quantity]);
   return (
     <div className={`${value !== "Pre-Order" ? "hidden" : undefined}`}>
-      {console.log("data", menu)}
       {data.order_date ? (
         <p className="ps-1 pt-2 text-gray-400">
           Current Stock : {currentStock}
@@ -248,21 +343,45 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
           >
             Add To Cart
           </Button>
-          <Button className="bg-orange-500 text-white">Buy Now</Button>
+          <Button
+            className="bg-orange-500 text-white"
+            onClick={() => handleBuyNow(buyNowData)}
+          >
+            Buy Now
+          </Button>
         </div>
       </div>
     </div>
   );
 }
-export function ReadyStock({ value, menu, data, setData, currentStock }) {
+export function ReadyStock({
+  value,
+  menu,
+  data,
+  setData,
+  buyNowData,
+  setBuyNowData,
+  currentStock,
+}) {
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
-      setData({ ...data, quantity: data.quantity + 1 });
+      const updateQuantity = data.quantity + 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     } else if (type === "decrement" && data.quantity - 1 > 0) {
-      setData({ ...data, quantity: data.quantity - 1 });
+      const updateQuantity = data.quantity - 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     }
   };
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const addToCart = useMutation({
     mutationFn: (data) => {
@@ -295,14 +414,47 @@ export function ReadyStock({ value, menu, data, setData, currentStock }) {
     );
   };
 
+  const handleBuyNow = (data) => {
+    toast.promise(
+      StoreBuyNow(data)
+        .then((res) => {
+          queryClient.invalidateQueries(["carts"]);
+          navigate(`/checkout/${res.transaction.id}`);
+        })
+        .catch((err) => {
+          throw err.message;
+        }),
+      {
+        loading: "Loading",
+        success: "Your file has successful Added",
+        error: (err) => err,
+      },
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      },
+    );
+  };
+
   useEffect(() => {
+    const newTotalPrice = parseInt(menu.product.product_price * data.quantity);
     setData({
       ...data,
-      total_price: parseInt(menu.product.product_price * data.quantity),
+      total_price: newTotalPrice,
+    });
+    setBuyNowData({
+      ...buyNowData,
+      data: { ...data, total_price: newTotalPrice },
+      total: newTotalPrice,
     });
   }, [data.quantity]);
   return (
     <div className={`${value !== "Ready" ? "hidden" : undefined}`}>
+      {console.log("data", data)}
+      {console.log("data buy now", buyNowData)}
       <p className="ps-1 pt-2 text-gray-400">Ready Stock : {currentStock}</p>
       <div className={`${currentStock == 0 ? "hidden" : undefined}`}>
         <div className="flex w-3/5 justify-between py-2">
@@ -336,7 +488,12 @@ export function ReadyStock({ value, menu, data, setData, currentStock }) {
           >
             Add To Cart
           </Button>
-          <Button className="bg-orange-500 text-white">Buy Now</Button>
+          <Button
+            className="bg-orange-500 text-white"
+            onClick={() => handleBuyNow(buyNowData)}
+          >
+            Buy Now
+          </Button>
         </div>
       </div>
     </div>

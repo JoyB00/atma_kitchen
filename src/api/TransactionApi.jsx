@@ -43,6 +43,19 @@ const GetDetailTransaction = async (transactionId) => {
   }
 };
 
+const StoreBuyNow = async (data) => {
+  try {
+    const response = await useAxios.post("/orderBuyNow", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
 const StoreTransaction = async (data) => {
   try {
     const response = await useAxios.post("/order", data, {
@@ -88,6 +101,7 @@ export {
   GetCustomerTransactions,
   GetAuthCustomerTransactions,
   GetDetailTransaction,
+  StoreBuyNow,
   StoreTransaction,
   PaymentCustomer,
   StorePaymentEvidence,
