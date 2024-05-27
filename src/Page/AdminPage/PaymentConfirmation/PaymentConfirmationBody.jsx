@@ -16,6 +16,7 @@ import {
   rejectTransaction,
 } from "../../../api/PaymentConfirmationApi.jsx";
 import { getPicture } from "../../../api/index.jsx";
+import { formatCurrency } from "../../../lib/FormatCurrency.jsx";
 
 export default function PaymentConfirmationBody() {
   return (
@@ -72,7 +73,7 @@ export function Content() {
             <table className="w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
               <tr>
                 <th className="py-8 ps-8 text-start font-medium">
-                  Transaction Number
+                  Transaction ID | Transaction Number
                 </th>
                 <th className="pe-6 text-start font-medium ">Customer Name</th>
                 <th className="pe-6 text-start font-medium ">Status</th>
@@ -103,6 +104,7 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
   const [data, setData] = useState({
     id: transaction.id,
     payment_amount: 0,
+    payment_method: transaction.payment_method,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState();
@@ -136,22 +138,31 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
   const submit = async () => {
     setIsLoading(true);
 
-    if (mode === "accept") {
-      await confirmPayment(data);
-    } else {
-      await rejectTransaction(transaction.id);
+    try {
+      if (mode === "accept") {
+        await confirmPayment(data);
+        toast.success("Payment has been confirmed");
+      } else {
+        await rejectTransaction(transaction.id);
+        toast.success("Transaction has been rejected");
+      }
+      setIsConfirmationOpened(false);
+      setIsOpened(false);
+      setIsLoading(false);
+      queryClient.invalidateQueries("paymentConfirmationList");
+    } catch (e) {
+      setIsLoading(false);
+      setIsConfirmationOpened(false);
+      toast.error(e.message);
     }
-
-    setIsConfirmationOpened(false);
-    setIsOpened(false);
-    setIsLoading(false);
-    queryClient.invalidateQueries("paymentConfirmationList");
   };
 
   return (
     <>
       <td className="ps-8">
-        <span>{transaction.transaction_number ?? "Unknown"}</span>
+        <span>
+          {transaction.id} | {transaction.transaction_number ?? "Unknown"}
+        </span>
       </td>
       <td>
         <span>{transaction.customer.users.fullName}</span>
@@ -184,11 +195,14 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
                 transaction.payment_method === '"Cash"' ? (
                   <div className="flex flex-col justify-start">
                     <span className="font-semibold">Payment method: Cash</span>
+                    <span className="font-semibold">
+                      Total price: {formatCurrency(transaction.total_price)}
+                    </span>
                     <Input
                       onChange={handleChange}
                       withAnimate
                       label="Payment amount (Rp.)"
-                      id="paymentAmount"
+                      id="payment_amount"
                       type="number"
                       placeholder="Rp. XX.XXX"
                     />

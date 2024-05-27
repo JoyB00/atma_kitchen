@@ -8,7 +8,6 @@ const fetchAllPaymentConfirmation = async () => {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
-    console.log(response);
     return response.data.data;
   } catch (err) {
     console.log(err.response.data);
@@ -26,8 +25,7 @@ const confirmPayment = async (data) => {
     });
     return response.data;
   } catch (err) {
-    console.log(err.response.data);
-    return err.response.data;
+    throw err.response.data;
   }
 };
 
