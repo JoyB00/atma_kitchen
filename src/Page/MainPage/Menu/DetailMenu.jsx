@@ -39,7 +39,7 @@ export function DetailMenu() {
   const [currentStock, setCurrentStock] = useState(0);
   const handleChangeDate = (event) => {
     const temp = menu.allLimit.find(
-      (limit) => limit.production_date === event.target.value,
+      (limit) => limit.production_date === event.target.value.slice(0, 10),
     );
     if (temp) {
       setCurrentStock(temp.limit_amount);
@@ -207,7 +207,7 @@ export function PreOrder({ value, menu, data, setData, currentStock }) {
   }, [data.quantity]);
   return (
     <div className={`${value !== "Pre-Order" ? "hidden" : undefined}`}>
-      {console.log("data", data)}
+      {console.log("data", menu)}
       {data.order_date ? (
         <p className="ps-1 pt-2 text-gray-400">
           Current Stock : {currentStock}

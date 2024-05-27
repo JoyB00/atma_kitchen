@@ -35,7 +35,8 @@ import CartPage from "./Page/MainPage/Cart/CartPage";
 // checkout
 import RootCheckout from "./Root/Main/Checkout/RootCheckout";
 import CheckoutPage from "./Page/MainPage/Checkout/CheckoutPage";
-import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";import Contact from "./Page/Contact";
+import { loader as loadOrder } from "./Page/MainPage/Checkout/CheckoutPage";
+import Contact from "./Page/Contact";
 
 // root Forgot Password
 import RootForgotPassword from "./Root/Main/ForgotPassword/RootForgotPassword";
@@ -73,6 +74,7 @@ import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 // Root Transaction Admin
 import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
 import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
+import PaymentConfirmationPage from "./Page/AdminPage/PaymentConfirmation/PaymentConfirmationPage";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -184,9 +186,7 @@ const router = createBrowserRouter([
       },
       {
         path: "about",
-        element: (
-            <About />
-        ),
+        element: <About />,
       },
       {
         path: "menu",
@@ -270,9 +270,7 @@ const router = createBrowserRouter([
       },
       {
         path: "contact",
-        element: (
-            <Contact />
-        ),
+        element: <Contact />,
       },
       {
         path: "AdminDashboard",
@@ -393,7 +391,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "paymentConfirmation",
-                element: <MainDashboard />,
+                element: <PaymentConfirmationPage />,
               },
             ],
           },
