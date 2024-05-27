@@ -14,6 +14,8 @@ import {
   faTruck,
   faUserTie,
   faLock,
+  faMoneyBill,
+  
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -114,6 +116,12 @@ export default function OperationalNavigation({
         label="Forgot password?"
         icon={faLock}
         url={"/ForgotPasswordEmployee/3"}
+      />
+
+      <Navigation
+        label="Transaction"
+        icon={faMoneyBill}
+        url={"/MoDashboard/transactionManagement"}
       />
     </>
   );

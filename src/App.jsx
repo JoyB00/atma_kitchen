@@ -117,6 +117,11 @@ import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurem
 import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 
+//Root Transaction
+import RootTransactionMO from "./Root/AdminDashboard/Transaction/RootTransaction";
+import TransactionMO from "./Page/MOPage/Transaction/TransactionPage"
+
+
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
 
@@ -490,6 +495,17 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <EmployeePage />,
+              },
+            ],
+          },
+
+          {
+            path: "transactionManagement",
+            element: <RootTransactionMO />,
+            children: [
+              {
+                index: true,
+                element: <TransactionMO />,
               },
             ],
           },

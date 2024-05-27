@@ -1,5 +1,21 @@
 import useAxios from ".";
 
+const GetOrderConfirmation = async () => {
+  try {
+    const response = await useAxios.get("/orderConfirmation", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    console.log(response.data.search);
+    return response.data.data;
+  } catch (err) {
+    console.log(err.response.data);
+    return err.response.data;
+  }
+};
+
 const GetCustomerTransactions = async (customerId) => {
   // Transactions is order history
   try {
@@ -72,6 +88,7 @@ const PaymentCustomer = async (data) => {
 };
 
 export {
+  FetchAllOrder,
   GetCustomerTransactions,
   GetAuthCustomerTransactions,
   GetDetailTransaction,

@@ -48,7 +48,7 @@ export default function Product() {
       variants={card}
       initial={scroll ? "hidden" : ""}
       animate={scroll ? "visible" : ""}
-      className="mt-8 grid grid-cols-5 gap-14 px-32"
+      className="mt-8 grid grid-cols-4 gap-14 px-32"
     >
       {Category.map((category, index) => (
         <NavLink key={index} to={`/menu?category=${category.alt}`}>

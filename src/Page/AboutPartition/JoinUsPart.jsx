@@ -1,6 +1,7 @@
 import React from 'react';
 import Chef from "../../assets/AboutAsset/chef33.png";
 import Button from '../../Component/Button';
+
 import {
   LazyLoadImage,
   LazyLoadComponent,
@@ -31,9 +32,9 @@ export default function What() {
         <h1 className=" font-semibold text-5xl">Join Us</h1>
         <h1 className=" font-semibold text-5xl mb-7">Experience the Love Now</h1>
         <div className="w-4/5 my-2">
-        Step into Atma Kitchen and experience the warmth and aroma of our freshly baked goods. Whether you’re a long-time customer or visiting for the first time, we welcome you to join our growing family of food enthusiasts. Let us be a part of your celebrations, your everyday joys, and your cherished memories. You  can find us in mobile and web-app and also in our physical store at <strong>Jl. Centralpark No. 10, Yogyakarta, Indonesia.</strong>
+        Step into Atma Kitchen and experience the warmth and aroma of our freshly baked goods. Whether you’re a long-time customer or visiting for the first time, we welcome you to join our growing family of food enthusiasts. Let us be a part of your celebrations, your everyday joys, and your cherished memories. You  can find us in mobile and web-app and also in our physical store located at <strong>Jl. Centralpark No. 10, Yogyakarta, Indonesia.</strong>
         </div>
-        <Button className="rounded-xl border-2 border-orange-500 bg-transparent text-orange-500 me-2 mt-4 hover:text-white">
+        <Button className="rounded-xl border-2 border-orange-500 bg-transparent text-orange-500 me-2 mt-4 hover:text-white" >
           Order Now
         </Button>
         <div className="w-4/5 mt-7">

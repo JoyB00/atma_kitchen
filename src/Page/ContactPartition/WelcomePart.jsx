@@ -76,7 +76,7 @@ export default function Welcome() {
                       className=" object-cover rounded-sm"
                 />
                 <div className="font-semibold mb-2 text-black">Address</div>
-                <div className="font-light text-black">Jl. Centralpark No. 10 Yogyakarta</div>
+                <div className="font-light text-sm text-black">Jl. Centralpark No. 10 Yogyakarta</div>
               </div>
 
               <div className="justify-center mb-7">
@@ -86,7 +86,7 @@ export default function Welcome() {
                       className=" object-cover rounded-sm"
                 />
                 <div className="font-semibold mb-2 text-black">Email</div>
-                <div className="font-light  text-black">atmakitchen@hotmail.co.id</div>
+                <div className="font-light text-sm text-black">atmakitchen@hotmail.co.id</div>
               </div>
 
               <div className="justify-center  mb-7">
@@ -96,8 +96,8 @@ export default function Welcome() {
                       className=" object-cover rounded-sm"
                 />
                 <div className="font-semibold mb-2 text-black">Call us</div>
-                <div className="font-light text-black">+62-8234-1543-888</div>
-                <div className="font-light text-black">+62-8132-3234-976</div>
+                <div className="font-light text-sm text-black">+62-8234-1543-888</div>
+                <div className="font-light text-sm text-black">+62-8132-3234-976</div>
               </div>
 
               <div className="flex flex-col items-center justify-center h-full py-3">

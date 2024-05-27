@@ -39,6 +39,7 @@ export default function Menu() {
     FetchAllProducts()
       .then((res) => {
         setProducts(res);
+        setFilteredProduct(res);
         setIsPending(false);
       })
       .catch((err) => {
@@ -151,45 +152,54 @@ export default function Menu() {
           </div>
         </div>
         <div className="grid grid-cols-5 gap-x-3 gap-y-6 px-12">
-          <div className="col-span-1">
-            <motion.ul
-              initial="hidden"
-              animate="visible"
-              variants={card}
-              className="sticky top-36 mx-auto flex w-full flex-col space-y-5 rounded-xl bg-transparent shadow-none"
-            >
-              <motion.li
-                key="all"
-                variants={productItem}
-                transition={{ type: "spring" }}
-                className={`${
-                  filterSelected === "all" ? "text-orange-500" : "text-black"
-                } cursor-pointer hover:text-orange-500`}
-                onClick={() => handleSortByCategory("all")}
-              >
-                All
-              </motion.li>
-              {Category.map((item) => (
-                <motion.li
-                  key={item.alt}
-                  variants={productItem}
-                  transition={{ type: "spring" }}
+          <div className="col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black sticky top-36">
+            <h2 className="px-4 pt-4 font-semibold">Filtered By Category</h2>
+            <ul className="px-8 pb-6 pt-3 text-black ">
+              <li className="pt-2">
+                <NavLink
                   className={`${
-                    filterSelected === item.alt
-                      ? "text-orange-500"
-                      : "text-black"
-                  } cursor-pointer hover:text-orange-500`}
-                  onClick={() => handleSortByCategory(item.alt)}
+                    filterSelected === "all" ? "text-orange-500" : "text-black"
+                  }`}
+                  id="all"
+                  onClick={() => handleSortByCategory("all")}
                 >
-                  {item.alt}
-                </motion.li>
+                  All
+                </NavLink>
+              </li>
+              {Category.map((item) => (
+                <li key={item.alt} className="pt-2">
+                  <NavLink
+                    className={`${
+                      filterSelected === item.alt
+                        ? "text-orange-500"
+                        : "text-black"
+                    }`}
+                    id={item.alt}
+                    onClick={() => handleSortByCategory(item.alt)}
+                  >
+                    {item.alt}
+                  </NavLink>
+                </li>
               ))}
-            </motion.ul>
+            </ul>
           </div>
-          <div className="col-span-4 h-screen">
+          <div className="col-span-4">
             {isPending ? (
-              <div className="flex h-screen items-center justify-center">
-                <RotateLoader color="#F99417" />
+              <div className="h-screen w-full bg-transparent">
+                <RotateLoader
+                  color="#F99417"
+                  loading={isPending}
+                  cssOverride={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    borderColor: "red",
+                  }}
+                  size={100}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
               </div>
             ) : (
               <>
@@ -197,10 +207,10 @@ export default function Menu() {
                   variants={card}
                   initial="hidden"
                   animate="visible"
-                  className="grid w-full grid-cols-3 gap-6"
+                  className="grid grid-cols-3 gap-4 rounded-xl"
                 >
                   {filteredProduct.length === 0 ? (
-                    <div className="col-span-3 flex h-screen items-center justify-center bg-orange-50">
+                    <div className="col-span-3 flex h-screen items-center justify-center bg-orange-50 ">
                       <p className="text-black">Product Not Found</p>
                     </div>
                   ) : (
