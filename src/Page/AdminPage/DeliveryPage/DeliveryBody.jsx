@@ -61,7 +61,7 @@ export function Content() {
           />
         </div>
       ) : (
-        <div className={"grid grid-cols-2"}>
+        <div className={"grid grid-cols-2 gap-2"}>
           {inputDeliveriesList.data.length === 0 ? (
             <span className="w-full px-2 py-4 text-xl font-semibold text-slate-800">
               Nothing to see here...
