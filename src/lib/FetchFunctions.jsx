@@ -135,6 +135,16 @@ const fetchInputDistance = async () => {
 };
 const allInputDistance = atom(fetchInputDistance);
 
+const fetchAllPaymentConfirmation = async () => {
+  try {
+    const response = await fetchAllPaymentConfirmation();
+    return response;
+  } catch (error) {
+    return error.message;
+  }
+};
+const allPaymentConfirmation = atom(fetchAllPaymentConfirmation);
+
 export {
   allIngredients,
   allCategories,
@@ -147,4 +157,5 @@ export {
   customerOrderHistory,
   allAddresses,
   allInputDistance,
+  allPaymentConfirmation,
 };
