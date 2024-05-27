@@ -10,7 +10,11 @@ import { BeatLoader } from "react-spinners";
 import { Form } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Input from "../../../Component/Input.jsx";
-import { fetchAllPaymentConfirmation } from "../../../api/PaymentConfirmationApi.jsx";
+import {
+  confirmPayment,
+  fetchAllPaymentConfirmation,
+  rejectTransaction,
+} from "../../../api/PaymentConfirmationApi.jsx";
 import { getPicture } from "../../../api/index.jsx";
 
 export default function PaymentConfirmationBody() {
@@ -95,12 +99,13 @@ export function Content() {
 
 export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
   const [isOpened, setIsOpened] = useState(false);
-  const [isChildOpened, setIsChildOpened] = useState(false);
+  const [isConfirmationOpened, setIsConfirmationOpened] = useState(false);
   const [data, setData] = useState({
     id: transaction.id,
     payment_amount: 0,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [mode, setMode] = useState();
   const handleChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
   };
@@ -111,18 +116,33 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
   const closeModal = () => {
     setIsOpened(false);
   };
-  const openChildModal = () => {
-    setIsChildOpened(true);
+  const openConfirmationModal = () => {
+    setIsConfirmationOpened(true);
   };
-  const closeChildModal = () => {
-    setIsChildOpened(false);
+  const closeConfirmationModal = () => {
+    setIsConfirmationOpened(false);
+  };
+
+  const showDialogReject = () => {
+    setMode("reject");
+    setIsConfirmationOpened(true);
+  };
+  const showDialogAccept = () => {
+    setMode("accept");
+    setIsConfirmationOpened(true);
   };
 
   const queryClient = useQueryClient();
   const submit = async () => {
     setIsLoading(true);
-    toast.success("Delivery range has been inputted successfully");
-    setIsChildOpened(false);
+
+    if (mode === "accept") {
+      await confirmPayment(data);
+    } else {
+      await rejectTransaction(transaction.id);
+    }
+
+    setIsConfirmationOpened(false);
     setIsOpened(false);
     setIsLoading(false);
     queryClient.invalidateQueries("paymentConfirmationList");
@@ -153,14 +173,14 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
       </td>
       <Modal open={isOpened} onClose={closeModal}>
         <div className="flex size-full items-center justify-center">
-          <div className="flex min-h-20 w-1/2 flex-col rounded-md bg-slate-100 p-8">
+          <div className="flex max-h-[90%] min-h-20 w-1/2 flex-col overflow-y-scroll rounded-md bg-slate-100 p-8">
             <span className="text-2xl font-bold text-orange-600">
               Confirm Payment
             </span>
             <div className="py-2" />
             <Form className="text-slate-800">
               {
-                // If payment method is Cash
+                // If payment method is Cash show payment amount, if method is e=money show payment evidence
                 transaction.payment_method === '"Cash"' ? (
                   <div className="flex flex-col justify-start">
                     <span className="font-semibold">Payment method: Cash</span>
@@ -183,22 +203,36 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
                         transaction.payment_evidence,
                         "payment_evidence",
                       )}
+                      className="my-2 w-1/2 rounded-lg shadow-md"
                     />
+                    <Button
+                      className="text-sm text-orange-600 hover:text-white"
+                      onClick={showDialogReject}
+                    >
+                      Reject
+                    </Button>
                   </div>
                 )
               }
               <div className="flex flex-row justify-center pt-2">
                 <Button
                   className="bg-orange-500 text-sm text-white"
-                  onClick={openChildModal}
+                  onClick={showDialogAccept}
                 >
-                  Save
+                  Confirm
                 </Button>
-                <Modal open={isChildOpened} onClose={closeChildModal}>
+                <Modal
+                  open={isConfirmationOpened}
+                  onClose={closeConfirmationModal}
+                >
                   <div className="flex size-full items-center justify-center text-black">
                     <div className="flex min-h-20 flex-col items-center rounded-md bg-slate-100 p-16">
                       <span className="text-lg">
-                        Confirm accepting this transaction?
+                        {mode === "accept" ? (
+                          <span>Do you want to confirm this order?</span>
+                        ) : (
+                          <span>Do you want to reject this order?</span>
+                        )}
                       </span>
                       <div className="py-2" />
                       <div className="flex flex-row">
@@ -213,13 +247,13 @@ export function InputPaymentConfirmTableRowPlusModal({ transaction }) {
                               size={10}
                             />
                           ) : (
-                            <span>Yes, it is correct</span>
+                            <span>Yes, I am sure</span>
                           )}
                         </Button>
                         <div className="px-1" />
                         <Button
                           className="border-orange-500 text-sm text-orange-500 hover:text-white"
-                          onClick={closeChildModal}
+                          onClick={closeConfirmationModal}
                         >
                           Nope, go back
                         </Button>
