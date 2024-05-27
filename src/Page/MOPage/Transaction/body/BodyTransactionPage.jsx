@@ -15,7 +15,7 @@ import { useAtom } from "jotai";
 import TransactionTable from "../component/TransactionTable";
 import { GetOrderConfirmation } from "../../../../api/TransactionApi";
 import { RotateLoader } from "react-spinners";
-export default function Body({ search }) {
+export default function BodyOrderConfirmation({ search }) {
   const transactions = useQuery({
     queryKey: ["order"],
     queryFn: GetOrderConfirmation,

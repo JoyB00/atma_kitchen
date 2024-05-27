@@ -1,8 +1,8 @@
 import Sidebar from "../../AdminPage/AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin";
-import Body from "./body/BodyTransactionPage";
 import FooterDashboard from "../../../Component/FooterDashboard";
 import { useState } from "react";
+import BodyOrderConfirmation from "./body/BodyTransactionPage";
 
 export default function TransactionMO() {
   const [search, setSearch] = useState("");
@@ -25,7 +25,7 @@ export default function TransactionMO() {
           setSearch={setSearch}
         />
         <div className="mt-32 px-4 ">
-         <Body />
+         <BodyOrderConfirmation />
           <FooterDashboard />
         </div>
       </div>
