@@ -91,13 +91,13 @@ export function InputDeliveryRangeCardModal({ delivery }) {
   const [isLoading, setIsLoading] = useState(false);
   const handleChange = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
-    if (event.target.value < 1) {
+    if (event.target.value < 0) {
       setShippingCost("Invalid Distance");
     } else if (event.target.value < 5) {
       setShippingCost("Rp. 10.000");
     } else if (event.target.value < 10) {
       setShippingCost("Rp. 15.000");
-    } else if (event.target.value < 15) {
+    } else if (event.target.value <= 15) {
       setShippingCost("Rp. 20.000");
     } else {
       setShippingCost("Rp. 25.000");
