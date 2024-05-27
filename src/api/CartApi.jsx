@@ -55,6 +55,19 @@ const UpdateCartItem = async (data) => {
     throw error.response.data;
   }
 };
+const UpdateListCartItem = async (data) => {
+  try {
+    const response = await useAxios.post(`/cartList`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
 
 const DeleteCartItem = async (id) => {
   try {
@@ -90,6 +103,7 @@ export {
   FetchCartsPerDate,
   AddCartItem,
   UpdateCartItem,
+  UpdateListCartItem,
   DeleteCartItem,
   DeleteListItem,
 };

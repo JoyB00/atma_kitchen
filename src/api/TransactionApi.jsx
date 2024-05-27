@@ -66,7 +66,7 @@ const StoreTransaction = async (data) => {
     });
     return response.data.data;
   } catch (error) {
-    return error.response.data;
+    throw error.response.data;
   }
 };
 
@@ -96,6 +96,32 @@ const StorePaymentEvidence = async (data) => {
     throw error.response.data;
   }
 };
+const UpdateDateTransaction = async (data) => {
+  try {
+    const response = await useAxios.put(`/order/${data.id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+const DeleteTransaction = async (data) => {
+  try {
+    const response = await useAxios.delete(`/order/${data.id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
 
 export {
   GetCustomerTransactions,
@@ -105,4 +131,6 @@ export {
   StoreTransaction,
   PaymentCustomer,
   StorePaymentEvidence,
+  UpdateDateTransaction,
+  DeleteTransaction,
 };

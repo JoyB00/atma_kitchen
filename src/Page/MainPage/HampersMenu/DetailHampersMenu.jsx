@@ -45,14 +45,14 @@ export function DetailHampersMenu() {
   });
   const [buyNowData, setBuyNowData] = useState({
     order_date: null,
-    total: 0,
+    total: hampers.hampers.hampers_price,
     data: [],
   });
   const [limit, setLimit] = useState(0);
   const handleChangeDate = (event) => {
     const selectedDate = event.target.value.slice(0, 10);
     let newLimit = hampers.details[0].product.daily_stock;
-    // console.log("tanggal", selectedDate);
+    console.log("but now", buyNowData);
 
     hampers.details.forEach((item, index) => {
       if (item.product) {

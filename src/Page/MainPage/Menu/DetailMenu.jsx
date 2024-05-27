@@ -41,7 +41,7 @@ export function DetailMenu() {
 
   const [buyNowData, setBuyNowData] = useState({
     order_date: null,
-    total: 0,
+    total: menu.product.product_price,
     data: [],
   });
   const [currentStock, setCurrentStock] = useState(0);

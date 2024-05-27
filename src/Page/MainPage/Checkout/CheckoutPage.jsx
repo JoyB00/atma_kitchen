@@ -22,6 +22,7 @@ import { formatCurrency } from "../../../lib/FormatCurrency";
 import toast from "react-hot-toast";
 import ModalDelivery from "./DeliveryModal";
 import ModalNota from "./PaymentModal";
+import ModalOrderExpired from "./ChangePickupDateModal";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BeatLoader } from "react-spinners";
@@ -40,6 +41,7 @@ export default function CheckoutPage() {
   const orderDetail = useRouteLoaderData("order-detail");
   const [dataPayment, setDataPayment] = useState({
     id: orderDetail.transaction.id,
+    pickup_date: orderDetail.transaction.pickup_date,
     amount: 0,
     first_name: orderDetail.transaction.customer.users.fullName,
     last_name: orderDetail.transaction.customer.users.fullName,
@@ -66,6 +68,7 @@ export default function CheckoutPage() {
   const [point, setPoint] = useState(0);
   const [clickPoint, setClickPoint] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
+  const [openModalOrderExpired, setOpenModalOrderExpired] = useState(false);
   const [picture, setPicture] = useState({
     id: orderDetail.transaction.id,
     payment_evidence: null,
@@ -115,6 +118,8 @@ export default function CheckoutPage() {
   };
 
   const handlePaymentCash = () => {
+    var now = new Date();
+    console.log("date", now);
     console.log("cash");
     if (!data.payment_method) {
       toast.error("Choose Your Payment Method", {
@@ -125,13 +130,17 @@ export default function CheckoutPage() {
         position: "bottom-right",
       });
     } else {
+      setLoadingButton(true);
       toast.promise(
         PaymentCustomer(data)
           .then((res) => {
             console.log(res);
+            setLoadingButton(false);
             queryClient.invalidateQueries(["orders"]);
           })
           .catch((err) => {
+            setLoadingButton(false);
+            setOpenModalOrderExpired(true);
             throw err.message;
           }),
         {
@@ -165,26 +174,39 @@ export default function CheckoutPage() {
       });
     } else {
       setLoadingButton(true);
-      const response = await GetTokenMidtrans(dataPayment);
-      setLoadingButton(false);
-      const { snapToken } = response;
-      window.snap.pay(snapToken, {
-        onSuccess: (result) => {
-          console.log("Success:", result);
-          handlePaymentCustomer(data);
-        },
-        onPending: (result) => {
-          console.log("Pending:", result);
-        },
-        onError: (result) => {
-          console.log("Error:", result);
-        },
-        onClose: () => {
-          console.log(
-            "Customer closed the popup without finishing the payment",
-          );
-        },
-      });
+      GetTokenMidtrans(dataPayment)
+        .then((response) => {
+          setLoadingButton(false);
+          const { snapToken } = response;
+          window.snap.pay(snapToken, {
+            onSuccess: (result) => {
+              console.log("Success:", result);
+              handlePaymentCustomer(data);
+            },
+            onPending: (result) => {
+              console.log("Pending:", result);
+            },
+            onError: (result) => {
+              console.log("Error:", result);
+            },
+            onClose: () => {
+              console.log(
+                "Customer closed the popup without finishing the payment",
+              );
+            },
+          });
+        })
+        .catch((err) => {
+          setLoadingButton(false);
+          setOpenModalOrderExpired(true);
+          toast.error(err.message, {
+            style: {
+              backgroundColor: "#000000",
+              color: "#ffffff",
+            },
+            position: "bottom-right",
+          });
+        });
     }
   };
 
@@ -257,7 +279,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {console.log(picture)}
+      {console.log(dataPayment)}
       <div className="flex h-screen w-full flex-col bg-transparent">
         <Navbar />
         <div className="px-12 pt-32">
@@ -566,7 +588,7 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* when already paid */}
-                  {orders.data.transaction.status !== "notPaid" ||
+                  {orders.data.transaction.status !== "notPaid" &&
                   orders.data.transaction.payment_method === '"E-Money"' ? (
                     <div>
                       <p
@@ -661,12 +683,16 @@ export default function CheckoutPage() {
 
                   {orders.data.transaction.payment_method === '"Cash"' && (
                     <div>
-                      <p>Waiting For Admin Confirmation</p>
+                      <p
+                        className={`${orders.data.transaction.status === "paymentValid" && "hidden"}`}
+                      >
+                        Waiting For Admin Confirmation
+                      </p>
                       <Button
-                        className={` mt-2 w-full border-blue-500 text-blue-500  ${orders.data.transaction.status !== "alreadyPaid" ? "opacity-20" : "hover:text-white"}`}
+                        className={` mt-2 w-full border-blue-500 text-blue-500  ${orders.data.transaction.status !== "paymentValid" ? "opacity-20" : "hover:text-white"}`}
                         onClick={() => setOpenModalNota(true)}
                         disabled={
-                          orders.data.transaction.status !== "alreadyPaid"
+                          orders.data.transaction.status !== "paymentValid"
                         }
                         withoutAnimate={
                           orders.data.transaction.status === "notPaid"
@@ -700,6 +726,12 @@ export default function CheckoutPage() {
             setOpen={setOpenModalNota}
             transaction={orders.data}
             id={orders.data.transaction.delivery_id}
+          />
+
+          <ModalOrderExpired
+            open={openModalOrderExpired}
+            setOpen={setOpenModalOrderExpired}
+            transaction={orders.data}
           />
         </>
       )}
