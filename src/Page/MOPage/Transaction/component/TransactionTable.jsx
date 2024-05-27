@@ -21,11 +21,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useAtom } from "jotai";
 import { BeatLoader } from "react-spinners";
 
-export default function TransactionTable( search, data, length) {
-  const [page, setPage] = useState(1);
-  const transactionPerPage = 8;
-  const startIndex = (page - 1) * transactionPerPage;
-  const endIndex = page * transactionPerPage;
+export default function TransactionTable( data, length) {
+  
 
   return (
     <>
@@ -40,6 +37,7 @@ export default function TransactionTable( search, data, length) {
             <th className="pe-6 text-center font-medium">Action</th>
           </tr>
         </thead>
+
 
         <motion.tbody
          initial={{ opacity: 0 }}

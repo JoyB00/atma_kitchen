@@ -15,13 +15,12 @@ import { useAtom } from "jotai";
 import TransactionTable from "../component/TransactionTable";
 import { GetOrderConfirmation } from "../../../../api/TransactionApi";
 import { RotateLoader } from "react-spinners";
-export default function BodyOrderConfirmation({ search }) {
-  const transactions = useQuery({
+export default function BodyOrderConfirmation() {
+  const orderConfirm = useQuery({
     queryKey: ["order"],
     queryFn: GetOrderConfirmation,
   });
 
-  const [isOpen, setIsOpen] = useState(false);
   return (
     <div
       initial={{ opacity: 0 }}
@@ -45,7 +44,7 @@ export default function BodyOrderConfirmation({ search }) {
         </div>
       </div>
       <div className="py-5">
-        {transactions.isFetching ? (
+        {orderConfirm.isFetching ? (
           <div className="flex justify-center py-20">
             <RotateLoader
               color="orange"
@@ -63,9 +62,8 @@ export default function BodyOrderConfirmation({ search }) {
         ) : (
           <>
               <TransactionTable
-                data={transactions.data}
-                length={transactions.data.length}
-                search={search}
+                data={orderConfirm.data}
+                length={orderConfirm.data.length}
               />
           </>
         )}
