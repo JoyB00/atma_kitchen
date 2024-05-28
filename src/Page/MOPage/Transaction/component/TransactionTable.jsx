@@ -21,7 +21,12 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useAtom } from "jotai";
 import { BeatLoader } from "react-spinners";
 
-export default function TransactionTable( data, length) {
+export default function TransactionTable( transaction) {
+  const [page, setPage] = useState(1);
+  const transactionPerPage = 8;
+  const startIndex = (page - 1) * transactionPerPage;
+  const endIndex = page * transactionPerPage;
+  const [isOpened, setIsOpened] = useState(false);
   
 
   return (
