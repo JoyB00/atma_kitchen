@@ -24,6 +24,29 @@ export default function Menu() {
     exit: { opacity: 0, y: -20 },
   };
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const category = queryParams.get("category") || "all";
+    setFilterSelected(category);
+  }, [location]);
+
+  useEffect(() => {
+    setIsPending(true);
+    FetchAllProducts()
+      .then((res) => {
+        setProducts(res);
+        setFilteredProduct(res);
+        setIsPending(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    handleSortByCategory(filterSelected);
+  }, [products, filterSelected]);
+
   const handleChange = (e, p) => {
     setPage(p);
   };
@@ -164,8 +187,8 @@ export default function Menu() {
             />
           </div>
         </div>
-        <div className=" grid grid-cols-5 gap-x-3 gap-y-6 px-12">
-          <div className=" col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black ">
+        <div className="grid grid-cols-5 gap-x-3 gap-y-6 px-12">
+          <div className="col-span-1 h-fit rounded-xl border-2 border-gray-100 text-left text-black sticky top-36">
             <h2 className="px-4 pt-4 font-semibold">Filtered By Category</h2>
             <ul className="px-8 pb-6 pt-3 text-black ">
               <li className="pt-2">
@@ -174,68 +197,33 @@ export default function Menu() {
                     filterSelected === "all" ? "text-orange-500" : "text-black"
                   }`}
                   id="all"
-                  onClick={handleSortByCategory}
+                  onClick={() => handleSortByCategory("all")}
                 >
                   All
                 </NavLink>
               </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Cake" ? "text-orange-500" : "text-black"
-                  }`}
-                  id="Cake"
-                  onClick={handleSortByCategory}
-                >
-                  Cake
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Bread"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Bread"
-                  onClick={handleSortByCategory}
-                >
-                  Bread
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Drink"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Drink"
-                  onClick={handleSortByCategory}
-                >
-                  Drink
-                </NavLink>
-              </li>
-              <li className="pt-2">
-                <NavLink
-                  className={`${
-                    filterSelected === "Titipan"
-                      ? "text-orange-500"
-                      : "text-black"
-                  }`}
-                  id="Entrusted"
-                  onClick={handleSortByCategory}
-                >
-                  Entrusted
-                </NavLink>
-              </li>
+              {Category.map((item) => (
+                <li key={item.alt} className="pt-2">
+                  <NavLink
+                    className={`${
+                      filterSelected === item.alt
+                        ? "text-orange-500"
+                        : "text-black"
+                    }`}
+                    id={item.alt}
+                    onClick={() => handleSortByCategory(item.alt)}
+                  >
+                    {item.alt}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="col-span-4">
             {isPending ? (
               <div className="h-screen w-full bg-transparent">
                 <RotateLoader
-                  color="orange"
+                  color="#F99417"
                   loading={isPending}
                   cssOverride={{
                     position: "absolute",
