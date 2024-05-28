@@ -4,6 +4,7 @@ import Product from "./HomePartition/ProductPart";
 import About from "./HomePartition/AboutPart";
 import FeaturedProduct from "./HomePartition/FeaturedProductPart";
 import BestSeller from "./HomePartition/BestSellerPart";
+import Promo from "./HomePartition/PromoPart";
 import MobilePart from "./HomePartition/MobilePart";
 import Footer from "../Component/Footer";
 import { AnimatePresence } from "framer-motion";
@@ -40,13 +41,14 @@ export default function Home() {
     <div className="w-full bg-transparent">
       <Navbar />
       <Intro />
+      <Promo />
       <AnimatePresence>
         <Product />
       </AnimatePresence>
       <About />
       <FeaturedProduct data={data} loading={isPending} />
       <BestSeller />
-
+     
       <MobilePart />
       <Footer />
     </div>
