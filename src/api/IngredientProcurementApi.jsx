@@ -1,5 +1,4 @@
-import { useAxios } from "./index";
-
+import useAxios from ".";
 const FetchAllIngredientProcurement = async () => {
   try {
     const response = await useAxios.get("/ingredientProcurement", {

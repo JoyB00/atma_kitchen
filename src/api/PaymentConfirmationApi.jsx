@@ -1,4 +1,4 @@
-import { useAxios } from "./index";
+import useAxios from ".";
 
 const fetchAllPaymentConfirmation = async () => {
   try {

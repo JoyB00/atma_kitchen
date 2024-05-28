@@ -1,5 +1,5 @@
-import { useAxios } from "./index";
-
+import { ClimbingBoxLoader } from "react-spinners";
+import useAxios from ".";
 const GetAllIngredients = async () => {
   try {
     const response = await useAxios.get("/ingredient", {
