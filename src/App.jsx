@@ -93,7 +93,6 @@ import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIng
 import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 
-
 // Root Employee
 import RootEmployee from "./Root/MoDashboard/Employee/RootEmployee";
 import EmployeePage from "./Page/MOPage/Employee/EmployeePage";
@@ -193,11 +192,7 @@ const router = createBrowserRouter([
       },
       {
         path: "menu",
-        element: (
-          <ProtectedRoot role_id={4}>
-            <RootMenuPage />
-          </ProtectedRoot>
-        ),
+        element: <RootMenuPage />,
         children: [
           {
             index: true,
@@ -218,11 +213,7 @@ const router = createBrowserRouter([
       },
       {
         path: "hampers",
-        element: (
-          <ProtectedRoot role_id={4}>
-            <RootMenuHampersPage />
-          </ProtectedRoot>
-        ),
+        element: <RootMenuHampersPage />,
         children: [
           {
             index: true,
