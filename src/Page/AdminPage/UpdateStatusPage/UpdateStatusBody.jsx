@@ -1,9 +1,6 @@
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckDouble,
-  faCheckToSlot,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheckDouble } from "@fortawesome/free-solid-svg-icons";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { RotateLoader } from "react-spinners";
 import { useState } from "react";
@@ -18,8 +15,7 @@ import {
   fetchAllPaymentConfirmation,
   rejectTransaction,
 } from "../../../api/PaymentConfirmationApi.jsx";
-import { getPicture } from "../../../api/index.jsx";
-import { formatCurrency } from "../../../lib/FormatCurrency.jsx";
+import sendNotificationToUser from "../../../api/NotificationApi.jsx";
 
 export default function UpdateStatusBody() {
   return (
@@ -45,9 +41,18 @@ export function Header() {
 }
 
 export function Content() {
+  const sendNotif = async () => {
+    await sendNotificationToUser({
+      userId: "1",
+      title: "Test",
+      message: "Test message",
+    });
+  };
+
   return (
     <div className="flex flex-col justify-center">
       <span>Notification Tester</span>
+      <Button onClick={sendNotif}>Test notif</Button>
     </div>
   );
 }
