@@ -77,6 +77,10 @@ export default function OrderTable( transaction) {
 
   return (
     <>
+      <td className="ps-8">
+        {console.log('aa',transaction.transaction)}
+            <span>{transaction.transaction.transaction_number}</span>
+          </td>
           <td className="ps-8">
             <span>{transaction.transaction.customer.users.fullName}</span>
           </td>

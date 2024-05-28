@@ -68,7 +68,10 @@ export default function BodyOrderConfirmation() {
           ) : (
             <table className="w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
            <thead className="border-b-2">
-           <tr>
+            <tr>
+              <th className="py-8 ps-8 text-start font-medium">
+                Transaction Number  
+              </th>
               <th className="py-8 ps-8 text-start font-medium">
                 Customer Name   
               </th>

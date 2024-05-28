@@ -1,59 +1,51 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Button from "../../Component/Button";
-import Brownies from "../../assets/HomeAssets/brownies.png";
+import Slider from 'react-slick';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { motion } from "framer-motion";
-import {
-  LazyLoadImage,
-  LazyLoadComponent,
-} from "react-lazy-load-image-component";
 
-export default function Intro() {
-  const navigate = useNavigate();
+// Assuming the images are hosted locally
+import atmaCarousel1 from '../../assets/HomeAssets/atmacarousel1.jpg';
+import atmaCarousel2 from '../../assets/HomeAssets/atmacarousel2.jpg';
 
-  const About = () => {
-    navigate('/about');
+export default function Promo() {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
   };
 
-  const Menu = () => {
-    navigate('/menu');
-  };
   return (
-    
-    <div className=" flex bg-gradient-to-tr from-transparent via-transparent to-red-100 py-36 ps-24">
-      <LazyLoadComponent>
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          className="my-auto w-1/2 pe-24 text-start text-black"
-        >
-          <h1 className="mb-7 text-6xl font-semibold">
-            Fresh Baked Cake Everyday !
-          </h1>
-          <p className="mb-7 text-lg">
-          Welcome to "Atma Kitchen"! We are a place where deliciousness is met
-          with joy. 
-          At Atma Kitchen, we believe that food should be a celebration of life, an experience that nourishes not just the body, but the soul. Our bakery is a haven for those who seek the highest quality, handcrafted delights made with love and a touch of magic.
-          </p>
-          <div className="flex ">
-            <Button className="me-2 rounded-3xl bg-orange-500 text-white" onClick={About}>
-              Read More
-            </Button>
-            <Button className="ms-2 rounded-3xl border-2  border-orange-500  bg-transparent text-orange-500 hover:text-white" onClick={Menu}>
-              Order Now
-            </Button>
+    <div className="flex flex-col items-center bg-gradient-to-bl from-transparent via-transparent to-orange-50 py-12">
+      <h2 className="text-5xl font-semibold mb-8 text-center text-black">Exclusive Promotions</h2>
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        className="w-full max-w-screen-xl px-4 mx-7"
+      >
+        <Slider {...settings}>
+          <div>
+            <LazyLoadImage
+              src={atmaCarousel1}
+              alt="Promotion 1"
+              effect="blur"
+              className="rounded-lg mx-auto h-3.4 w-3/4"
+            />
           </div>
-        </motion.div>
-      </LazyLoadComponent>
-      <div className="my-auto flex w-1/2 items-end justify-end ">
-        <LazyLoadImage
-          effect="blur"
-          src={Brownies}
-          alt=""
-          className="drop-shadow-md"
-        />
-      </div>
+          <div>
+            <LazyLoadImage
+              src={atmaCarousel2}
+              alt="Promotion 2"
+              effect="blur"
+              className="rounded-lg mx-auto h-3/4 w-3/4"
+            />
+          </div>
+        </Slider>
+      </motion.div>
     </div>
   );
 }
