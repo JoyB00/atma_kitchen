@@ -75,6 +75,7 @@ import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
 import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
 import PaymentConfirmationPage from "./Page/AdminPage/PaymentConfirmation/PaymentConfirmationPage";
+import UpdateStatusPage from "./Page/AdminPage/UpdateStatusPage/UpdateStatusPage";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -387,6 +388,10 @@ const router = createBrowserRouter([
               {
                 path: "paymentConfirmation",
                 element: <PaymentConfirmationPage />,
+              },
+              {
+                path: "updateStatus",
+                element: <UpdateStatusPage />,
               },
             ],
           },

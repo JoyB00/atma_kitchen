@@ -1,4 +1,4 @@
-import useAxios from ".";
+import { useAxios } from "./index";
 
 const GetCustomerTransactions = async (customerId) => {
   // Transactions is order history
