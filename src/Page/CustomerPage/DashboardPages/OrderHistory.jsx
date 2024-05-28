@@ -159,12 +159,17 @@ export function TransactionTable({ data, search, length }) {
 
       case "accepted":
         return (
-          <Badge bgColor="bg-cyan-100" ringColor="ring-cyan-500">
+          <Badge bgColor="bg-lime-100" ringColor="ring-lime-500">
             <p className="p-2 ">{statusText}</p>
           </Badge>
         );
 
       case "rejected":
+        return (
+          <Badge bgColor="bg-red-100" ringColor="ring-red-500">
+            <p className="p-2 ">{statusText}</p>
+          </Badge>
+        );
     }
   };
 

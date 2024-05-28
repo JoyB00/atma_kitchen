@@ -695,16 +695,14 @@ export default function CheckoutPage() {
                   {orders.data.transaction.payment_method === '"Cash"' && (
                     <div>
                       <p
-                        className={`${orders.data.transaction.status === "paymentValid" && "hidden"}`}
+                        className={`${orders.data.transaction.status !== "notPaid" && "hidden"}`}
                       >
                         Waiting For Admin Confirmation
                       </p>
                       <Button
-                        className={` mt-2 w-full border-blue-500 text-blue-500  ${orders.data.transaction.status !== "paymentValid" ? "opacity-20" : "hover:text-white"}`}
+                        className={` mt-2 w-full border-blue-500 text-blue-500  ${orders.data.transaction.status === "notPaid" ? "opacity-20" : "hover:text-white"}`}
                         onClick={() => setOpenModalNota(true)}
-                        disabled={
-                          orders.data.transaction.status !== "paymentValid"
-                        }
+                        disabled={orders.data.transaction.status === "notPaid"}
                         withoutAnimate={
                           orders.data.transaction.status === "notPaid"
                         }

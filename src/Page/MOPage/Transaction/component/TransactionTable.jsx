@@ -19,11 +19,12 @@ import toast from "react-hot-toast";
 import { getPicture } from "../../../../api";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useAtom } from "jotai";
+import { TransactionConfirmation } from "../../../../api/MOTransactionConfirmation";
 import { Form } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import { Modal } from "@mui/material";
 
-export default function OrderTable( transaction) {
+export default function OrderTable(transaction, id) {
   const [isOpened, setIsOpened] = useState(false);
   const [isConfirmationOpened, setIsConfirmationOpened] = useState(false);
   const [load, setDataLoad] = useState({
@@ -31,6 +32,7 @@ export default function OrderTable( transaction) {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState();
+  const [data, setData] = useState({ id: transaction.transaction.id });
 
   const handleChange = (event) => {
     setDataLoad({ ...data, [event.target.name]: event.target.value });
@@ -53,10 +55,12 @@ export default function OrderTable( transaction) {
 
   const showDialogReject = () => {
     setMode("reject");
+    setData({ ...data, status: "rejected" });
     setIsConfirmationOpened(true);
   };
   const showDialogAccept = () => {
     setMode("accept");
+    setData({ ...data, status: "accepted" });
     setIsConfirmationOpened(true);
   };
 
@@ -64,9 +68,9 @@ export default function OrderTable( transaction) {
     setIsLoading(true);
 
     if (mode === "accept") {
-      await confirmPayment(data);
+      await TransactionConfirmation(data);
     } else {
-      await rejectTransaction(transaction.id);
+      await TransactionConfirmation(data);
     }
 
     setIsConfirmationOpened(false);
@@ -77,20 +81,20 @@ export default function OrderTable( transaction) {
 
   return (
     <>
-          <td className="ps-8">
-            <span>{transaction.transaction.customer.users.fullName}</span>
-          </td>
-          <td className="ps-8">
-          <span>{transaction.transaction.total_price}</span>
-          </td>
-          <td className="pe-8">
-            <span>{transaction.transaction.status}</span>
-          </td>
-          <td>
-            <span>{transaction.transaction.payment_method}</span>
-          </td>
-          <td className="pe-6">
-          
+      {console.log(data)}
+      <td className="ps-8">
+        <span>{transaction.transaction.customer.users.fullName}</span>
+      </td>
+      <td className="ps-8">
+        <span>{transaction.transaction.total_price}</span>
+      </td>
+      <td className="pe-8">
+        <span>{transaction.transaction.status}</span>
+      </td>
+      <td>
+        <span>{transaction.transaction.payment_method}</span>
+      </td>
+      <td className="pe-6">
         <Button
           className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
           type="button"
@@ -98,7 +102,6 @@ export default function OrderTable( transaction) {
         >
           Confirm Order
         </Button>
-       
       </td>
       <Modal open={isOpened} onClose={closeModal}>
         <div className="flex size-full items-center justify-center">
@@ -107,9 +110,11 @@ export default function OrderTable( transaction) {
               Confirmation Order
             </span>
 
-            <div className="h-1 w-full bg-gray-200 my-2 rounded-md"></div>
-            <p className="text-lg font-light text-black ml-5">Are you sure want to confirm this order?</p>
-           
+            <div className="my-2 h-1 w-full rounded-md bg-gray-200"></div>
+            <p className="ml-5 text-lg font-light text-black">
+              Are you sure want to confirm this order?
+            </p>
+
             <div className="py-2" />
             <Form className="text-slate-800">
               <div className="flex flex-row justify-center pt-2">
@@ -120,7 +125,7 @@ export default function OrderTable( transaction) {
                   Confirm
                 </Button>
                 <Button
-                  className="bg-orange-500 text-sm text-white mx-3"
+                  className="mx-3 bg-orange-500 text-sm text-white"
                   onClick={showDialogReject}
                 >
                   Reject
@@ -177,9 +182,6 @@ export default function OrderTable( transaction) {
           </div>
         </div>
       </Modal>
-
-        
-    
     </>
   );
 }
