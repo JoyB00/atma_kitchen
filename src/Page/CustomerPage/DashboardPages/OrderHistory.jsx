@@ -97,15 +97,20 @@ export function TransactionTable({ data, search, length }) {
           <p>Pay Now</p>
         </Button>
       );
-    } else if (
-      transaction.transaction.payment_method === '"E-Money"' &&
-      transaction.transaction.payment_evidence === null
-    ) {
-      return (
-        <Button className="bg-blue-500 text-white">
-          <p>Send Payment Evidence</p>
-        </Button>
-      );
+    } else if (transaction.transaction.payment_method === '"E-Money"') {
+      if (!transaction.transaction.payment_evidence) {
+        return (
+          <Button className="bg-blue-500 text-white">
+            <p>Send Payment Evidence</p>
+          </Button>
+        );
+      } else {
+        return (
+          <Button className="bg-yellow-500 text-white">
+            <p>Waiting Confirmation</p>
+          </Button>
+        );
+      }
     } else if (
       transaction.transaction.payment_method === '"Cash"' &&
       transaction.transaction.status === "notPaid"
@@ -160,7 +165,6 @@ export function TransactionTable({ data, search, length }) {
         );
 
       case "rejected":
-        
     }
   };
 

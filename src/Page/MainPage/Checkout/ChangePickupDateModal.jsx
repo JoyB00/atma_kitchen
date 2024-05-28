@@ -2,11 +2,9 @@ import Modal from "@mui/material/Modal";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Button from "../../../Component/Button";
-import pickupIcon from "../../../assets/food-delivery.png";
-import deliveryIcon from "../../../assets/fast-delivery.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AddDelivery, UpdateDelivery } from "../../../api/DeliveryApi";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import OrderExpiredImage from "../../../assets/orderExpired.jpg";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import InputDateTime from "../../../Component/InputDateTime";
@@ -17,7 +15,7 @@ import {
 } from "../../../api/TransactionApi.jsx";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalDelivery({ open, setOpen, transaction }) {
   const [disabledCheck, setDisabledCheck] = useState(true);
@@ -25,7 +23,7 @@ export default function ModalDelivery({ open, setOpen, transaction }) {
     id: transaction.transaction.id,
     pickup_date: null,
   });
-  const [load, setLoad] = useState(false);
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const handleCheck = (e) => {
@@ -126,7 +124,7 @@ export default function ModalDelivery({ open, setOpen, transaction }) {
             DeleteTransaction(data)
               .then((res) => {
                 console.log(res);
-                return redirect("/CustomerDashboard/OrderHistory");
+                navigate("/CustomerDashboard/OrderHistory");
               })
               .catch((err) => {
                 throw err.message;
@@ -173,8 +171,18 @@ export default function ModalDelivery({ open, setOpen, transaction }) {
                   your orders
                 </p>
               </div>
+              <div className="flex justify-center py-5">
+                <LazyLoadImage
+                  effect="blur"
+                  src={OrderExpiredImage}
+                  alt="Expired Order Image"
+                  className="h-72 rounded-3xl object-cover "
+                />
+              </div>
               <div className="p-5 text-black">
-                <label htmlFor="order_date">Change Order Date</label>
+                <div className="pb-3">
+                  <label htmlFor="order_date">Change Order Date</label>
+                </div>
                 <InputDateTime
                   id="date"
                   name="date"

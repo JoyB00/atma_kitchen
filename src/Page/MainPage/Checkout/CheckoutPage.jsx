@@ -129,6 +129,17 @@ export default function CheckoutPage() {
         },
         position: "bottom-right",
       });
+    } else if (
+      orders.data.transaction.delivery.delivery_method === "Delivery Courier" &&
+      !orders.data.transaction.delivery.shipping_cost
+    ) {
+      toast.error("Wait for confirmation of shipping costs", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
     } else {
       setLoadingButton(true);
       toast.promise(
