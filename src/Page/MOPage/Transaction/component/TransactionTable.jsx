@@ -82,23 +82,22 @@ export default function OrderTable(transaction, id) {
   return (
     <>
       <td className="ps-8">
-        {console.log('aa',transaction.transaction)}
-            <span>{transaction.transaction.transaction_number}</span>
-          </td>
-          <td className="ps-8">
-            <span>{transaction.transaction.customer.users.fullName}</span>
-          </td>
-          <td className="ps-8">
-          <span>{transaction.transaction.total_price}</span>
-          </td>
-          <td className="pe-8">
-            <span>{transaction.transaction.status}</span>
-          </td>
-          <td>
-            <span>{transaction.transaction.payment_method}</span>
-          </td>
-          <td className="pe-6">
-          
+        {console.log("aa", transaction.transaction)}
+        <span>{transaction.transaction.transaction_number}</span>
+      </td>
+      <td className="ps-8">
+        <span>{transaction.transaction.customer.users.fullName}</span>
+      </td>
+      <td className="ps-8">
+        <span>{transaction.transaction.total_price}</span>
+      </td>
+      <td className="pe-8">
+        <span>{transaction.transaction.status}</span>
+      </td>
+      <td>
+        <span>{transaction.transaction.payment_method}</span>
+      </td>
+      <td className="pe-6">
         <Button
           className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
           type="button"

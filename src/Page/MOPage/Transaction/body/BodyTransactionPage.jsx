@@ -61,33 +61,27 @@ export default function BodyOrderConfirmation() {
           </div>
         ) : (
           <div>
-          {orderConfirmation.data.length === 0 ? (
-            <span className="w-full px-2 py-4 text-xl font-semibold text-slate-800">
-              Nothing to see here...
-            </span>
-          ) : (
-            <table className="w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
-           <thead className="border-b-2">
-            <tr>
-              <th className="py-8 ps-8 text-start font-medium">
-                Transaction Number  
-              </th>
-              <th className="py-8 ps-8 text-start font-medium">
-                Customer Name   
-              </th>
-              <th className="pe-6 text-start font-medium ">Total Price (Rp.)</th>
-              <th className="pe-6 text-start font-medium ">Status</th>
-              <th className="pe-6 text-start font-medium">Payment Method</th>
-            </tr>
-          </thead>
-            <tbody>
-              {orderConfirmation.data?.map((transaction) => (
-                <>
-                  <tr key={transaction.id}>
-                    <OrderTable
-                      key={transaction.id}
-                      transaction={transaction}
-                    />
+            {orderConfirmation.data.length === 0 ? (
+              <span className="w-full px-2 py-4 text-xl font-semibold text-slate-800">
+                Nothing to see here...
+              </span>
+            ) : (
+              <table className="w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
+                <thead className="border-b-2">
+                  <tr>
+                    <th className="py-8 ps-8 text-start font-medium">
+                      Transaction Number
+                    </th>
+                    <th className="py-8 ps-8 text-start font-medium">
+                      Customer Name
+                    </th>
+                    <th className="pe-6 text-start font-medium ">
+                      Total Price (Rp.)
+                    </th>
+                    <th className="pe-6 text-start font-medium ">Status</th>
+                    <th className="pe-6 text-start font-medium">
+                      Payment Method
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
