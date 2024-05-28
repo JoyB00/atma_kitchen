@@ -134,9 +134,13 @@ export function InputDeliveryRangeCardModal({ delivery }) {
         "flex flex-col rounded-xl border border-orange-400 bg-white p-4 shadow-md "
       }
     >
-      <span className="text-sm">Transaction ID: {delivery.id}</span>
+      <span className="text-xs">Transaction ID: {delivery.id}</span>
       <span className="font-semibold">
         {delivery.delivery.recipient_address}
+      </span>
+      <span className="text-sm">Order date: {delivery.order_date}</span>
+      <span className="text-sm">
+        Customer Name: {delivery.customer.users.fullName}
       </span>
       <Button
         className="me-2 mt-4 bg-transparent text-orange-500 hover:text-white "
@@ -152,6 +156,9 @@ export function InputDeliveryRangeCardModal({ delivery }) {
               Input Delivery Range
             </span>
             <div className="py-2" />
+            <span className="font-semibold text-slate-800">
+              {delivery.delivery.recipient_address}
+            </span>
             <Form>
               <Input
                 onChange={handleChange}
