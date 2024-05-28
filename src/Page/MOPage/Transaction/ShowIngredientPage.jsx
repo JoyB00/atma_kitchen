@@ -1,10 +1,10 @@
 import Sidebar from "../../AdminPage/AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin";
 import FooterDashboard from "../../../Component/FooterDashboard";
+import BodyIngredient from "./body/BodyShowIngredientPage";
 import { useState } from "react";
-import BodyOrderConfirmation from "./body/BodyTransactionPage";
 
-export default function TransactionMO() {
+export default function ShowIngredientMO() {
   const [search, setSearch] = useState("");
   const user = JSON.parse(sessionStorage.getItem("user"));
 
@@ -18,14 +18,14 @@ export default function TransactionMO() {
             user.role_id == 2
               ? "/AdminDashboard"
               : user.role_id == 3
-                ? "/MoDashboard/transactionManagement"
+                ? "/MoDashboard/showIngredient"
                 : ""
           }
-          page="Confirm Order"
+          page="Show Ingredient"
           setSearch={setSearch}
         />
         <div className="mt-32 px-4 ">
-         <BodyOrderConfirmation />
+        <BodyIngredient />
           <FooterDashboard />
         </div>
       </div>

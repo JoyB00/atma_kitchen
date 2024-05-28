@@ -93,6 +93,7 @@ import AddIngredientProcurement from "./Page/MOPage/IngredientProcurement/AddIng
 import EditIngredientProcurement from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 import { loader as ingredientProcurementLoader } from "./Page/MOPage/IngredientProcurement/EditIngredientProcurement/EditIngredientProcurement";
 
+
 // Root Employee
 import RootEmployee from "./Root/MoDashboard/Employee/RootEmployee";
 import EmployeePage from "./Page/MOPage/Employee/EmployeePage";
@@ -121,8 +122,9 @@ import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement
 
 //Root Transaction
 import RootTransactionMO from "./Root/AdminDashboard/Transaction/RootTransaction";
-import TransactionMO from "./Page/MOPage/Transaction/TransactionPage"
-
+import TransactionMO from "./Page/MOPage/Transaction/TransactionPage";
+import RootShowIngredient from "./Root/MoDashboard/ShowIngredient/RootShowIngredient";
+import ShowIngredientMO from "./Page/MOPage/Transaction/ShowIngredientPage";
 
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
@@ -504,6 +506,17 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <TransactionMO />,
+              },
+            ],
+          },
+
+          {
+            path: "showIngredient",
+            element: <RootShowIngredient />,
+            children: [
+              {
+                index: true,
+                element: <ShowIngredientMO />,
               },
             ],
           },

@@ -7,6 +7,7 @@ import {
   expandOperational,
   expandMaster,
   expandTransaction,
+  expandOrder,
 } from "../../../../lib/AtomVar";
 import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
@@ -15,15 +16,15 @@ import { NavLink } from "react-router-dom";
 
 export default function Sidebar({ role }) {
   const [expandedMaster, setExpandedMaster] = useAtom(expandMaster);
-  const [expandedOperational, setExpandedOperational] =
-    useAtom(expandOperational);
-  const [expandedTransaction, setExpandedTransaction] =
-    useAtom(expandTransaction);
+  const [expandedOperational, setExpandedOperational] = useAtom(expandOperational);
+  const [expandedTransaction, setExpandedTransaction] = useAtom(expandTransaction);
+  const [expandedOrder, setExpandedOrder] = useAtom(expandOrder);
 
   const collapseMenu = () => {
     setExpandedMaster(false);
     setExpandedOperational(false);
     setExpandedTransaction(false);
+    setExpandedOrder(false);
   };
 
   return (
@@ -79,7 +80,9 @@ export default function Sidebar({ role }) {
             expandedMaster={expandedMaster}
             setExpandedMaster={setExpandedMaster}
             expandedOperational={expandedOperational}
-            setExpandedOperational={setExpandedOperational}
+              setExpandedOperational={setExpandedOperational}
+              expandedOrder={expandedOrder}
+              setExpandedOrder={setExpandedOrder}
           />
         ) : role == 1 ? (
           <OwnerNavigation

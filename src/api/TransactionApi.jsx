@@ -101,7 +101,7 @@ const StorePaymentEvidence = async (data) => {
 };
 
 export {
-  FetchAllOrder,
+  GetOrderConfirmation,
   GetCustomerTransactions,
   GetAuthCustomerTransactions,
   GetDetailTransaction,
