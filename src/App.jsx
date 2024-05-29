@@ -5,6 +5,7 @@ import Login from "./Page/Login";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense } from "react";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
@@ -601,10 +602,21 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient();
 const App = () => {
+  const theme = createTheme({
+    palette: {
+      type: "light",
+      primary: {
+        main: "#f78336",
+      },
+    },
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
