@@ -13,6 +13,8 @@ import {
   faEgg,
   faGifts,
 } from "@fortawesome/free-solid-svg-icons";
+import { getPicture } from "../../../../api";
+import { formatCurrency } from "../../../../lib/FormatCurrency";
 export default function ModalDetailTransaction({ open, setOpen, id }) {
   const [load, setLoad] = useState(true);
   const [details, setDetails] = useState([]);
@@ -79,16 +81,32 @@ export default function ModalDetailTransaction({ open, setOpen, id }) {
                       return (
                         <tr key={item.id}>
                           <td className="py-2 ps-2  text-sm">
-                            <FontAwesomeIcon
-                              icon={faEgg}
-                              className="me-2 text-orange-500"
-                            />
-                            {item.product
-                              ? item.product.product_name
-                              : item.hampers.hampers_name}
+                            <div className="flex">
+                              <LazyLoadImage
+                                src={
+                                  item.product
+                                    ? getPicture(
+                                        item.product.product_picture,
+                                        "product",
+                                      )
+                                    : getPicture(
+                                        item.hampers.hampers_picture,
+                                        "hampers",
+                                      )
+                                }
+                                className="rounded-xl object-cover"
+                                effect="blur w-20 h-20"
+                              />
+
+                              <div className="my-auto ms-3 text-lg font-semibold ">
+                                {item.product
+                                  ? item.product.product_name
+                                  : item.hampers.hampers_name}
+                              </div>
+                            </div>
                           </td>
                           <td className="text-center text-sm">
-                            {item.quantity}
+                            {item.quantity} pcs
                           </td>
                           <td className="text-center text-sm">
                             {item.price <= 999

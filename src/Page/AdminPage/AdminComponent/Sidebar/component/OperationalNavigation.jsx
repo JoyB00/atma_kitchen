@@ -15,7 +15,7 @@ import {
   faUserTie,
   faLock,
   faMoneyBill,
-  
+  faKitchenSet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -148,6 +148,11 @@ export default function OperationalNavigation({
             icon={faEgg}
             url={"/MoDashboard/showIngredient"}
           />
+          <Navigation
+            label="Confirmation To Process"
+            icon={faKitchenSet}
+            url={"/MoDashboard/confirmationToProcess"}
+          />
         </div>
       ) : undefined}
 
@@ -156,7 +161,6 @@ export default function OperationalNavigation({
         icon={faLock}
         url={"/ForgotPasswordEmployee/3"}
       />
-     
     </>
   );
 }

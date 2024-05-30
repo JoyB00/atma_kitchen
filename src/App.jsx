@@ -125,6 +125,9 @@ import RootTransactionMO from "./Root/AdminDashboard/Transaction/RootTransaction
 import TransactionMO from "./Page/MOPage/Transaction/TransactionPage";
 import RootShowIngredient from "./Root/MoDashboard/ShowIngredient/RootShowIngredient";
 import ShowIngredientMO from "./Page/MOPage/Transaction/ShowIngredientPage";
+import RootConfirmationToProccess from "./Root/MoDashboard/ConfirmationToProccess/RootConfirmationToProccess";
+import ConfirmationToProccessPage from "./Page/MOPage/ConfirmationToProccess/ConfirmationToProccessPage";
+import RecapOrderPage from "./Page/MOPage/ConfirmationToProccess/component/RecapOrderPage";
 
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
@@ -509,6 +512,20 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <ShowIngredientMO />,
+              },
+            ],
+          },
+          {
+            path: "confirmationToProcess",
+            element: <RootConfirmationToProccess />,
+            children: [
+              {
+                index: true,
+                element: <ConfirmationToProccessPage />,
+              },
+              {
+                path: "recapOrders",
+                element: <RecapOrderPage />,
               },
             ],
           },
