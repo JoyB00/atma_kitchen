@@ -14,6 +14,7 @@ const GetCustomerTransactions = async (customerId) => {
     return error.response.data;
   }
 };
+
 const GetAuthCustomerTransactions = async (transactionId) => {
   // Transactions is order history
   try {
@@ -84,6 +85,58 @@ const StorePaymentEvidence = async (data) => {
   }
 };
 
+const GetTransactionWhereStatusOnProcess = async () => {
+  var data = {
+    status: "onProcess",
+  };
+
+  try {
+    const response = await useAxios.post(`/transactionWhereStatus`, data, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const GetTransactionWhereStatusReadyForPickup = async () => {
+  var data = {
+    status: "readyForPickup",
+  };
+
+  try {
+    const response = await useAxios.post(`/transactionWhereStatus`, data, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const ChangeTransactionStatus = async ({ id, status }) => {
+  var data = {
+    id: id,
+    status: status,
+  };
+
+  try {
+    const response = await useAxios.post(`/changeTransactionStatus`, data, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export {
   GetCustomerTransactions,
   GetAuthCustomerTransactions,
@@ -91,4 +144,7 @@ export {
   StoreTransaction,
   PaymentCustomer,
   StorePaymentEvidence,
+  ChangeTransactionStatus,
+  GetTransactionWhereStatusOnProcess,
+  GetTransactionWhereStatusReadyForPickup,
 };
