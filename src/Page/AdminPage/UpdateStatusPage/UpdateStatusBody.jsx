@@ -9,7 +9,10 @@ import Button from "../../../Component/Button.jsx";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import sendNotificationToUser from "../../../api/NotificationApi.jsx";
-import { ChangeTransactionStatus } from "../../../api/TransactionApi.jsx";
+import {
+  ChangeTransactionStatus,
+  GetTransactionWhereStatus,
+} from "../../../api/TransactionApi.jsx";
 
 export default function UpdateStatusBody() {
   return (
