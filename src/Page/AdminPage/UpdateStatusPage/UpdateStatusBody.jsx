@@ -41,11 +41,11 @@ export function Content() {
   const [tab, setTab] = useState(0);
   const transactionsOnProcessList = useQuery({
     queryKey: ["transactionOnProcessList"],
-    queryFn: GetTransactionWhereStatus({ status: "onProcess" }),
+    queryFn: () => GetTransactionWhereStatus({ status: "onProcess" }),
   });
   const transactionInDeliveryList = useQuery({
     queryKey: ["transactionInDeliveryList"],
-    queryFn: GetTransactionWhereStatus({ status: "readyForPickup" }),
+    queryFn: () => GetTransactionWhereStatus({ status: "readyForPickup" }),
   });
 
   return (
@@ -221,10 +221,19 @@ export function TransactionRow({ transaction, mode }) {
           </Button>
         ) : (
           <div className="flex flex-row">
-            <Button className="bg-orange-500 text-white" onClick={openDialog}>
-              Finish Order
-            </Button>
-            <div className="px-1" />
+            {transaction.delivery.delivery_method === "Pick-Up" ? (
+              <>
+                <Button
+                  className="bg-orange-500 text-white"
+                  onClick={openDialog}
+                >
+                  Finish Order
+                </Button>
+                <div className="px-1" />
+              </>
+            ) : (
+              <></>
+            )}
             <Button
               className="bg-orange-500 text-white"
               onClick={sendNotifReady}
