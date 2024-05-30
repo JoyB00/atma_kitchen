@@ -141,26 +141,9 @@ const DeleteTransaction = async (data) => {
   }
 };
 
-const GetTransactionWhereStatusOnProcess = async () => {
-  var data = {
-    status: "onProcess",
-  };
-
-  try {
-    const response = await useAxios.post(`/transactionWhereStatus`, data, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-    });
-    return response.data.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-const GetTransactionWhereStatusReadyForPickup = async () => {
-  var data = {
-    status: "readyForPickup",
+const GetTransactionWhereStatus = async ({ status }) => {
+  const data = {
+    status: status,
   };
 
   try {
@@ -203,8 +186,7 @@ export {
   PaymentCustomer,
   StorePaymentEvidence,
   ChangeTransactionStatus,
-  GetTransactionWhereStatusOnProcess,
-  GetTransactionWhereStatusReadyForPickup,
+  GetTransactionWhereStatus,
   UpdateDateTransaction,
   DeleteTransaction,
 };

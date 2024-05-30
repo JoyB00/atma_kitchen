@@ -9,11 +9,7 @@ import Button from "../../../Component/Button.jsx";
 import { BeatLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import sendNotificationToUser from "../../../api/NotificationApi.jsx";
-import {
-  ChangeTransactionStatus,
-  GetTransactionWhereStatusOnProcess,
-  GetTransactionWhereStatusReadyForPickup,
-} from "../../../api/TransactionApi.jsx";
+import { ChangeTransactionStatus } from "../../../api/TransactionApi.jsx";
 
 export default function UpdateStatusBody() {
   return (
@@ -28,7 +24,7 @@ export default function UpdateStatusBody() {
 export function Header() {
   return (
     <div className="w-full">
-      <motion.div className="grid min-h-24 grid-cols-3 overflow-clip rounded-2xl bg-gradient-to-t from-orange-400 to-orange-500 ps-4 drop-shadow-md">
+      <motion.div className="grid min-h-24 grid-cols-3 text-clip rounded-2xl bg-gradient-to-t from-orange-400 to-orange-500 ps-4 drop-shadow-md">
         <h1 className="col-span-2 px-3 pt-6 font-semibold text-white ">
           <FontAwesomeIcon icon={faCheckDouble} /> Update Transaction Status
         </h1>
@@ -42,11 +38,11 @@ export function Content() {
   const [tab, setTab] = useState(0);
   const transactionsOnProcessList = useQuery({
     queryKey: ["transactionOnProcessList"],
-    queryFn: GetTransactionWhereStatusOnProcess,
+    queryFn: GetTransactionWhereStatus({ status: "onProcess" }),
   });
   const transactionInDeliveryList = useQuery({
     queryKey: ["transactionInDeliveryList"],
-    queryFn: GetTransactionWhereStatusReadyForPickup,
+    queryFn: GetTransactionWhereStatus({ status: "readyForPickup" }),
   });
 
   return (
