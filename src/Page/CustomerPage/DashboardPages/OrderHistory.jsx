@@ -6,9 +6,9 @@ import {
 } from "../../../api/CustomerApi";
 import { useState } from "react";
 import { useRouteLoaderData } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { RotateLoader } from "react-spinners";
-import { Pagination } from "@mui/material";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { BeatLoader, RotateLoader } from "react-spinners";
+import { Modal, Pagination, Tab, Tabs } from "@mui/material";
 import { motion } from "framer-motion";
 import Button from "../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,41 +17,62 @@ import { faGifts } from "@fortawesome/free-solid-svg-icons";
 import ModalDetailTransaction from "../../AdminPage/CustomerOrderHistory/component/ModalDetailTransaction";
 import { formatCurrency } from "../../../lib/FormatCurrency";
 import { NavLink } from "react-router-dom";
+import {
+  ChangeTransactionStatus,
+  GetTransactionWhereStatusCustomer,
+} from "../../../api/TransactionApi.jsx";
+import toast from "react-hot-toast";
+import sendNotificationToUser from "../../../api/NotificationApi.jsx";
 
 export default function OrderHistory() {
+  const [tab, setTab] = useState(0);
   const customer = useRouteLoaderData("customer");
   const orderHistory = useQuery({
     queryKey: ["orderHistory"],
     queryFn: () => FetchOrderHistory(customer.id),
   });
+
   return (
     <div className=" w-full bg-transparent">
-      {console.log(customer.id)}
       <Navbar />
       <div className="min-h-screen px-14 pt-36">
         <Header />
-        {orderHistory.isFetching ? (
-          <RotateLoader
-            color="orange"
-            loading={orderHistory.isFetching}
-            cssOverride={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              borderColor: "red",
-            }}
-            size={50}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-        ) : (
+        <div>
+          <Tabs
+            value={tab}
+            onChange={(e, newValue) => setTab(newValue)}
+            className="pb-4"
+          >
+            <Tab label="Order History" />
+            <Tab label="In Delivery" />
+          </Tabs>
+        </div>
+        {tab === 0 ? (
           <>
-            <TransactionTable
-              data={orderHistory.data}
-              length={orderHistory.data.length}
-            />
+            {orderHistory.isFetching ? (
+              <RotateLoader
+                color="orange"
+                loading={orderHistory.isFetching}
+                cssOverride={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  borderColor: "red",
+                }}
+                size={50}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            ) : (
+              <TransactionTable
+                data={orderHistory.data}
+                length={orderHistory.data.length}
+              />
+            )}
           </>
+        ) : (
+          <InDeliveryTable />
         )}
       </div>
       <div className="from-cyan-100 via-transparent md:pt-12 ">
@@ -67,6 +88,128 @@ export function Header() {
       <span className="text-3xl font-bold text-orange-500">Order History</span>
       <span className="text-xl">Did you miss our cake?</span>
     </div>
+  );
+}
+
+export function InDeliveryTable() {
+  const inDeliveryTransactionList = useQuery({
+    queryKey: ["inDeliveryTransaction"],
+    queryFn: () =>
+      GetTransactionWhereStatusCustomer({ status: "readyForPickup" }),
+  });
+
+  return (
+    <>
+      {inDeliveryTransactionList.isFetching ? (
+        <div className="flex justify-center py-20">
+          <RotateLoader
+            color="orange"
+            loading={true}
+            cssOverride={{
+              justifyContent: "center",
+              borderColor: "red",
+            }}
+            size={50}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      ) : (
+        <table className="w-full rounded-lg bg-slate-100 text-start text-slate-800 shadow-md">
+          <thead>
+            <tr>
+              <th className="py-2 ps-8 pt-4 text-start">Transaction Number</th>
+              <th className="py-2 pt-4 text-start">Order Date</th>
+              <th className="py-2 pt-4 text-start">Delivery/Pickup Date</th>
+              <th className="py-2 pt-4 text-start">Method</th>
+              <th className="py-2"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {inDeliveryTransactionList.data?.map((transaction) => (
+              <InDeliveryTableContent
+                key={transaction.id}
+                transaction={transaction}
+              />
+            ))}
+          </tbody>
+        </table>
+      )}
+    </>
+  );
+}
+
+export function InDeliveryTableContent({ transaction }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmationDialog, setConfirmationDialog] = useState(false);
+  const openDialog = () => {
+    setConfirmationDialog(true);
+  };
+  const closeDialog = () => {
+    setConfirmationDialog(false);
+  };
+
+  const queryClient = useQueryClient();
+  const submit = async () => {
+    setIsLoading(true);
+    try {
+      await ChangeTransactionStatus({ id: transaction.id, status: "finished" });
+      setIsLoading(false);
+      toast.success("Order successfully finished");
+      await sendNotificationToUser({
+        title: "🎉 Order has been finished!!!",
+        message: "Thanks for ordering at Atma Kitchen, bon appetit! 🍰",
+        user_id: transaction.customer.users.id,
+      });
+      await queryClient.invalidateQueries(["inDeliveryTransaction"]);
+      closeDialog();
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  };
+
+  return (
+    <tr key={transaction.id}>
+      <td className="py-2 ps-8 ">
+        {transaction.transaction_number ?? transaction.id}
+      </td>
+      <td className="py-2">{transaction.order_date}</td>
+      <td className="py-2">{transaction.pickup_date}</td>
+      <td className="py-2">{transaction.delivery.delivery_method}</td>
+      <td className="py-2">
+        {transaction.delivery.delivery_method === "Delivery Courier" ? (
+          <Button onClick={openDialog} className="bg-orange-500 text-white">
+            Finish order
+          </Button>
+        ) : (
+          <span>automatically finished when you pick up</span>
+        )}
+        <Modal open={confirmationDialog}>
+          <div className="flex size-full items-center justify-center">
+            <div className="flex max-h-[90%] min-h-20 w-1/2 flex-col overflow-y-scroll rounded-md bg-slate-100 p-8">
+              <span className="text-center text-slate-800">
+                You are about to finish this order. Are you sure?
+              </span>
+              <div className="py-2" />
+              <Button onClick={submit} className="bg-orange-500 text-white">
+                {isLoading ? (
+                  <BeatLoader color="white" size={8} />
+                ) : (
+                  "Yes, I am sure"
+                )}
+              </Button>
+              <Button
+                className="text-slate-800 hover:text-white"
+                onClick={closeDialog}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      </td>
+    </tr>
   );
 }
 
@@ -208,7 +351,7 @@ export function TransactionTable({ data, search, length }) {
                 className="border-t-2 border-gray-100  text-black"
                 key={item.id}
               >
-                <td className="px-6 py-6 text-start font-medium ">
+                <td className="p-6 text-start font-medium ">
                   <NavLink to={`/checkout/${item.id}`}>
                     <TextButton transaction={item} />
                   </NavLink>
@@ -275,56 +418,6 @@ export function TransactionTable({ data, search, length }) {
         setOpen={setOpenModal}
       />
     </>
-  );
-}
-
-export function TransactionTile({ detailedTransaction }) {
-  // hirarki detail transaction
-  // - transaction
-  // - cart
-  //   - product/hampers
-
-  const ProductTile = (transactionDetail) => {
-    const detail = transactionDetail.transactionDetail;
-    return (
-      <div className="flex flex-row items-center text-nowrap px-4 py-2 text-black">
-        <span className="text-md text-start font-bold">
-          {detail.product
-            ? detail.product.product_name
-            : detail.hampers.hampers_name}{" "}
-          (x{detail.quantity})
-        </span>
-        <div className="w-full" />
-        <span className=" text-end text-sm">
-          Rp.{" "}
-          {detail.product
-            ? detail.product.product_price
-            : detail.hampers.hampers_price}
-        </span>
-      </div>
-    );
-  };
-
-  return (
-    <div className="flex h-80 flex-col items-stretch overflow-clip rounded-lg border border-orange-300 bg-gray-100 shadow-lg">
-      <div className="flex flex-col items-start bg-orange-500 p-4">
-        <span>Ordered on</span>
-        <span className="text-xl font-bold">
-          {detailedTransaction.transaction.order_date}
-        </span>
-        <span className="text-xs">
-          Order ID: {detailedTransaction.transaction.id}
-        </span>
-      </div>
-      <div className="py-2" />
-      <div className="flex flex-col">
-        <div className="flex flex-col">
-          {detailedTransaction.details.map((transactionDetails) => (
-            <ProductTile transactionDetail={transactionDetails} />
-          ))}
-        </div>
-      </div>
-    </div>
   );
 }
 

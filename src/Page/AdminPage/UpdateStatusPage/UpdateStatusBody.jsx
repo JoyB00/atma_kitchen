@@ -164,8 +164,8 @@ export function TransactionRow({ transaction, mode }) {
         await sendNotifFinish();
         toast.success("Transaction have been marked as finished");
       }
-      queryClient.invalidateQueries("transactionOnProcessList");
-      queryClient.invalidateQueries("transactionInDeliveryList");
+      await queryClient.invalidateQueries(["transactionOnProcessList"]);
+      await queryClient.invalidateQueries(["transactionInDeliveryList"]);
     } catch (e) {
       toast.error(e.message);
     } finally {

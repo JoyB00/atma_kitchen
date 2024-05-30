@@ -158,6 +158,27 @@ const GetTransactionWhereStatus = async ({ status }) => {
   }
 };
 
+const GetTransactionWhereStatusCustomer = async ({ status }) => {
+  const data = {
+    status: status,
+  };
+
+  try {
+    const response = await useAxios.post(
+      `/transactionWhereStatusCustomer`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 const ChangeTransactionStatus = async ({ id, status }) => {
   var data = {
     id: id,
@@ -187,6 +208,7 @@ export {
   StorePaymentEvidence,
   ChangeTransactionStatus,
   GetTransactionWhereStatus,
+  GetTransactionWhereStatusCustomer,
   UpdateDateTransaction,
   DeleteTransaction,
 };
