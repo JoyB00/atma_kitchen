@@ -46,6 +46,7 @@ const EditCustomer = async (data) => {
 
 const FetchOrderHistory = async (id) => {
   try {
+    console.log("id", id);
     const response = await useAxios.get(`/orderHistory/${id}`, {
       headers: {
         "Content-Type": "application/json",

@@ -21,7 +21,8 @@ import { getPicture } from "../../../api";
 import { formatCurrency } from "../../../lib/FormatCurrency";
 import toast from "react-hot-toast";
 import ModalDelivery from "./DeliveryModal";
-import ModalPayment from "./PaymentModal";
+import ModalNota from "./PaymentModal";
+import ModalOrderExpired from "./ChangePickupDateModal";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BeatLoader } from "react-spinners";
@@ -40,6 +41,7 @@ export default function CheckoutPage() {
   const orderDetail = useRouteLoaderData("order-detail");
   const [dataPayment, setDataPayment] = useState({
     id: orderDetail.transaction.id,
+    pickup_date: orderDetail.transaction.pickup_date,
     amount: 0,
     first_name: orderDetail.transaction.customer.users.fullName,
     last_name: orderDetail.transaction.customer.users.fullName,
@@ -62,10 +64,11 @@ export default function CheckoutPage() {
 
   const queryClient = useQueryClient();
   const [openModal, setOpenModal] = useState(false);
-  const [openModalPayment, setOpenModalPayment] = useState(false);
+  const [openModalNota, setOpenModalNota] = useState(false);
   const [point, setPoint] = useState(0);
   const [clickPoint, setClickPoint] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
+  const [openModalOrderExpired, setOpenModalOrderExpired] = useState(false);
   const [picture, setPicture] = useState({
     id: orderDetail.transaction.id,
     payment_evidence: null,
@@ -115,6 +118,8 @@ export default function CheckoutPage() {
   };
 
   const handlePaymentCash = () => {
+    var now = new Date();
+    console.log("date", now);
     console.log("cash");
     if (!data.payment_method) {
       toast.error("Choose Your Payment Method", {
@@ -124,6 +129,44 @@ export default function CheckoutPage() {
         },
         position: "bottom-right",
       });
+    } else if (
+      orders.data.transaction.delivery.delivery_method === "Delivery Courier" &&
+      !orders.data.transaction.delivery.shipping_cost
+    ) {
+      toast.error("Wait for confirmation of shipping costs", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    } else {
+      setLoadingButton(true);
+      toast.promise(
+        PaymentCustomer(data)
+          .then((res) => {
+            console.log(res);
+            setLoadingButton(false);
+            queryClient.invalidateQueries(["orders"]);
+          })
+          .catch((err) => {
+            setLoadingButton(false);
+            setOpenModalOrderExpired(true);
+            throw err.message;
+          }),
+        {
+          loading: "Loading",
+          success: "Your Payment already success",
+          error: (err) => err,
+        },
+        {
+          style: {
+            backgroundColor: "#000000",
+            color: "#ffffff",
+          },
+          position: "bottom-right",
+        },
+      );
     }
   };
 
@@ -142,26 +185,39 @@ export default function CheckoutPage() {
       });
     } else {
       setLoadingButton(true);
-      const response = await GetTokenMidtrans(dataPayment);
-      setLoadingButton(false);
-      const { snapToken } = response;
-      window.snap.pay(snapToken, {
-        onSuccess: (result) => {
-          console.log("Success:", result);
-          handlePaymentCustomer(data);
-        },
-        onPending: (result) => {
-          console.log("Pending:", result);
-        },
-        onError: (result) => {
-          console.log("Error:", result);
-        },
-        onClose: () => {
-          console.log(
-            "Customer closed the popup without finishing the payment",
-          );
-        },
-      });
+      GetTokenMidtrans(dataPayment)
+        .then((response) => {
+          setLoadingButton(false);
+          const { snapToken } = response;
+          window.snap.pay(snapToken, {
+            onSuccess: (result) => {
+              console.log("Success:", result);
+              handlePaymentCustomer(data);
+            },
+            onPending: (result) => {
+              console.log("Pending:", result);
+            },
+            onError: (result) => {
+              console.log("Error:", result);
+            },
+            onClose: () => {
+              console.log(
+                "Customer closed the popup without finishing the payment",
+              );
+            },
+          });
+        })
+        .catch((err) => {
+          setLoadingButton(false);
+          setOpenModalOrderExpired(true);
+          toast.error(err.message, {
+            style: {
+              backgroundColor: "#000000",
+              color: "#ffffff",
+            },
+            position: "bottom-right",
+          });
+        });
     }
   };
 
@@ -234,7 +290,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {console.log(picture)}
+      {console.log(dataPayment)}
       <div className="flex h-screen w-full flex-col bg-transparent">
         <Navbar />
         <div className="px-12 pt-32">
@@ -272,6 +328,10 @@ export default function CheckoutPage() {
                       DELIVERY METHOD :{" "}
                       {orders.data.transaction.delivery.delivery_method}
                     </p>
+                    <p className="pt-2  text-sm text-gray-500">
+                      Pick Up Date :{" "}
+                      {orders.data.transaction.pickup_date.slice(0, 10)}
+                    </p>
                     {orders.data.transaction.delivery.delivery_method ===
                       "Delivery Courier" && (
                       <>
@@ -294,7 +354,8 @@ export default function CheckoutPage() {
                           "Delivery Courier" &&
                           orders.data.transaction.delivery.shipping_cost !==
                             null) ||
-                        orders.data.transaction.status !== "notPaid"
+                        orders.data.transaction.status !== "notPaid" ||
+                        orders.data.transaction.payment_method === '"Cash"'
                           ? "hidden"
                           : undefined
                       }`}
@@ -363,7 +424,7 @@ export default function CheckoutPage() {
               <div className="col-span-4">
                 <div className=" mt-4 rounded-2xl border-2 border-gray-200 p-5 text-start text-black">
                   <div
-                    className={`${orders.data.transaction.status !== "notPaid" && "hidden"}`}
+                    className={`${orders.data.transaction.status !== "notPaid" || orders.data.transaction.payment_method === '"Cash"' ? "hidden" : undefined}`}
                   >
                     <p className="pb-4 font-semibold">Order Details</p>
                     <div className="flex justify-between pb-2">
@@ -538,10 +599,11 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* when already paid */}
-                  {orders.data.transaction.status !== "notPaid" && (
+                  {orders.data.transaction.status !== "notPaid" &&
+                  orders.data.transaction.payment_method === '"E-Money"' ? (
                     <div>
                       <p
-                        className={`text-sm font-semibold text-red-500 ${orders.data.transaction.payment_evidence && "hidden"}`}
+                        className={`text-sm font-semibold text-red-500 ${orders.data.transaction.payment_evidence || orders.data.transaction.payment_method === '"Cash"' ? "hidden" : undefined}`}
                       >
                         <i>
                           *Could you please send over the proof of payment as
@@ -553,15 +615,17 @@ export default function CheckoutPage() {
                       orders.data.transaction.payment_evidence ? (
                         <div className="mt-2  rounded-lg border border-dashed border-gray-900/25 px-6 py-8">
                           <div className="flex h-36 justify-center ">
-                            <img
+                            <LazyLoadImage
+                              effect="blur"
                               src={
-                                picture || !orders.data.transaction
+                                picture.payment_evidence ||
+                                !orders.data.transaction
                                   ? URL.createObjectURL(
                                       picture.payment_evidence,
                                     )
                                   : getPicture(
-                                      hampersData.hampers_picture,
-                                      "hampers",
+                                      orders.data.transaction.payment_evidence,
+                                      "payment_evidence",
                                     )
                               }
                               alt="hampers picture"
@@ -619,7 +683,30 @@ export default function CheckoutPage() {
                       >
                         Send
                       </Button>
-                      <Button className=" mt-2 w-full border-blue-500 text-blue-500 hover:text-white">
+                      <Button
+                        className=" mt-2 w-full border-blue-500 text-blue-500 hover:text-white"
+                        onClick={() => setOpenModalNota(true)}
+                      >
+                        Show Nota
+                      </Button>
+                    </div>
+                  ) : undefined}
+
+                  {orders.data.transaction.payment_method === '"Cash"' && (
+                    <div>
+                      <p
+                        className={`${orders.data.transaction.status !== "notPaid" && "hidden"}`}
+                      >
+                        Waiting For Admin Confirmation
+                      </p>
+                      <Button
+                        className={` mt-2 w-full border-blue-500 text-blue-500  ${orders.data.transaction.status === "notPaid" ? "opacity-20" : "hover:text-white"}`}
+                        onClick={() => setOpenModalNota(true)}
+                        disabled={orders.data.transaction.status === "notPaid"}
+                        withoutAnimate={
+                          orders.data.transaction.status === "notPaid"
+                        }
+                      >
                         Show Nota
                       </Button>
                     </div>
@@ -643,11 +730,17 @@ export default function CheckoutPage() {
             transaction={orders.data}
             id={orders.data.transaction.delivery_id}
           />
-          <ModalPayment
-            open={openModalPayment}
-            setOpen={setOpenModalPayment}
+          <ModalNota
+            open={openModalNota}
+            setOpen={setOpenModalNota}
             transaction={orders.data}
             id={orders.data.transaction.delivery_id}
+          />
+
+          <ModalOrderExpired
+            open={openModalOrderExpired}
+            setOpen={setOpenModalOrderExpired}
+            transaction={orders.data}
           />
         </>
       )}

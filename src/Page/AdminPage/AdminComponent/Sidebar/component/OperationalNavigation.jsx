@@ -14,6 +14,8 @@ import {
   faTruck,
   faUserTie,
   faLock,
+  faMoneyBill,
+  
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -25,6 +27,8 @@ export default function OperationalNavigation({
   setExpandedMaster,
   expandedOperational,
   setExpandedOperational,
+  expandedOrder,
+  setExpandedOrder,
 }) {
   const navigate = useNavigate();
   const forgotPassword = () => {
@@ -110,11 +114,49 @@ export default function OperationalNavigation({
           />
         </div>
       ) : undefined}
+      <motion.button
+        whileHover={{
+          scale: 1.05,
+        }}
+        transition={{ type: "just" }}
+        className={`${
+          expandedOrder
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
+            : " text-start text-gray-400 hover:text-orange-400"
+        }py-2 mt-2 grid w-full grid-cols-4`}
+        onClick={() => setExpandedOrder(!expandedOrder)}
+      >
+        <div className="col-span-1  ms-3 text-start">
+          <FontAwesomeIcon icon={faMoneyBill} />
+        </div>
+        <p className="col-span-2 text-start font-normal ">Confirm Order</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
+          <FontAwesomeIcon
+            icon={expandedOrder ? faChevronDown : faChevronRight}
+          />
+        </div>
+      </motion.button>
+      {expandedOrder ? (
+        <div className="ms-8">
+          <Navigation
+            label="Transaction"
+            icon={faMoneyBill}
+            url={"/MoDashboard/transactionManagement"}
+          />
+          <Navigation
+            label="Show Ingredient"
+            icon={faEgg}
+            url={"/MoDashboard/showIngredient"}
+          />
+        </div>
+      ) : undefined}
+
       <Navigation
         label="Forgot password?"
         icon={faLock}
         url={"/ForgotPasswordEmployee/3"}
       />
+     
     </>
   );
 }

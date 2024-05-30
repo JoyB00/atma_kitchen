@@ -18,12 +18,14 @@ import { AddCartItem } from "../../../api/CartApi";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatCurrency } from "../../../lib/FormatCurrency";
+import { useNavigate } from "react-router-dom";
 import {
   faBox,
   faCalendar,
   faCookie,
   faEgg,
 } from "@fortawesome/free-solid-svg-icons";
+import { StoreBuyNow } from "../../../api/TransactionApi";
 
 export function DetailHampersMenu() {
   const hampers = useRouteLoaderData("detail-menu-hampers");
@@ -41,11 +43,16 @@ export function DetailHampersMenu() {
     order_date: "",
     total_price: hampers.hampers.hampers_price,
   });
+  const [buyNowData, setBuyNowData] = useState({
+    order_date: null,
+    total: hampers.hampers.hampers_price,
+    data: [],
+  });
   const [limit, setLimit] = useState(0);
   const handleChangeDate = (event) => {
     const selectedDate = event.target.value.slice(0, 10);
     let newLimit = hampers.details[0].product.daily_stock;
-    // console.log("tanggal", selectedDate);
+    console.log("but now", buyNowData);
 
     hampers.details.forEach((item, index) => {
       if (item.product) {
@@ -72,6 +79,16 @@ export function DetailHampersMenu() {
       order_date: event.target.value,
       quantity: 1,
     });
+    setBuyNowData({
+      ...buyNowData,
+      order_date: event.target.value,
+      data: {
+        ...data,
+        limit_item: newLimit,
+        order_date: event.target.value,
+        quantity: 1,
+      },
+    });
   };
   useEffect(() => {
     if (value === "Ready") {
@@ -81,8 +98,25 @@ export function DetailHampersMenu() {
         status_item: value,
         quantity: 1,
       });
+      setBuyNowData({
+        ...buyNowData,
+        data: {
+          ...data,
+          limit_item: hampers.ready_stock[0].ready_stock,
+          status_item: value,
+          quantity: 1,
+        },
+      });
     } else {
       setData({ ...data, status_item: value, quantity: 1 });
+      setBuyNowData({
+        ...buyNowData,
+        data: {
+          ...data,
+          status_item: value,
+          quantity: 1,
+        },
+      });
     }
   }, [value]);
   return (
@@ -196,6 +230,8 @@ export function DetailHampersMenu() {
               hampers={hampers}
               data={data}
               setData={setData}
+              buyNowData={buyNowData}
+              setBuyNowData={setBuyNowData}
               currentStock={limit}
             />
             <ReadyStock
@@ -203,6 +239,8 @@ export function DetailHampersMenu() {
               hampers={hampers}
               data={data}
               setData={setData}
+              buyNowData={buyNowData}
+              setBuyNowData={setBuyNowData}
               currentStock={hampers.ready_stock[0].ready_stock}
             />
           </div>
@@ -215,8 +253,17 @@ export function DetailHampersMenu() {
   );
 }
 
-export function PreOrder({ value, hampers, data, setData, currentStock }) {
+export function PreOrder({
+  value,
+  hampers,
+  data,
+  setData,
+  buyNowData,
+  setBuyNowData,
+  currentStock,
+}) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const addToCart = useMutation({
     mutationFn: (data) => {
       return AddCartItem(data);
@@ -250,16 +297,59 @@ export function PreOrder({ value, hampers, data, setData, currentStock }) {
 
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
-      setData({ ...data, quantity: data.quantity + 1 });
+      const updateQuantity = data.quantity + 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     } else if (type === "decrement" && data.quantity - 1 > 0) {
-      setData({ ...data, quantity: data.quantity - 1 });
+      const updateQuantity = data.quantity - 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     }
   };
 
+  const handleBuyNow = (data) => {
+    toast.promise(
+      StoreBuyNow(data)
+        .then((res) => {
+          queryClient.invalidateQueries(["carts"]);
+          navigate(`/checkout/${res.transaction.id}`);
+        })
+        .catch((err) => {
+          throw err.message;
+        }),
+      {
+        loading: "Loading",
+        success: "Your file has successful Added",
+        error: (err) => err,
+      },
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      },
+    );
+  };
+
   useEffect(() => {
+    const newTotalPrice = parseInt(
+      hampers.hampers.hampers_price * data.quantity,
+    );
     setData({
       ...data,
-      total_price: parseInt(hampers.hampers.hampers_price * data.quantity),
+      total_price: newTotalPrice,
+    });
+    setBuyNowData({
+      ...buyNowData,
+      data: { ...data, total_price: newTotalPrice },
+      total: newTotalPrice,
     });
   }, [data.quantity]);
   return (
@@ -305,13 +395,26 @@ export function PreOrder({ value, hampers, data, setData, currentStock }) {
           >
             Add To Cart
           </Button>
-          <Button className="bg-orange-500 text-white">Buy Now</Button>
+          <Button
+            className="bg-orange-500 text-white"
+            onClick={() => handleBuyNow(buyNowData)}
+          >
+            Buy Now
+          </Button>
         </div>
       </div>
     </div>
   );
 }
-export function ReadyStock({ value, hampers, data, setData, currentStock }) {
+export function ReadyStock({
+  value,
+  hampers,
+  data,
+  setData,
+  buyNowData,
+  setBuyNowData,
+  currentStock,
+}) {
   function formatCurrency(amount) {
     const formatter = new Intl.NumberFormat("ID", {
       style: "currency",
@@ -323,12 +426,22 @@ export function ReadyStock({ value, hampers, data, setData, currentStock }) {
 
   const handleChangeAmount = (type) => {
     if (type === "increment" && data.quantity + 1 <= currentStock) {
-      setData({ ...data, quantity: data.quantity + 1 });
+      const updateQuantity = data.quantity + 1;
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     } else if (type === "decrement" && data.quantity - 1 > 0) {
-      setData({ ...data, quantity: data.quantity - 1 });
+      setData({ ...data, quantity: updateQuantity });
+      setBuyNowData({
+        ...buyNowData,
+        data: { ...data, quantity: updateQuantity },
+      });
     }
   };
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const addToCart = useMutation({
     mutationFn: (data) => {
@@ -361,10 +474,43 @@ export function ReadyStock({ value, hampers, data, setData, currentStock }) {
     );
   };
 
+  const handleBuyNow = (data) => {
+    toast.promise(
+      StoreBuyNow(data)
+        .then((res) => {
+          queryClient.invalidateQueries(["carts"]);
+          navigate(`/checkout/${res.transaction.id}`);
+        })
+        .catch((err) => {
+          throw err.message;
+        }),
+      {
+        loading: "Loading",
+        success: "Your file has successful Added",
+        error: (err) => err,
+      },
+      {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      },
+    );
+  };
+
   useEffect(() => {
+    const newTotalPrice = parseInt(
+      hampers.hampers.hampers_price * data.quantity,
+    );
     setData({
       ...data,
-      total_price: parseInt(hampers.hampers.hampers_price * data.quantity),
+      total_price: newTotalPrice,
+    });
+    setBuyNowData({
+      ...buyNowData,
+      data: { ...data, total_price: newTotalPrice },
+      total: newTotalPrice,
     });
   }, [data.quantity]);
   return (
@@ -402,7 +548,12 @@ export function ReadyStock({ value, hampers, data, setData, currentStock }) {
           >
             Add To Cart
           </Button>
-          <Button className="bg-orange-500 text-white">Buy Now</Button>
+          <Button
+            className="bg-orange-500 text-white"
+            onClick={() => handleBuyNow(buyNowData)}
+          >
+            Buy Now
+          </Button>
         </div>
       </div>
     </div>

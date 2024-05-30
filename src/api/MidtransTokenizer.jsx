@@ -11,7 +11,7 @@ const GetTokenMidtrans = async (data) => {
     });
     return response.data;
   } catch (error) {
-    return error.response;
+    throw error.response.data;
   }
 };
 

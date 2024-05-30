@@ -1,5 +1,21 @@
 import { useAxios } from "./index";
 
+const GetOrderConfirmation = async () => {
+  try {
+    const response = await useAxios.get("/orderConfirmation", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    console.log(response.data.search);
+    return response.data.data;
+  } catch (err) {
+    console.log(err.response.data);
+    return err.response.data;
+  }
+};
+
 const GetCustomerTransactions = async (customerId) => {
   // Transactions is order history
   try {
@@ -44,6 +60,20 @@ const GetDetailTransaction = async (transactionId) => {
   }
 };
 
+const StoreBuyNow = async (data) => {
+  try {
+    const response = await useAxios.post("/orderBuyNow", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 const StoreTransaction = async (data) => {
   try {
     const response = await useAxios.post("/order", data, {
@@ -54,7 +84,7 @@ const StoreTransaction = async (data) => {
     });
     return response.data.data;
   } catch (error) {
-    return error.response.data;
+    throw error.response.data;
   }
 };
 
@@ -76,6 +106,32 @@ const StorePaymentEvidence = async (data) => {
     const response = await useAxios.post(`/payment/evidence/${data.id}`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+const UpdateDateTransaction = async (data) => {
+  try {
+    const response = await useAxios.put(`/order/${data.id}`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+const DeleteTransaction = async (data) => {
+  try {
+    const response = await useAxios.delete(`/order/${data.id}`, {
+      headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
@@ -138,13 +194,17 @@ const ChangeTransactionStatus = async ({ id, status }) => {
 };
 
 export {
+  GetOrderConfirmation,
   GetCustomerTransactions,
   GetAuthCustomerTransactions,
   GetDetailTransaction,
+  StoreBuyNow,
   StoreTransaction,
   PaymentCustomer,
   StorePaymentEvidence,
   ChangeTransactionStatus,
   GetTransactionWhereStatusOnProcess,
   GetTransactionWhereStatusReadyForPickup,
+  UpdateDateTransaction,
+  DeleteTransaction,
 };

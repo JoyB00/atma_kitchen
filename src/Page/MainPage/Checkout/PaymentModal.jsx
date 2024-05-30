@@ -1,14 +1,12 @@
 import Modal from "@mui/material/Modal";
-import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import Button from "../../../Component/Button";
 import pickupIcon from "../../../assets/food-delivery.png";
 import deliveryIcon from "../../../assets/fast-delivery.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AddDelivery, UpdateDelivery } from "../../../api/DeliveryApi";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { formatCurrency } from "../../../lib/FormatCurrency";
+import ShoppingBill from "./ShoppingBillPDF";
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
 
 const DELIVERY_METHOD = [
   {
@@ -22,6 +20,7 @@ const DELIVERY_METHOD = [
     icon: deliveryIcon,
   },
 ];
+
 export default function ModalPayment({ open, setOpen, id, transaction }) {
   const initialState = id
     ? {
@@ -36,6 +35,7 @@ export default function ModalPayment({ open, setOpen, id, transaction }) {
         recipient_address: "",
       };
   const [data, setData] = useState(initialState);
+  const [total, setTotal] = useState(0);
   const [load, setLoad] = useState(false);
   const queryClient = useQueryClient();
 
@@ -45,116 +45,21 @@ export default function ModalPayment({ open, setOpen, id, transaction }) {
     exit: { opacity: 0, y: -20 },
   };
 
-  const handleDeliveryMethod = (event) => {
-    if (event.target.value === "Pick-Up") {
-      setData({
-        ...data,
-        delivery_method: event.target.value,
-        recipient_address: null,
-      });
-    } else {
-      setData({
-        ...data,
-        delivery_method: event.target.value,
-      });
-    }
-  };
-
-  const handleAddress = (event) => {
-    setData({ ...data, recipient_address: event.target.value });
-  };
-
-  const addDelivery = (data) => {
-    setLoad(true);
-    if (
-      data.delivery_method === "Delivery Courier" &&
-      !data.recipient_address
-    ) {
-      toast.error("Address is required", {
-        style: {
-          backgroundColor: "#000000",
-          color: "#ffffff",
-        },
-        position: "bottom-right",
-      });
-      setLoad(false);
-    } else {
-      toast.promise(
-        AddDelivery(data)
-          .then((res) => {
-            console.log(res);
-            setLoad(false);
-            setOpen(false);
-            queryClient.invalidateQueries(["orders"]);
-          })
-          .catch((err) => {
-            console.error(err);
-          }),
-        {
-          loading: "Loading",
-          success: "Your Delivery method successful Added",
-          error: (err) => err,
-        },
-        {
-          style: {
-            backgroundColor: "#000000",
-            color: "#ffffff",
-          },
-          position: "bottom-right",
-        },
-      );
-    }
-  };
-  const updateDelivery = (data) => {
-    setLoad(true);
-    if (
-      data.delivery_method === "Delivery Courier" &&
-      !data.recipient_address
-    ) {
-      toast.error("Address is required", {
-        style: {
-          backgroundColor: "#000000",
-          color: "#ffffff",
-        },
-        position: "bottom-right",
-      });
-      setLoad(false);
-    } else {
-      toast.promise(
-        UpdateDelivery(data)
-          .then((res) => {
-            console.log(res);
-            setLoad(false);
-            setOpen(false);
-            queryClient.invalidateQueries(["orders"]);
-          })
-          .catch((err) => {
-            console.error(err);
-          }),
-        {
-          loading: "Loading",
-          success: "Your Delivery method successful updated",
-          error: (err) => err,
-        },
-        {
-          style: {
-            backgroundColor: "#000000",
-            color: "#ffffff",
-          },
-          position: "bottom-right",
-        },
-      );
-    }
-  };
   useEffect(() => {
-    if (open && id) {
-      setData({
-        ...data,
-        delivery_method: transaction.transaction.delivery.delivery_method,
-        recipient_address: transaction.transaction.delivery.recipient_address,
-      });
-    }
-  }, [open]);
+    let tempTotal = 0;
+    transaction.details.forEach((item) => {
+      tempTotal += item.price * item.quantity;
+    });
+    setTotal(tempTotal);
+  }, [transaction.details]);
+
+  const handlePrint = (url) => {
+    const printWindow = window.open(url, "_blank");
+    printWindow.addEventListener("load", () => {
+      printWindow.print();
+    });
+  };
+
   return (
     <>
       <Modal
@@ -170,53 +75,154 @@ export default function ModalPayment({ open, setOpen, id, transaction }) {
                 htmlFor="delivery_method"
                 className="ps-2 text-xl font-semibold text-white"
               >
-                Payment
+                Shopping Bill
               </label>
             </div>
             <div className="p-5 text-black">
-              <p className="font-semibold">Payment Methods</p>
-              <div className="item-center flex justify-between py-2">
-                <label htmlFor="COD">COD (Cash On Delivery)</label>
-                <input
-                  name="paymentMethod"
-                  id="COD"
-                  type="radio"
-                  className=" h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                />
+              <div>
+                <p className="font-semibold">Atma Kitchen </p>
+                <p className="font-semibold">
+                  Jl. Centralpark No. 10 Yogyakarta{" "}
+                </p>
               </div>
-              <div className="item-center flex justify-between py-2">
-                <div className="">
-                  <label htmlFor="E-Money">
-                    <p>E-Money </p>
-                    <p className="text-sm text-gray-500">BCA : 501230313402</p>
-                    <p className="text-sm text-gray-500">Dana : 08912342123</p>
-                  </label>
+              <div className=" pt-6">
+                <div className=" grid grid-cols-2 text-start">
+                  <p className="col-span-1">No Nota</p>
+                  <p className="col-span-1">
+                    : {transaction.transaction.transaction_number}{" "}
+                  </p>
                 </div>
-                <input
-                  name="paymentMethod"
-                  id="E-Money"
-                  type="radio"
-                  className=" h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                />
+                <div className="grid grid-cols-2 text-start">
+                  <p className="col-span-1">Order Date</p>
+                  <p className="col-span-1 ">
+                    : {transaction.transaction.order_date?.slice(0, 16)}{" "}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 text-start">
+                  <p className="col-span-1">Paid Off</p>
+                  <p className="col-span-1 ">
+                    : {transaction.transaction.paidoff_date?.slice(0, 16)}{" "}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 text-start">
+                  <p className="col-span-1">Pick Up Date</p>
+                  <p className="col-span-1 ">
+                    : {transaction.transaction.pickup_date?.slice(0, 16)}{" "}
+                  </p>
+                </div>
+              </div>
+              <div className=" pt-6">
+                <p>
+                  <span className="font-semibold">Customer </span> :{" "}
+                  {transaction.transaction.customer.users.email} /{" "}
+                  {transaction.transaction.customer.users.fullName}
+                </p>
+                <p className="pb-4 text-sm text-gray-500">
+                  {transaction.transaction.delivery?.recipient_address}
+                </p>
+                <p>
+                  <span className="font-semibold">Delivery Method </span> :{" "}
+                  {transaction.transaction.delivery?.delivery_method}
+                </p>
+              </div>
+              <div className=" pe-8 pt-6">
+                {transaction.details.map((item) => {
+                  return (
+                    <div className="grid grid-cols-2" key={item.id}>
+                      <p className="col-span-1">
+                        {item.quantity}{" "}
+                        {item.hampers_id
+                          ? item.hampers.hampers_name
+                          : item.product.product_name}
+                      </p>
+                      <p className="col-span-1 text-end">
+                        {formatCurrency(item.price)}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className=" pe-8 pt-6">
+                <div className="grid grid-cols-2 ">
+                  <p className="col-span-1">Total</p>
+                  <p className="col-span-1 text-end">{formatCurrency(total)}</p>
+                </div>
+                {transaction.transaction.delivery?.delivery_method ===
+                  "Delivery Courier" && (
+                  <>
+                    <div className="grid grid-cols-2 text-red-500">
+                      <p className="col-span-1">
+                        Shipping Cost (rad.{" "}
+                        {transaction.transaction.delivery.distance} km){" "}
+                      </p>
+                      <p className="col-span-1 text-end">
+                        {formatCurrency(
+                          transaction.transaction.delivery.shipping_cost,
+                        )}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 ">
+                      <p className="col-span-1">Total</p>
+                      <p className="col-span-1 text-end">
+                        {formatCurrency(
+                          total +
+                            transaction.transaction.delivery.shipping_cost,
+                        )}
+                      </p>
+                    </div>
+                  </>
+                )}
+                {transaction.transaction.used_point !== 0 && (
+                  <>
+                    <div className="grid grid-cols-2 text-green-500">
+                      <p className="col-span-1">
+                        Discount {transaction.transaction.used_point} points
+                      </p>
+                      <p className="col-span-1 text-end ">
+                        -
+                        {formatCurrency(
+                          transaction.transaction.used_point * 100,
+                        )}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 font-semibold">
+                      <p className="col-span-1">Total</p>
+                      <p className="col-span-1 text-end">
+                        {formatCurrency(transaction.transaction.total_price)}
+                      </p>
+                    </div>
+                  </>
+                )}
+                <div className=" pe-8 pt-6">
+                  <p className="col-span-1">
+                    Point from this transaction :{" "}
+                    {transaction.transaction.earned_point}
+                  </p>
+                  <p className="col-span-1">
+                    Customer Current Point :{" "}
+                    {transaction.transaction.current_point}
+                  </p>
+                </div>
               </div>
             </div>
-
-            <div className="flex w-full justify-end gap-x-2 rounded-b-xl bg-gray-100 p-4">
-              <Button
-                className="bg-orange-500 text-white"
-                onClick={
-                  id ? () => updateDelivery(data) : () => addDelivery(data)
-                }
-              >
-                {load ? "loading" : "Save"}
-              </Button>
-              <Button
-                className="border-orange-500 bg-transparent text-orange-500 hover:text-white"
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
-            </div>
+            <BlobProvider document={<ShoppingBill transaction={transaction} />}>
+              {({ url }) => (
+                <div className="flex w-full justify-end gap-x-2 rounded-b-xl bg-gray-100 p-4">
+                  <Button
+                    className="bg-orange-500 text-white"
+                    onClick={() => handlePrint(url)}
+                  >
+                    {load ? "loading" : "Print"}
+                  </Button>
+                  <Button
+                    className="border-orange-500 bg-transparent text-orange-500 hover:text-white"
+                    onClick={() => setOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
+            </BlobProvider>
           </div>
         </div>
       </Modal>

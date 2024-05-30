@@ -106,6 +106,7 @@ import EditCustomerProfile from "./Page/CustomerPage/DashboardPages/EditCustomer
 import ChangePasswordLoggedIn from "./Page/CustomerPage/DashboardPages/ChangePasswordLoggedIn";
 import OrderHistory from "./Page/CustomerPage/DashboardPages/OrderHistory";
 import ModifyAddressPage from "./Page/CustomerPage/DashboardPages/ModifyAddress";
+import { loader as loaderCustomer } from "./Page/CustomerPage/DashboardPages/OrderHistory";
 
 // Root Consignor
 import RootConsignor from "./Root/MoDashboard/Consignor/RootConsignor";
@@ -120,6 +121,12 @@ import OtherProcurementPage from "./Page/MOPage/OtherProcurement/OtherProcuremen
 import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurement/AddOtherProcurement";
 import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
+
+//Root Transaction
+import RootTransactionMO from "./Root/AdminDashboard/Transaction/RootTransaction";
+import TransactionMO from "./Page/MOPage/Transaction/TransactionPage";
+import RootShowIngredient from "./Root/MoDashboard/ShowIngredient/RootShowIngredient";
+import ShowIngredientMO from "./Page/MOPage/Transaction/ShowIngredientPage";
 
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
@@ -187,11 +194,7 @@ const router = createBrowserRouter([
       },
       {
         path: "menu",
-        element: (
-          <ProtectedRoot role_id={4}>
-            <RootMenuPage />
-          </ProtectedRoot>
-        ),
+        element: <RootMenuPage />,
         children: [
           {
             index: true,
@@ -212,11 +215,7 @@ const router = createBrowserRouter([
       },
       {
         path: "hampers",
-        element: (
-          <ProtectedRoot role_id={4}>
-            <RootMenuHampersPage />
-          </ProtectedRoot>
-        ),
+        element: <RootMenuHampersPage />,
         children: [
           {
             index: true,
@@ -497,6 +496,28 @@ const router = createBrowserRouter([
               },
             ],
           },
+
+          {
+            path: "transactionManagement",
+            element: <RootTransactionMO />,
+            children: [
+              {
+                index: true,
+                element: <TransactionMO />,
+              },
+            ],
+          },
+
+          {
+            path: "showIngredient",
+            element: <RootShowIngredient />,
+            children: [
+              {
+                index: true,
+                element: <ShowIngredientMO />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -588,7 +609,9 @@ const router = createBrowserRouter([
           },
           {
             path: "OrderHistory",
+            id: "customer",
             element: <OrderHistory />,
+            loader: loaderCustomer,
           },
           {
             path: "Addresses",

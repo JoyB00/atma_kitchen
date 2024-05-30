@@ -10,6 +10,7 @@ import { RotateLoader } from "react-spinners";
 import { getPicture } from "../../../api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCalendar,
   faCartShopping,
   faChevronDown,
   faTrash,
@@ -20,6 +21,7 @@ import {
   UpdateCartItem,
   DeleteCartItem,
   DeleteListItem,
+  UpdateListCartItem,
 } from "../../../api/CartApi";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Accordion from "@mui/material/Accordion";
@@ -27,10 +29,12 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { StoreTransaction } from "../../../api/TransactionApi";
 import { useNavigate } from "react-router-dom";
 import { formatCurrency } from "../../../lib/FormatCurrency";
+import InputDateTime from "../../../Component/InputDateTime";
+import Modal from "@mui/material/Modal";
 
 export default function CartPage() {
   const queryClient = useQueryClient();
@@ -41,6 +45,8 @@ export default function CartPage() {
   const [dataSelected, setDataSelected] = useState();
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [updateDate, setUpdateDate] = useState({ order_date: null });
   const navigate = useNavigate();
 
   const handleSearch = (event) => {
@@ -61,6 +67,7 @@ export default function CartPage() {
     });
     orderDataSelected[0].total = total;
     setDataSelected(orderDataSelected);
+    setUpdateDate({ ...updateDate, late_order_date: event.target.value });
     setTotal(total);
   };
   const handleChangeAmount = (type, index, item) => {
@@ -127,6 +134,7 @@ export default function CartPage() {
           total += element.total_price;
         });
         setTotal(total);
+        updatedCart.total = total;
 
         setCarts((prevCarts) =>
           prevCarts.map((cart) =>
@@ -173,17 +181,32 @@ export default function CartPage() {
       });
     } else {
       setLoading(true);
-      StoreTransaction(data[0])
-        .then((res) => {
-          console.log(res);
-          queryClient.invalidateQueries(["carts"]);
-          navigate(`/checkout/${res.transaction.id}`);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+
+      toast.promise(
+        StoreTransaction(data[0])
+          .then((res) => {
+            console.log(res);
+            queryClient.invalidateQueries(["carts"]);
+            navigate(`/checkout/${res.transaction.id}`);
+            setLoading(false);
+          })
+          .catch((err) => {
+            setLoading(false);
+            throw err.message;
+          }),
+        {
+          loading: "Loading",
+          success: "Let's complete your transaction ",
+          error: (err) => err,
+        },
+        {
+          style: {
+            backgroundColor: "#000000",
+            color: "#ffffff",
+          },
+          position: "bottom-right",
+        },
+      );
     }
   };
 
@@ -286,6 +309,20 @@ export default function CartPage() {
       });
   };
 
+  const handleOpenModalChangeDate = () => {
+    if (!dataSelected) {
+      toast.error("Please Check The Order Before", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
+      });
+    } else {
+      setOpenModal(true);
+    }
+  };
+
   const handleDeleteListCart = (event, data) => {
     event.preventDefault();
     if (!dataSelected) {
@@ -299,6 +336,62 @@ export default function CartPage() {
     } else {
       swallDeleteList(data);
     }
+  };
+
+  const swallUpdateDate = (data) => {
+    console.log(updateDate);
+    setOpenModal(false);
+    withReactContent(Swal)
+      .fire({
+        title: `Are you sure to Update Order Date ?  `,
+        text: `You won't be able to revert this!`,
+        icon: `warning`,
+        showCancelButton: true,
+        confirmButtonColor: `#3085d6`,
+        cancelButtonColor: `#d33`,
+        confirmButtonText: `Yes, update it!`,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          toast.promise(
+            UpdateListCartItem(data)
+              .then(() => {
+                setIsFetching(true);
+                setDataSelected(null);
+                FetchCartsPerDate()
+                  .then((res) => {
+                    queryClient.invalidateQueries(["carts"]);
+                    setCarts(res);
+                    setFilteredCarts(res);
+                    setTotal(0);
+                    setIsFetching(false);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              })
+              .catch((err) => {
+                throw err.message;
+              }),
+            {
+              loading: "Loading",
+              success: "Your file has been Updated",
+              error: (err) => err,
+            },
+            {
+              style: {
+                backgroundColor: "#000000",
+                color: "#ffffff",
+              },
+              position: "bottom-right",
+            },
+          );
+        }
+      });
+  };
+
+  const handleChangeDate = (event) => {
+    setUpdateDate({ ...updateDate, order_date: event.target.value });
   };
 
   useEffect(() => {
@@ -315,7 +408,7 @@ export default function CartPage() {
   }, []);
 
   return (
-    <AnimatePresence>
+    <>
       <div className="flex h-screen w-full flex-col bg-transparent">
         {console.log(dataSelected)}
         <Navbar />
@@ -329,7 +422,14 @@ export default function CartPage() {
           <div className="flex items-center justify-between gap-x-2 pt-2">
             <div>
               <Button
-                className="border-orange-500 text-orange-500 hover:text-white"
+                className="bg-orange-500 text-white hover:text-white"
+                onClick={handleOpenModalChangeDate}
+              >
+                <FontAwesomeIcon icon={faCalendar} className="pe-2" />
+                Change Date
+              </Button>
+              <Button
+                className="me-2 ms-2 border-orange-500 text-orange-500 hover:text-white"
                 onClick={(event) => handleDeleteListCart(event, dataSelected)}
               >
                 <FontAwesomeIcon icon={faTrash} className="pe-2" />
@@ -547,7 +647,8 @@ export default function CartPage() {
                   className="my-6 w-full bg-orange-500 text-white"
                   onClick={() => handleStoreOrder(dataSelected)}
                 >
-                  <FontAwesomeIcon icon={faCartShopping} /> Order Now
+                  <FontAwesomeIcon icon={faCartShopping} />{" "}
+                  {loading ? "Loading..." : "Order Now"}
                 </Button>
               </div>
             </div>
@@ -557,6 +658,48 @@ export default function CartPage() {
           <Footer />
         </div>
       </div>
-    </AnimatePresence>
+      <Modal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div className="flex size-full items-center justify-center">
+          <div className="flex w-1/3 flex-col rounded-xl bg-white">
+            <div className="w-full rounded-t-xl bg-orange-500 p-5">
+              <label
+                htmlFor="delivery_method"
+                className="ps-2 text-xl font-semibold text-white"
+              >
+                Change Order Date
+              </label>
+            </div>
+            <div className="p-5 text-black">
+              <label htmlFor="order_date">Change Order Date</label>
+              <InputDateTime
+                id="date"
+                name="date"
+                placeholder="Select Date"
+                onChange={handleChangeDate}
+              />
+            </div>
+            <div className="flex w-full justify-end gap-x-2 rounded-b-xl bg-gray-100 p-4">
+              <Button
+                className="bg-orange-500 text-white"
+                onClick={() => swallUpdateDate(updateDate)}
+              >
+                Save
+              </Button>
+              <Button
+                className="border-orange-500 bg-transparent text-orange-500 hover:text-white"
+                onClick={() => setOpenModal(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }
