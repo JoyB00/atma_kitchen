@@ -8,6 +8,7 @@ import {
   expandMaster,
   expandTransaction,
   expandOrder,
+  expandReport,
 } from "../../../../lib/AtomVar";
 import AdminNavigation from "./component/AdminNavigation";
 import OperationalNavigation from "./component/OperationalNavigation";
@@ -16,15 +17,19 @@ import { NavLink } from "react-router-dom";
 
 export default function Sidebar({ role }) {
   const [expandedMaster, setExpandedMaster] = useAtom(expandMaster);
-  const [expandedOperational, setExpandedOperational] = useAtom(expandOperational);
-  const [expandedTransaction, setExpandedTransaction] = useAtom(expandTransaction);
+  const [expandedOperational, setExpandedOperational] =
+    useAtom(expandOperational);
+  const [expandedTransaction, setExpandedTransaction] =
+    useAtom(expandTransaction);
   const [expandedOrder, setExpandedOrder] = useAtom(expandOrder);
+  const [expandedReport, setExpandedReport] = useAtom(expandReport);
 
   const collapseMenu = () => {
     setExpandedMaster(false);
     setExpandedOperational(false);
     setExpandedTransaction(false);
     setExpandedOrder(false);
+    setExpandedReport(false);
   };
 
   return (
@@ -80,9 +85,11 @@ export default function Sidebar({ role }) {
             expandedMaster={expandedMaster}
             setExpandedMaster={setExpandedMaster}
             expandedOperational={expandedOperational}
-              setExpandedOperational={setExpandedOperational}
-              expandedOrder={expandedOrder}
-              setExpandedOrder={setExpandedOrder}
+            setExpandedOperational={setExpandedOperational}
+            expandedOrder={expandedOrder}
+            setExpandedOrder={setExpandedOrder}
+            expandedReport={expandedReport}
+            setExpandedReport={setExpandedReport}
           />
         ) : role == 1 ? (
           <OwnerNavigation
@@ -90,6 +97,8 @@ export default function Sidebar({ role }) {
             setExpandedMaster={setExpandedMaster}
             expandedOperational={expandedOperational}
             setExpandedOperational={setExpandedOperational}
+            expandedReport={expandedReport}
+            setExpandedReport={setExpandedReport}
           />
         ) : undefined}
       </ul>

@@ -1,4 +1,6 @@
-import useAxios from ".";
+import { useAxios } from "./index";
+import axios from "axios";
+import { BASE_URL } from ".";
 
 const TransactionConfirmation = async (data) => {
   try {
@@ -17,19 +19,19 @@ const TransactionConfirmation = async (data) => {
 
 const ConfirmationToProcess = async () => {
   try {
-    const response = await useAxios.get("/transactionConfirmation/proccess", {
+    const response = await useAxios.get(`/transactionConfirmation/proccess`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
     });
-    console.log(response);
     return response.data.data;
   } catch (error) {
     console.log(error);
     return error.response.data;
   }
 };
+
 const RecapTransactionToProcess = async (data) => {
   try {
     const response = await useAxios.post(

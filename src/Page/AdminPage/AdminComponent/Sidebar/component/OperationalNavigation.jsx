@@ -16,6 +16,10 @@ import {
   faLock,
   faMoneyBill,
   faKitchenSet,
+  faBook,
+  faReceipt,
+  faChartLine,
+  faChartPie,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -29,6 +33,8 @@ export default function OperationalNavigation({
   setExpandedOperational,
   expandedOrder,
   setExpandedOrder,
+  expandedReport,
+  setExpandedReport,
 }) {
   const navigate = useNavigate();
   const forgotPassword = () => {
@@ -53,7 +59,7 @@ export default function OperationalNavigation({
           <FontAwesomeIcon icon={faFilePen} />
         </div>
         <p className="col-span-2 text-start font-normal ">Master Data</p>
-        <div className="col-span-1 my-auto flex justify-end text-start">
+        <div className="col-span-1 my-auto flex  justify-end text-start">
           <FontAwesomeIcon
             icon={expandedMaster ? faChevronDown : faChevronRight}
           />
@@ -152,6 +158,48 @@ export default function OperationalNavigation({
             label="Confirmation To Process"
             icon={faKitchenSet}
             url={"/MoDashboard/confirmationToProcess"}
+          />
+        </div>
+      ) : undefined}
+
+      <motion.button
+        whileHover={{
+          scale: 1.05,
+        }}
+        transition={{ type: "just" }}
+        className={`${
+          expandedReport
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white "
+            : " text-start text-gray-400 hover:text-orange-400"
+        } mt-2 grid w-full grid-cols-4 py-5`}
+        onClick={() => setExpandedReport(!expandedReport)}
+      >
+        <div className="col-span-1  ms-3 text-start">
+          <FontAwesomeIcon icon={faBook} />
+        </div>
+        <p className="col-span-2 text-start font-normal ">Reports</p>
+        <div className="col-span-1 my-auto flex justify-end text-start">
+          <FontAwesomeIcon
+            icon={expandedReport ? faChevronDown : faChevronRight}
+          />
+        </div>
+      </motion.button>
+      {expandedReport ? (
+        <div className="ms-8">
+          <Navigation
+            label="Sales Report"
+            icon={faChartLine}
+            url={"/MoDashboard/transactionManagement"}
+          />
+          <Navigation
+            label="Product Sales Report"
+            icon={faReceipt}
+            url={"/MoDashboard/productSalesReport"}
+          />
+          <Navigation
+            label="Ingredient Stock Report"
+            icon={faChartPie}
+            url={"/MoDashboard/ingredientStockReport"}
           />
         </div>
       ) : undefined}

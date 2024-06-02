@@ -131,6 +131,15 @@ import RootConfirmationToProccess from "./Root/MoDashboard/ConfirmationToProcces
 import ConfirmationToProccessPage from "./Page/MOPage/ConfirmationToProccess/ConfirmationToProccessPage";
 import RecapOrderPage from "./Page/MOPage/ConfirmationToProccess/component/RecapOrderPage";
 
+// Sales
+// Root Product Sales Report
+import RootProductSalesReport from "./Root/MoDashboard/Report/RootProductSalesReport";
+import ProductSalesReportPage from "./Page/MOPage/ProductSalesReport/ProductSalesReportPage";
+
+// Root Ingredient Stock Report
+import RootIngredientStockReport from "./Root/MoDashboard/Report/RootIngredientStockReport";
+import IngredientStockReportPage from "./Page/MOPage/IngredientStockReport/IngredientStockReportPage";
+
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
 
@@ -535,6 +544,27 @@ const router = createBrowserRouter([
               },
             ],
           },
+          // report
+          {
+            path: "productSalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <ProductSalesReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientStockReport",
+            element: <RootIngredientStockReport />,
+            children: [
+              {
+                index: true,
+                element: <IngredientStockReportPage />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -580,6 +610,26 @@ const router = createBrowserRouter([
                     element: <EditEmployeeSalary />,
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "productSalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <ProductSalesReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientStockReport",
+            element: <RootIngredientStockReport />,
+            children: [
+              {
+                index: true,
+                element: <IngredientStockReportPage />,
               },
             ],
           },
