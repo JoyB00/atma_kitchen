@@ -1,4 +1,5 @@
-import useAxios from ".";
+import { useAxios } from ".";
+
 const FetchAllSalary = async () => {
   try {
     const response = await useAxios.get(`/employeeSalary`, {

@@ -5,6 +5,7 @@ import Login from "./Page/Login";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense } from "react";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
@@ -75,6 +76,7 @@ import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
 import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
 import PaymentConfirmationPage from "./Page/AdminPage/PaymentConfirmation/PaymentConfirmationPage";
+import UpdateStatusPage from "./Page/AdminPage/UpdateStatusPage/UpdateStatusPage";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -390,6 +392,10 @@ const router = createBrowserRouter([
                 path: "paymentConfirmation",
                 element: <PaymentConfirmationPage />,
               },
+              {
+                path: "updateStatus",
+                element: <UpdateStatusPage />,
+              },
             ],
           },
         ],
@@ -636,10 +642,21 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient();
 const App = () => {
+  const theme = createTheme({
+    palette: {
+      type: "light",
+      primary: {
+        main: "#f78336",
+      },
+    },
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
