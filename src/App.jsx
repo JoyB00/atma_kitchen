@@ -142,6 +142,7 @@ import IngredientStockReportPage from "./Page/MOPage/IngredientStockReport/Ingre
 
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
+import MonthlySalesReportPage from "./Page/MOPage/MonthlySalesReport/MonthlySalesReportPage.jsx";
 
 // Employee Salary
 import RootEmployeeSalary from "./Root/OwnerRoot/RootEmployeeSalary/RootEmployeeSalary";
@@ -545,6 +546,16 @@ const router = createBrowserRouter([
             ],
           },
           // report
+          {
+            path: "monthlySalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <MonthlySalesReportPage />,
+              },
+            ],
+          },
           {
             path: "productSalesReport",
             element: <RootProductSalesReport />,

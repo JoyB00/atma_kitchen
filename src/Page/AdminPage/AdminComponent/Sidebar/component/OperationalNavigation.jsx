@@ -52,7 +52,7 @@ export default function OperationalNavigation({
           expandedMaster
             ? "rounded-full bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-white "
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-4 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-4`}
         onClick={() => setExpandedMaster(!expandedMaster)}
       >
         <div className="col-span-1 ms-3 text-start">
@@ -93,7 +93,7 @@ export default function OperationalNavigation({
           expandedOperational
             ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-2 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-2`}
         onClick={() => setExpandedOperational(!expandedOperational)}
       >
         <div className="col-span-1  ms-3 text-start">
@@ -129,7 +129,7 @@ export default function OperationalNavigation({
           expandedOrder
             ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-2 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-2`}
         onClick={() => setExpandedOrder(!expandedOrder)}
       >
         <div className="col-span-1  ms-3 text-start">
@@ -187,9 +187,9 @@ export default function OperationalNavigation({
       {expandedReport ? (
         <div className="ms-8">
           <Navigation
-            label="Sales Report"
+            label="Monthly Sales Report"
             icon={faChartLine}
-            url={"/MoDashboard/transactionManagement"}
+            url={"/MoDashboard/monthlySalesReport"}
           />
           <Navigation
             label="Product Sales Report"
