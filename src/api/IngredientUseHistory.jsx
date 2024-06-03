@@ -1,4 +1,18 @@
-import useAxios from ".";
+import { useAxios } from "./index";
+
+const GetAllIngredientUse = async () => {
+  try {
+    const res = await useAxios.get("ingredientUseHistory", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return res.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
 
 const StoreIngredientUse = async (data) => {
   try {
@@ -14,4 +28,4 @@ const StoreIngredientUse = async (data) => {
   }
 };
 
-export { StoreIngredientUse };
+export { GetAllIngredientUse, StoreIngredientUse };

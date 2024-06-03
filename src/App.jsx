@@ -122,6 +122,10 @@ import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurem
 import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 
+// Root Ingredient Use
+import RootIngredientUse from "./Root/MoDashboard/IngredientUse/RootIngredientUse";
+import IngredientUsePage from "./Page/MOPage/IngredientUse/IngredientUsePage";
+
 //Root Transaction
 import RootTransactionMO from "./Root/AdminDashboard/Transaction/RootTransaction";
 import TransactionMO from "./Page/MOPage/Transaction/TransactionPage";
@@ -533,7 +537,11 @@ const router = createBrowserRouter([
           },
           {
             path: "confirmationToProcess",
-            element: <RootConfirmationToProccess />,
+            element: (
+              <Suspense fallback={<LoadingPage />}>
+                <RootConfirmationToProccess />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -573,6 +581,16 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <IngredientStockReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientUse",
+            element: <RootIngredientUse />,
+            children: [
+              {
+                index: true,
+                element: <IngredientUsePage />,
               },
             ],
           },

@@ -20,6 +20,7 @@ import {
   faReceipt,
   faChartLine,
   faChartPie,
+  faPlateWheat,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -108,6 +109,11 @@ export default function OperationalNavigation({
       </motion.button>
       {expandedOperational ? (
         <div className="ms-8">
+          <Navigation
+            label="Ingredient Use"
+            icon={faPlateWheat}
+            url={"/MoDashboard/ingredientUse"}
+          />
           <Navigation
             label="Ingredient Procurement"
             icon={faCartArrowDown}

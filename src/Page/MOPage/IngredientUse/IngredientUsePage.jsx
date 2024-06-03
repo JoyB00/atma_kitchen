@@ -1,15 +1,12 @@
 import Sidebar from "../../AdminPage/AdminComponent/Sidebar/Sidebar";
 import NavbarAdmin from "../../AdminPage/AdminComponent/NavbarAdmin/NavbarAdmin";
 import FooterDashboard from "../../../Component/FooterDashboard";
-import BodyConfirm from "./body/bodyConfirm";
 import { useState } from "react";
-import { allIngredients } from "../../../lib/FetchFunctions";
-import { useAtom } from "jotai";
+import Body from "./Body/BodyIngredientUse";
 
-export default function ConfirmationToProccessPage() {
+export default function IngredientUsePage() {
   const [search, setSearch] = useState("");
   const user = JSON.parse(sessionStorage.getItem("user"));
-  const [ingredient] = useAtom(allIngredients);
 
   return (
     <div className="flex size-full min-h-screen min-w-full items-start bg-orange-100/50">
@@ -20,14 +17,14 @@ export default function ConfirmationToProccessPage() {
             user.role_id == 2
               ? "/AdminDashboard"
               : user.role_id == 3
-                ? "/MoDashboard/confirmationToProcess"
+                ? "/MoDashboard/ingredientUse"
                 : ""
           }
-          page="Confirmation To Process"
+          page="Ingredient Use History"
           setSearch={setSearch}
         />
         <div className="mt-32 px-4 ">
-          <BodyConfirm search={search} />
+          <Body search={search} />
           <FooterDashboard />
         </div>
       </div>

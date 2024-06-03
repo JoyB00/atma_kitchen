@@ -105,6 +105,31 @@ export default function RecapOrderPage() {
         allRecipe: tempProductList[productId].all_recipes,
       },
     }));
+    const dataTemp = data;
+    productListArray.forEach((item) => {
+      if (
+        extractLoyangQuantity(item.id) === "1/2 Loyang" &&
+        item.quantity === 1
+      ) {
+        const updatedRecapIngredient = [...dataTemp.recapIngredient];
+
+        item.product.allRecipe.forEach((recipe) => {
+          const foundIndex = updatedRecapIngredient.findIndex((data) => {
+            return data.ingredient_name === recipe.ingredients.ingredient_name;
+          });
+          if (foundIndex !== -1) {
+            updatedRecapIngredient[foundIndex].quantity =
+              updatedRecapIngredient[foundIndex].quantity + recipe.quantity;
+          }
+          recipe.quantity = recipe.quantity * 2;
+          console.log(item);
+        });
+        setData((prevState) => ({
+          ...prevState,
+          recapIngredient: updatedRecapIngredient,
+        }));
+      }
+    });
 
     return productListArray;
   };
@@ -125,7 +150,9 @@ export default function RecapOrderPage() {
     const fractionalUnits = quantity % 2;
 
     if (extractLoyangQuantity(productString) === "1/2 Loyang") {
-      if (fractionalUnits === 1) {
+      if (quantity === 1) {
+        return "1 Loyang";
+      } else if (fractionalUnits === 1) {
         return `${fractionalUnits > 0 ? fractionalUnits + " " : ""}1/2 Loyang`;
       } else {
         return `${fullUnits / 2} Loyang`;
