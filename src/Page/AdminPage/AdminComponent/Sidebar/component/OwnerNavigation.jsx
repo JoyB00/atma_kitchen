@@ -6,6 +6,10 @@ import {
   faUserTie,
   faFileArchive,
   faLock,
+  faBook,
+  faChartLine,
+  faReceipt,
+  faChartPie,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../../../../Component/Button";
@@ -17,6 +21,8 @@ export default function OwnerNavigation({
   setExpandedMaster,
   expandedOperational,
   setExpandedOperational,
+  expandedReport,
+  setExpandedReport,
 }) {
   const navigate = useNavigate();
   const forgotPassword = () => {
@@ -55,42 +61,49 @@ export default function OwnerNavigation({
           />
         </div>
       ) : undefined}
+
       <motion.button
         whileHover={{
           scale: 1.05,
         }}
         transition={{ type: "just" }}
         className={`${
-          expandedOperational
-            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
+          expandedReport
+            ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white "
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-2 mt-2 grid w-full grid-cols-4`}
-        onClick={() => setExpandedOperational(!expandedOperational)}
+        } mt-2 grid w-full grid-cols-4 py-5`}
+        onClick={() => setExpandedReport(!expandedReport)}
       >
         <div className="col-span-1  ms-3 text-start">
-          <FontAwesomeIcon icon={faFileArchive} />
+          <FontAwesomeIcon icon={faBook} />
         </div>
-        <p className="col-span-2 text-start font-normal ">Operational Data</p>
+        <p className="col-span-2 text-start font-normal ">Reports</p>
         <div className="col-span-1 my-auto flex justify-end text-start">
           <FontAwesomeIcon
-            icon={expandedOperational ? faChevronDown : faChevronRight}
+            icon={expandedReport ? faChevronDown : faChevronRight}
           />
         </div>
       </motion.button>
-      {expandedOperational ? (
+      {expandedReport ? (
         <div className="ms-8">
-          {/* <Navigation
-            label="Ingredient Procurement"
-            icon={faCartArrowDown}
-            url={"/MoDashboard/ingredientProcurement"}
+          <Navigation
+            label="Sales Report"
+            icon={faChartLine}
+            url={"/OwnerDashboard/transactionManagement"}
           />
           <Navigation
-            label="Others Procurement"
-            icon={faTruck}
-            url={"/MoDashboard/otherProcurements"}
-          /> */}
+            label="Product Sales Report"
+            icon={faReceipt}
+            url={"/OwnerDashboard/productSalesReport"}
+          />
+          <Navigation
+            label="Ingredient Stock Report"
+            icon={faChartPie}
+            url={"/OwnerDashboard/ingredientStockReport"}
+          />
         </div>
       ) : undefined}
+
       <Navigation
         label="Forgot password?"
         icon={faLock}

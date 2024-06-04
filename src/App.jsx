@@ -5,6 +5,7 @@ import Login from "./Page/Login";
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Suspense } from "react";
+import { ThemeProvider, createTheme } from "@mui/material";
 
 // Protected Root
 import ProtectedRoot from "./Root/ProtectedRoot/ProtectedRoot";
@@ -75,6 +76,7 @@ import EditHampers from "./Page/AdminPage/HampersPage/EditHampers/EditHampers";
 import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
 import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
 import PaymentConfirmationPage from "./Page/AdminPage/PaymentConfirmation/PaymentConfirmationPage";
+import UpdateStatusPage from "./Page/AdminPage/UpdateStatusPage/UpdateStatusPage";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -120,6 +122,10 @@ import AddOtherProcurement from "./Page/MOPage/OtherProcurement/AddOtherProcurem
 import EditOtherProcurement from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 import { loader as loaderOtherProcurement } from "./Page/MOPage/OtherProcurement/EditOtherProcurement/EditOtherProcurement";
 
+// Root Ingredient Use
+import RootIngredientUse from "./Root/MoDashboard/IngredientUse/RootIngredientUse";
+import IngredientUsePage from "./Page/MOPage/IngredientUse/IngredientUsePage";
+
 //Root Transaction
 import RootTransactionMO from "./Root/AdminDashboard/Transaction/RootTransaction";
 import TransactionMO from "./Page/MOPage/Transaction/TransactionPage";
@@ -129,8 +135,18 @@ import RootConfirmationToProccess from "./Root/MoDashboard/ConfirmationToProcces
 import ConfirmationToProccessPage from "./Page/MOPage/ConfirmationToProccess/ConfirmationToProccessPage";
 import RecapOrderPage from "./Page/MOPage/ConfirmationToProccess/component/RecapOrderPage";
 
+// Sales
+// Root Product Sales Report
+import RootProductSalesReport from "./Root/MoDashboard/Report/RootProductSalesReport";
+import ProductSalesReportPage from "./Page/MOPage/ProductSalesReport/ProductSalesReportPage";
+
+// Root Ingredient Stock Report
+import RootIngredientStockReport from "./Root/MoDashboard/Report/RootIngredientStockReport";
+import IngredientStockReportPage from "./Page/MOPage/IngredientStockReport/IngredientStockReportPage";
+
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
+import MonthlySalesReportPage from "./Page/MOPage/MonthlySalesReport/MonthlySalesReportPage.jsx";
 
 // Employee Salary
 import RootEmployeeSalary from "./Root/OwnerRoot/RootEmployeeSalary/RootEmployeeSalary";
@@ -390,6 +406,10 @@ const router = createBrowserRouter([
                 path: "paymentConfirmation",
                 element: <PaymentConfirmationPage />,
               },
+              {
+                path: "updateStatus",
+                element: <UpdateStatusPage />,
+              },
             ],
           },
         ],
@@ -517,7 +537,11 @@ const router = createBrowserRouter([
           },
           {
             path: "confirmationToProcess",
-            element: <RootConfirmationToProccess />,
+            element: (
+              <Suspense fallback={<LoadingPage />}>
+                <RootConfirmationToProccess />
+              </Suspense>
+            ),
             children: [
               {
                 index: true,
@@ -526,6 +550,47 @@ const router = createBrowserRouter([
               {
                 path: "recapOrders",
                 element: <RecapOrderPage />,
+              },
+            ],
+          },
+          // report
+          {
+            path: "monthlySalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <MonthlySalesReportPage />,
+              },
+            ],
+          },
+          {
+            path: "productSalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <ProductSalesReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientStockReport",
+            element: <RootIngredientStockReport />,
+            children: [
+              {
+                index: true,
+                element: <IngredientStockReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientUse",
+            element: <RootIngredientUse />,
+            children: [
+              {
+                index: true,
+                element: <IngredientUsePage />,
               },
             ],
           },
@@ -574,6 +639,26 @@ const router = createBrowserRouter([
                     element: <EditEmployeeSalary />,
                   },
                 ],
+              },
+            ],
+          },
+          {
+            path: "productSalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <ProductSalesReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientStockReport",
+            element: <RootIngredientStockReport />,
+            children: [
+              {
+                index: true,
+                element: <IngredientStockReportPage />,
               },
             ],
           },
@@ -636,10 +721,21 @@ const router = createBrowserRouter([
 
 const queryClient = new QueryClient();
 const App = () => {
+  const theme = createTheme({
+    palette: {
+      type: "light",
+      primary: {
+        main: "#f78336",
+      },
+    },
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <Toaster />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

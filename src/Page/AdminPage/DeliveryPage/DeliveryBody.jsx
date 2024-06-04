@@ -135,7 +135,7 @@ export function InputDeliveryRangeCardModal({ delivery }) {
       }
     >
       <span className="text-xs">Transaction ID: {delivery.id}</span>
-      <span className="font-semibold">
+      <span className="text-ellipsis font-semibold">
         {delivery.delivery.recipient_address}
       </span>
       <span className="text-sm">Order date: {delivery.order_date}</span>

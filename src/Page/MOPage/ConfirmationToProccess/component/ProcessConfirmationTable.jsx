@@ -4,12 +4,17 @@ import { motion } from "framer-motion";
 import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Badge from "../../../../Component/Badge";
-import { faGifts, faKitchenSet } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckSquare,
+  faGifts,
+  faKitchenSet,
+} from "@fortawesome/free-solid-svg-icons";
 import ModalDetailTransaction from "../../../AdminPage/CustomerOrderHistory/component/ModalDetailTransaction";
 import { formatCurrency } from "../../../../lib/FormatCurrency";
 import { Checkbox } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RecapTransactionToProcess } from "../../../../api/MOTransactionConfirmation";
+import toast from "react-hot-toast";
 
 export default function ProcessConfirmationTable({ data, search, length }) {
   const [page, setPage] = useState(1);
@@ -30,7 +35,8 @@ export default function ProcessConfirmationTable({ data, search, length }) {
   };
 
   const [dataRes, setDataRes] = useState({
-    pickup_date_date: data[0].pickup_date,
+    pickup_date_date: data.length > 0 ? data[0].pickup_date : null,
+
     item: [],
   });
 
@@ -45,20 +51,49 @@ export default function ProcessConfirmationTable({ data, search, length }) {
     }
   };
 
+  const handleCheckAll = (event) => {
+    if (allChecked === false) {
+      const updatedItems = data.slice(startIndex, endIndex);
+      setDataRes({ ...dataRes, item: updatedItems });
+    } else {
+      setDataRes({ ...dataRes, item: [] });
+    }
+    setAllChecked(() => !allChecked);
+  };
+
+  const [allChecked, setAllChecked] = useState(false);
+
   const handleClick = (data) => {
-    RecapTransactionToProcess(data)
-      .then((res) => {
-        console.log(res);
-        navigate("recapOrders", { state: res });
-      })
-      .catch((err) => {
-        console.log(err);
+    if (data.item.length === 0) {
+      toast.error("Please select the order before", {
+        style: {
+          backgroundColor: "#000000",
+          color: "#ffffff",
+        },
+        position: "bottom-right",
       });
+    } else {
+      RecapTransactionToProcess(data)
+        .then((res) => {
+          console.log(res);
+          navigate("recapOrders", { state: res });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
     <>
-      <div>
+      <div className="flex justify-between">
+        <Button
+          className="mb-6 border-orange-500 text-orange-500 hover:text-white"
+          onClick={handleCheckAll}
+        >
+          {" "}
+          <FontAwesomeIcon icon={faCheckSquare} className="pe-2" /> Select All
+        </Button>
         <Button
           className="mb-6 bg-orange-500 text-white"
           onClick={() => handleClick(dataRes)}
@@ -118,6 +153,7 @@ export default function ProcessConfirmationTable({ data, search, length }) {
                     <div className="flex items-center justify-center">
                       <Checkbox
                         value={item.id}
+                        checked={dataRes.item.includes(item)}
                         onChange={(event) => handleSetData(event, item)}
                       />
                     </div>
@@ -144,7 +180,7 @@ export default function ProcessConfirmationTable({ data, search, length }) {
                   </td>
 
                   <td className="text-start text-sm font-medium">
-                    {item.pickup_date.slice(0, 16)}
+                    {item.pickup_date?.slice(0, 16)}
                   </td>
                   <td className="text-start text-sm font-medium ">
                     {item.payment_method}

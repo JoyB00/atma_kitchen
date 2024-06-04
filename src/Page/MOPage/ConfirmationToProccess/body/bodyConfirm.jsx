@@ -18,9 +18,9 @@ import LoadingTable from "../component/LoadingTable";
 import ProcessConfirmationTable from "../component/ProcessConfirmationTable";
 
 export default function BodyConfirm({ search }) {
-  const orders = useQuery({
+  const ordersToProcess = useQuery({
     queryKey: ["ordersToProcess"],
-    queryFn: () => ConfirmationToProcess(),
+    queryFn: ConfirmationToProcess,
   });
   return (
     <div
@@ -38,16 +38,16 @@ export default function BodyConfirm({ search }) {
       </div>
 
       <div>
-        {orders.isFetching ? (
-          <LoadingTable loading={orders.isFetching} />
+        {ordersToProcess.isFetching ? (
+          <LoadingTable loading={ordersToProcess.isFetching} />
         ) : (
           <div>
-            {console.log("data", orders.data)}
+            {console.log("data", ordersToProcess)}
             <div className="pt-6">
               <ProcessConfirmationTable
                 search={search}
-                data={orders.data}
-                length={orders.data.length}
+                data={ordersToProcess.data}
+                length={ordersToProcess.data.length}
               />
             </div>
           </div>
