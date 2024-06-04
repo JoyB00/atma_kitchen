@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { GetAllIngredients } from "../../../../api/IngredientApi";
 import LoadingTable from "../Component/LoadingTable";
-import { allIngredients } from "../../../../lib/FetchFunctions";
+
 export default function BodyIngredient({ search }) {
   const ingredient = useQuery({
     queryKey: ["ingredient"],

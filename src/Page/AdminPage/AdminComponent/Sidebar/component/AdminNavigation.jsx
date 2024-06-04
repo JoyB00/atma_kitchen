@@ -13,8 +13,7 @@ import {
   faMoneyBill,
   faTruck,
   faCheckToSlot,
-  faMoneyCheck,
-  faMoneyCheckDollar,
+  faCheckDouble,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -141,6 +140,11 @@ export default function AdminNavigation({
             label="Payment Confirmation"
             icon={faCheckToSlot}
             url={"/AdminDashboard/transaction/paymentConfirmation"}
+          />
+          <Navigation
+            label="Update Status"
+            icon={faCheckDouble}
+            url={"/AdminDashboard/transaction/updateStatus"}
           />
         </div>
       ) : undefined}

@@ -1,4 +1,4 @@
-import useAxios from ".";
+import { useAxios } from "./index";
 
 const GetOrderConfirmation = async () => {
   try {
@@ -30,6 +30,7 @@ const GetCustomerTransactions = async (customerId) => {
     return error.response.data;
   }
 };
+
 const GetAuthCustomerTransactions = async (transactionId) => {
   // Transactions is order history
   try {
@@ -72,6 +73,7 @@ const StoreBuyNow = async (data) => {
     throw error.response.data;
   }
 };
+
 const StoreTransaction = async (data) => {
   try {
     const response = await useAxios.post("/order", data, {
@@ -139,6 +141,62 @@ const DeleteTransaction = async (data) => {
   }
 };
 
+const GetTransactionWhereStatus = async ({ status }) => {
+  const data = {
+    status: status,
+  };
+
+  try {
+    const response = await useAxios.post(`/transactionWhereStatus`, data, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const GetTransactionWhereStatusCustomer = async ({ status }) => {
+  const data = {
+    status: status,
+  };
+
+  try {
+    const response = await useAxios.post(
+      `/transactionWhereStatusCustomer`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      },
+    );
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+const ChangeTransactionStatus = async ({ id, status }) => {
+  var data = {
+    id: id,
+    status: status,
+  };
+
+  try {
+    const response = await useAxios.post(`/changeTransactionStatus`, data, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export {
   GetOrderConfirmation,
   GetCustomerTransactions,
@@ -148,6 +206,9 @@ export {
   StoreTransaction,
   PaymentCustomer,
   StorePaymentEvidence,
+  ChangeTransactionStatus,
+  GetTransactionWhereStatus,
+  GetTransactionWhereStatusCustomer,
   UpdateDateTransaction,
   DeleteTransaction,
 };

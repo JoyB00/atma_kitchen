@@ -1,4 +1,5 @@
-import useAxios from ".";
+import { useAxios } from ".";
+
 const FetchAllEmployees = async () => {
   try {
     const response = await useAxios.get("/employee", {
