@@ -1,19 +1,8 @@
+import React, { useEffect, useState } from "react";
 import Button from "../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEgg,
-  faFilter,
-  faMoneyCheck,
-  faMoneyCheckDollar,
-  faSquarePlus,
-} from "@fortawesome/free-solid-svg-icons";
-// import Drawer from "../../../../Component/Drawer";
-// import Checkbox from "../../../../Component/Checkbox";
+import { faMoneyCheckDollar, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useAtom } from "jotai";
 import { fetchWithdrawalRequests, confirmWithdrawalRequest } from "../../../api/BalanceWithdrawal";
 export default function BodyWithdrawal() {
   const [requests, setRequests] = useState([]);
@@ -23,7 +12,7 @@ export default function BodyWithdrawal() {
     const fetchData = async () => {
       try {
         const data = await fetchWithdrawalRequests();
-        setRequests(data);
+        setRequests(data.data); // Ensure to access the data property from the response
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -37,7 +26,7 @@ export default function BodyWithdrawal() {
     try {
       await confirmWithdrawalRequest(id);
       const data = await fetchWithdrawalRequests(); // Refresh the requests
-      setRequests(data);
+      setRequests(data.data); // Ensure to access the data property from the response
     } catch (error) {
       console.error(error);
     }
@@ -63,41 +52,38 @@ export default function BodyWithdrawal() {
         </div>
       </div>
       <div>
-      <h1>Withdrawal Requests</h1>
-      <table className="w-full mt-4 bg-white shadow-md">
-        <thead>
-          <tr>
-            <th className="py-4 px-6">Customer ID</th>
-            <th className="py-4 px-6">Amount</th>
-            <th className="py-4 px-6">Bank Name</th>
-            <th className="py-4 px-6">Account Number</th>
-            <th className="py-4 px-6">Date</th>
-            <th className="py-4 px-6">Detail Information</th>
-            <th className="py-4 px-6">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {requests.map(request => (
-            <tr key={request.id}>
-              <td className="py-4 px-6">{request.customer_id}</td>
-              <td className="py-4 px-6">{request.nominal_balance}</td>
-              <td className="py-4 px-6">{request.bank_name}</td>
-              <td className="py-4 px-6">{request.account_number}</td>
-              <td className="py-4 px-6">{request.date}</td>
-              <td className="py-4 px-6">{request.detail_information}</td>
-              <td className="py-4 px-6">
-                <Button onClick={() => handleConfirm(request.id)} className="bg-green-500 text-white px-4 py-2">
-                  Confirm
-                </Button>
-              </td>
+        <h1>Withdrawal Requests</h1>
+        <table className="w-full mt-4 bg-white shadow-md">
+          <thead>
+            <tr>
+              <th className="py-4 px-6">Customer ID</th>
+              <th className="py-4 px-6">Amount</th>
+              <th className="py-4 px-6">Bank Name</th>
+              <th className="py-4 px-6">Account Number</th>
+              <th className="py-4 px-6">Date</th>
+              <th className="py-4 px-6">Detail Information</th>
+              <th className="py-4 px-6">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-      
-
-      
+          </thead>
+          <tbody>
+            {requests.map(request => (
+              <tr key={request.id}>
+                <td className="py-4 px-6">{request.customer_id}</td>
+                <td className="py-4 px-6">{request.nominal_balance}</td>
+                <td className="py-4 px-6">{request.bank_name}</td>
+                <td className="py-4 px-6">{request.account_number}</td>
+                <td className="py-4 px-6">{request.date}</td>
+                <td className="py-4 px-6">{request.detail_information}</td>
+                <td className="py-4 px-6">
+                  <Button onClick={() => handleConfirm(request.id)} className="bg-green-500 text-white px-4 py-2">
+                    Confirm
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
