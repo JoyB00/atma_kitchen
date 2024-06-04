@@ -643,6 +643,16 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "monthlySalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <MonthlySalesReportPage />,
+              },
+            ],
+          },
+          {
             path: "productSalesReport",
             element: <RootProductSalesReport />,
             children: [
