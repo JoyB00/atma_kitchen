@@ -15,6 +15,20 @@ const TransactionConfirmation = async (data) => {
   }
 };
 
+const getShortageIngredients = async (transactionId) => {
+  try {
+    const response = await useAxios.get(`/shortageIngredient/${transactionId}`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data; // Ensure this matches the response structure from your backend
+  } catch (err) {
+    console.error("Error fetching shortage ingredients:", err);
+    throw err;
+  }
+};
+
 const ConfirmationToProcess = async () => {
   try {
     const response = await useAxios.get("/transactionConfirmation/proccess", {
@@ -52,6 +66,7 @@ const RecapTransactionToProcess = async (data) => {
 
 export {
   TransactionConfirmation,
+  getShortageIngredients,
   ConfirmationToProcess,
   RecapTransactionToProcess,
 };

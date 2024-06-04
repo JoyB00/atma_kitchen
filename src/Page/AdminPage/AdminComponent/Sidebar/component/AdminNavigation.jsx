@@ -13,6 +13,8 @@ import {
   faMoneyBill,
   faTruck,
   faCheckToSlot,
+  faMoneyCheck,
+  faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -143,6 +145,11 @@ export default function AdminNavigation({
         </div>
       ) : undefined}
 
+      <Navigation
+        label="Balance Withdrawal"
+        icon={faMoneyCheckDollar}
+        url={"/AdminDashboard/balance"}
+      />
       <Navigation
         label="Forgot password?"
         icon={faLock}
