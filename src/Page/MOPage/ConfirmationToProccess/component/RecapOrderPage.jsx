@@ -350,7 +350,7 @@ export default function RecapOrderPage() {
                 })}
               </div>
             </div>
-            <div className="flex justify-end gap-x-2 rounded-b-2xl bg-gray-100 p-5">
+            <div className="sticky bottom-0 flex justify-end gap-x-2 rounded-b-2xl bg-gray-100 p-5 ">
               <NavLink to="/MoDashboard/confirmationToProcess">
                 <Button className="border-orange-500 text-orange-500 hover:text-white">
                   Cancel
