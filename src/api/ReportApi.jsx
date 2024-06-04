@@ -42,4 +42,25 @@ const GetMonthlySalesReport = async ({ year }) => {
   }
 };
 
-export { GetProductSalesReport, GetMonthlySalesReport };
+const GetIngredientUsageReport = async ({ from, to }) => {
+  try {
+    const data = {
+      from: from,
+      to: to,
+    };
+    const response = await useAxios.post(`/ingredientUsageReport`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data;
+  } catch (e) {
+    return e.response.data;
+  }
+};
+export {
+  GetProductSalesReport,
+  GetMonthlySalesReport,
+  GetIngredientUsageReport,
+};

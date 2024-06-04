@@ -10,6 +10,7 @@ import {
   faChartLine,
   faReceipt,
   faChartPie,
+  faWeightScale,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../../../../Component/Button";
@@ -100,6 +101,11 @@ export default function OwnerNavigation({
             label="Ingredient Stock Report"
             icon={faChartPie}
             url={"/OwnerDashboard/ingredientStockReport"}
+          />
+          <Navigation
+            label="Ingredient Usage Report"
+            icon={faWeightScale}
+            url={"/OwnerDashboard/ingredientUsage"}
           />
         </div>
       ) : undefined}
