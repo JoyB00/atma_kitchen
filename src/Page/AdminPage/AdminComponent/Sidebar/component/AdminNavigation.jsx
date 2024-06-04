@@ -14,6 +14,7 @@ import {
   faTruck,
   faCheckToSlot,
   faCheckDouble,
+  faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
