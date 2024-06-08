@@ -21,6 +21,7 @@ import {
   faChartLine,
   faChartPie,
   faPlateWheat,
+  faPerson,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -206,6 +207,16 @@ export default function OperationalNavigation({
             label="Ingredient Stock Report"
             icon={faChartPie}
             url={"/MoDashboard/ingredientStockReport"}
+          />
+          <Navigation
+            label="Absences Report"
+            icon={faPerson}
+            url={"/MoDashboard/absenceReport"}
+          />
+          <Navigation
+            label="Consignor Sales Report"
+            icon={faPerson}
+            url={"/MoDashboard/consignorReport"}
           />
         </div>
       ) : undefined}
