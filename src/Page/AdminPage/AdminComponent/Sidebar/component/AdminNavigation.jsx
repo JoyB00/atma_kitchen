@@ -14,6 +14,8 @@ import {
   faTruck,
   faCheckToSlot,
   faCheckDouble,
+  faClock,
+  faMoneyCheckDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -37,7 +39,7 @@ export default function AdminNavigation({
           expandedMaster
             ? "rounded-full bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-white "
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-4 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-4`}
         onClick={() => setExpandedMaster(!expandedMaster)}
       >
         <div className="col-span-1 ms-3 text-start">
@@ -79,7 +81,7 @@ export default function AdminNavigation({
           expandedOperational
             ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-2 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-2`}
         onClick={() => setExpandedOperational(!expandedOperational)}
       >
         <div className="col-span-1  ms-3 text-start">
@@ -116,7 +118,7 @@ export default function AdminNavigation({
           expandedTransaction
             ? "rounded-2xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-orange-400"
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-2 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-2`}
         onClick={() => setExpandedTransaction(!expandedTransaction)}
       >
         <div className="col-span-1  ms-3 text-start">
@@ -146,9 +148,19 @@ export default function AdminNavigation({
             icon={faCheckDouble}
             url={"/AdminDashboard/transaction/updateStatus"}
           />
+          <Navigation
+            label="Late Payments"
+            icon={faClock}
+            url={"/AdminDashboard/transaction/latePayments"}
+          />
         </div>
       ) : undefined}
 
+      <Navigation
+        label="Balance Withdrawal"
+        icon={faMoneyCheckDollar}
+        url={"/AdminDashboard/balance"}
+      />
       <Navigation
         label="Forgot password?"
         icon={faLock}

@@ -101,6 +101,7 @@ const PaymentCustomer = async (data) => {
     throw error.response.data;
   }
 };
+
 const StorePaymentEvidence = async (data) => {
   try {
     const response = await useAxios.post(`/payment/evidence/${data.id}`, data, {
@@ -197,6 +198,19 @@ const ChangeTransactionStatus = async ({ id, status }) => {
   }
 };
 
+const GetLatePayments = async () => {
+  try {
+    const response = await useAxios.get(`/lateTransactions`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
 export {
   GetOrderConfirmation,
   GetCustomerTransactions,
@@ -211,4 +225,5 @@ export {
   GetTransactionWhereStatusCustomer,
   UpdateDateTransaction,
   DeleteTransaction,
+  GetLatePayments,
 };
