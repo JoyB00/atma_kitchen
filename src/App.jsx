@@ -77,6 +77,7 @@ import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
 import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
 import PaymentConfirmationPage from "./Page/AdminPage/PaymentConfirmation/PaymentConfirmationPage";
 import UpdateStatusPage from "./Page/AdminPage/UpdateStatusPage/UpdateStatusPage";
+import LatePaymentsPage from "./Page/AdminPage/LatePaymentsPage/LatePaymentsPage.jsx";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -410,6 +411,10 @@ const router = createBrowserRouter([
               {
                 path: "updateStatus",
                 element: <UpdateStatusPage />,
+              },
+              {
+                path: "latePayments",
+                element: <LatePaymentsPage />,
               },
             ],
           },
