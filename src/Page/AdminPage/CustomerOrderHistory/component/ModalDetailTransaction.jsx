@@ -15,6 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { getPicture } from "../../../../api";
 import { formatCurrency } from "../../../../lib/FormatCurrency";
+
 export default function ModalDetailTransaction({ open, setOpen, id }) {
   const [load, setLoad] = useState(true);
   const [details, setDetails] = useState([]);

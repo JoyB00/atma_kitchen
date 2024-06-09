@@ -3,6 +3,7 @@ import Footer from "../../../Component/Footer";
 import {
   FetchOrderHistory,
   GetLoggedInCustomer,
+  SearchOrderHistory,
 } from "../../../api/CustomerApi";
 import { useState } from "react";
 import { useRouteLoaderData } from "react-router-dom";
@@ -13,7 +14,7 @@ import { motion } from "framer-motion";
 import Button from "../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Badge from "../../../Component/Badge";
-import { faGifts } from "@fortawesome/free-solid-svg-icons";
+import { faGifts, faXmark } from "@fortawesome/free-solid-svg-icons";
 import ModalDetailTransaction from "../../AdminPage/CustomerOrderHistory/component/ModalDetailTransaction";
 import { formatCurrency } from "../../../lib/FormatCurrency";
 import { NavLink } from "react-router-dom";
@@ -23,6 +24,7 @@ import {
 } from "../../../api/TransactionApi.jsx";
 import toast from "react-hot-toast";
 import sendNotificationToUser from "../../../api/NotificationApi.jsx";
+import Input from "../../../Component/Input.jsx";
 
 export default function OrderHistory() {
   const [tab, setTab] = useState(0);
@@ -83,11 +85,137 @@ export default function OrderHistory() {
 }
 
 export function Header() {
+  const [isOpened, setIsOpened] = useState(false);
+  const openModal = () => {
+    setIsOpened(true);
+  };
+  const closeModal = () => {
+    setIsOpened(false);
+  };
+
   return (
-    <div className="flex flex-col text-start text-black">
-      <span className="text-3xl font-bold text-orange-500">Order History</span>
-      <span className="text-xl">Did you miss our cake?</span>
+    <div className="flex flex-row justify-between">
+      <div className="flex flex-col text-start text-black">
+        <span className="text-3xl font-bold text-orange-500">
+          Order History
+        </span>
+        <span className="text-xl">Did you miss our cake?</span>
+      </div>
+      <Button className="bg-orange-500 text-white" onClick={openModal}>
+        Search History
+      </Button>
+      <OrderHistorySearchModal
+        className="-z-40"
+        isOpened={isOpened}
+        closeModal={closeModal}
+      />
     </div>
+  );
+}
+
+export function OrderHistorySearchModal({ isOpened, closeModal }) {
+  const [search, setSearch] = useState("");
+  const orderHistorySearch = useQuery({
+    queryKey: ["orderHistorySearch"],
+    queryFn: () => SearchOrderHistory(search),
+  });
+
+  const queryClient = useQueryClient();
+  const submit = async () => {
+    await queryClient.refetchQueries(["orderHistorySearch"]);
+  };
+
+  return (
+    <>
+      <Modal open={isOpened} onClose={closeModal}>
+        <div className="flex size-full items-center justify-center">
+          <div className="flex max-h-[80%] min-h-20 w-5/6 flex-col rounded-md bg-slate-100 p-8">
+            <div className="flex flex-row justify-between">
+              <span className="text-2xl font-bold text-orange-500">
+                Search order history
+              </span>
+              <FontAwesomeIcon
+                icon={faXmark}
+                onClick={closeModal}
+                className="cursor-pointer"
+              />
+            </div>
+            <span className="text-base font-semibold text-slate-800">
+              Put a product/hampers name and search away...
+            </span>
+            <div className="flex w-full flex-row items-center">
+              <Input
+                label="Search"
+                id="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                withAnimate
+                type="text"
+                className="min-w-full"
+              />
+              <div className="px-2" />
+              <Button
+                className="my-4 bg-orange-500 text-white"
+                onClick={submit}
+              >
+                Search
+              </Button>
+            </div>
+            <div className="py-2" />
+            <div className=" overflow-y-scroll">
+              {orderHistorySearch.isFetching ? (
+                <div className="flex justify-center py-20">
+                  <RotateLoader
+                    color="orange"
+                    loading={true}
+                    cssOverride={{
+                      justifyContent: "center",
+                      borderColor: "red",
+                    }}
+                    size={50}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                </div>
+              ) : (
+                orderHistorySearch.data?.map((transaction) => (
+                  <div
+                    key={transaction.id}
+                    className="my-2 flex flex-col rounded-md bg-slate-50 p-4 shadow-lg"
+                  >
+                    <span className="text-lg font-bold text-slate-800">
+                      Transaction ID:{" "}
+                      {transaction.transaction_number ?? transaction.id}
+                    </span>
+                    <span className="text-md text-slate-800">
+                      Ordered at: {transaction.order_date}
+                    </span>
+                    <div className="py-2" />
+                    {transaction.transaction_details.map((detail) => (
+                      <div
+                        key={detail.id}
+                        className="grid grid-cols-3 rounded-md bg-slate-200 p-4 shadow-md"
+                      >
+                        <span className="text-md text-slate-800">
+                          {detail.product.product_name ??
+                            detail.hampers.hampers_name}
+                        </span>
+                        <span className="text-md text-slate-800">
+                          Rp. {formatCurrency(detail.price)} x {detail.quantity}
+                        </span>
+                        <span className="text-md text-slate-800">
+                          Subtotal: {formatCurrency(detail.total_price)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }
 

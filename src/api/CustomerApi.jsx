@@ -59,9 +59,28 @@ const FetchOrderHistory = async (id) => {
   }
 };
 
+const SearchOrderHistory = async (term) => {
+  const data = {
+    query: term,
+  };
+
+  try {
+    const response = await useAxios.post(`/searchOrderHistory`, data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
 export {
   FetchAllCustomers,
   FetchOrderHistory,
+  SearchOrderHistory,
   GetLoggedInCustomer,
   EditCustomer,
 };
