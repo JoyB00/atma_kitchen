@@ -1,29 +1,32 @@
 import { Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
-import { formatCurrency } from "../../../../lib/FormatCurrency";
-
-export default function ConsignorTable({ search, data, length }) {
+export default function ConsignorTable({ search, data }) {
   const [page, setPage] = useState(1);
-  const productPerPage = 15;
-  const startIndex = (page - 1) * productPerPage;
-  const endIndex = page * productPerPage;
+  const itemsPerPage = 8;
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = page * itemsPerPage;
 
   const handleChange = (e, p) => {
     setPage(p);
   };
 
-  useEffect(() => {}, []);
+  console.log('Table Data:', data); // Log the table data for debugging
+
   return (
     <>
-      <table className=" mb-6 w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
+      <table className="mb-6 w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
-            <th className="px-6 text-center font-medium">No</th>
-            <th className="py-8 text-start font-medium ">Ingredient Name</th>
-            <th className=" text-start font-medium ">Unit</th>
-            <th className="pe-6 text-start font-medium ">Stock</th>
+            <th className="px-6 py-4 text-center font-medium">No</th>
+            <th className="px-6 py-4 text-start font-medium">Consignor</th>
+            <th className="px-6 py-4 text-start font-medium">Product Name</th>
+            <th className="px-6 py-4 text-start font-medium">Quantity Sold</th>
+            <th className="px-6 py-4 text-start font-medium">Sale Price</th>
+            <th className="px-6 py-4 text-start font-medium">Total</th>
+            <th className="px-6 py-4 text-start font-medium">Commission</th>
+            <th className="px-6 py-4 text-start font-medium">Received</th>
           </tr>
         </thead>
         <motion.tbody
@@ -31,36 +34,55 @@ export default function ConsignorTable({ search, data, length }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {data
-            .filter((item) => {
-              return search.toLowerCase() === ""
-                ? item
-                : item.ingredient_name.toLowerCase().includes(search) ||
-                    item.ingredient_name.includes(search);
-            })
-            .slice(startIndex, endIndex)
-            .map((item, index) => (
+          {data.flatMap((item, index) =>
+            item.products.map((product, productIndex) => (
               <motion.tr
-                // variants={productItem}
-                className="border-t-2 border-gray-100  text-black"
-                key={item.id}
+                className="border-t-2 border-gray-100 text-black"
+                key={`${index}-${productIndex}`}
               >
-                <td className="px-6 py-6 text-center font-medium">
-                  {index + 1}
+                {productIndex === 0 && (
+                  <td
+                    className="px-6 py-4 text-center font-medium"
+                    rowSpan={item.products.length}
+                  >
+                    {startIndex + index + 1}
+                  </td>
+                )}
+                {productIndex === 0 && (
+                  <td
+                    className="px-6 py-4 text-start font-medium"
+                    rowSpan={item.products.length}
+                  >
+                    {item.consignor_name}
+                  </td>
+                )}
+                <td className="px-6 py-4 text-start font-medium">
+                  {product.product_name}
                 </td>
-                <td className="text-start font-medium">
-                  {item.ingredient_name}
+                <td className="px-6 py-4 text-start font-medium">
+                  {product.quantity_sold} pcs
                 </td>
-                <td className="text-start font-medium ">{item.unit}</td>
-                <td className="text-start font-medium ">{item.quantity}</td>
+                <td className="px-6 py-4 text-start font-medium">
+                  {product.sale_price}
+                </td>
+                <td className="px-6 py-4 text-start font-medium">
+                  {product.total}
+                </td>
+                <td className="px-6 py-4 text-start font-medium">
+                  {product.commission}
+                </td>
+                <td className="px-6 py-4 text-start font-medium">
+                  {product.received}
+                </td>
               </motion.tr>
-            ))}
+            ))
+          )}
         </motion.tbody>
         <tfoot>
           <tr>
-            <td colSpan={4}>
+            <td colSpan={8}>
               <Pagination
-                count={Math.ceil(length / productPerPage)}
+                count={Math.ceil(data.length / itemsPerPage)}
                 size="small"
                 className="mb-4 flex justify-center"
                 onChange={handleChange}

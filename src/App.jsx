@@ -164,6 +164,10 @@ import { loader as loadSalary } from "./Page/OwnerPage/EmployeeSalaryPage/EditEm
 //
 import ForgotPasswordEmployeePage from "./Page/EmployeePage/ForgotPassword";
 import { loader as loadId } from "./Page/EmployeePage/ForgotPassword";
+import RootEmployeeAbsenceReport from "./Root/MoDashboard/Report/RootEmployeeAbsenceReport.jsx";
+import EmployeeAbsenceReportPage from "./Page/MOPage/EmployeeAbsenceReport/EmployeeAbsenceReportPage.jsx";
+import RootIncomeandExpenseReport from "./Root/MoDashboard/Report/RootIncomeExpenseReport.jsx";
+import IncomeandExpenseReportPage from "./Page/MOPage/IncomeandExpenseReport/IncomeandExpenseReportPage.jsx";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -590,17 +594,6 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "consignorSalesReport",
-            element: <RootConsignorSalesReport />,
-            children: [
-              {
-                index: true,
-                element: <ConsignorSalesReportPage />,
-              },
-            ],
-          },
-           
-          {
             path: "ingredientUse",
             element: <RootIngredientUse />,
             children: [
@@ -611,15 +604,36 @@ const router = createBrowserRouter([
             ],
           },
           {
-            path: "ingredientUsage",
-            element: <RootIngredientUse />,
+            path: "employeeAbsenceReport",
+            element: <RootEmployeeAbsenceReport />,
             children: [
               {
                 index: true,
-                element: <IngredientUsageReportPage />,
+                element: <EmployeeAbsenceReportPage />,
               },
             ],
           },
+          {
+            path: "incomeExpenseReport",
+            element: <RootIncomeandExpenseReport />,
+            children: [
+              {
+                index: true,
+                element: <IncomeandExpenseReportPage />,
+              },
+            ],
+          },
+          {
+            path: "consignorSalesReport",
+            element: <RootConsignorSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <ConsignorSalesReportPage />,
+              },
+            ],
+          },
+         
         ],
       },
       {
