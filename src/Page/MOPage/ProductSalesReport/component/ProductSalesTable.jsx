@@ -52,10 +52,10 @@ export default function ProductSalesTable({ search, data, length }) {
                 <td className="text-start font-medium">{item.Product}</td>
                 <td className="text-start font-medium ">{item.Quantity} pcs</td>
                 <td className="text-start font-medium ">
-                  {formatCurrency(item.Price)}
+                  {formatCurrency(item.OriginalPrice)}
                 </td>
                 <td className="text-start font-medium ">
-                  {formatCurrency(item.Price * item.Quantity)}
+                  {formatCurrency(item.OriginalPrice * item.Quantity)}
                 </td>
               </motion.tr>
             ))}

@@ -151,6 +151,7 @@ import ConsignorSalesReportPage from "./Page/MOPage/ConsignorSalesReport/Consign
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
 import MonthlySalesReportPage from "./Page/MOPage/MonthlySalesReport/MonthlySalesReportPage.jsx";
+import IngredientUsageReportPage from "./Page/MOPage/IngredientUsageReport/IngredientUsageReportPage.jsx";
 
 // Employee Salary
 import RootEmployeeSalary from "./Root/OwnerRoot/RootEmployeeSalary/RootEmployeeSalary";
@@ -609,6 +610,16 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "ingredientUsage",
+            element: <RootIngredientUse />,
+            children: [
+              {
+                index: true,
+                element: <IngredientUsageReportPage />,
+              },
+            ],
+          },
         ],
       },
       {
@@ -658,6 +669,16 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "monthlySalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <MonthlySalesReportPage />,
+              },
+            ],
+          },
+          {
             path: "productSalesReport",
             element: <RootProductSalesReport />,
             children: [
@@ -674,6 +695,16 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <IngredientStockReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientUsage",
+            element: <RootIngredientUse />,
+            children: [
+              {
+                index: true,
+                element: <IngredientUsageReportPage />,
               },
             ],
           },
