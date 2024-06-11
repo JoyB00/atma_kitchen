@@ -1,4 +1,3 @@
-// PDFIncomeExpense.jsx
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
@@ -12,6 +11,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
+  sectionTitle: {
+    fontSize: 14,
+    marginVertical: 10,
+    fontWeight: 'bold',
+  },
   table: {
     display: 'table',
     width: 'auto',
@@ -19,6 +23,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
+    marginBottom: 10,
   },
   tableRow: {
     flexDirection: 'row',
@@ -50,6 +55,7 @@ const PDFIncomeExpense = ({ data, month, year }) => (
       <Text>Tahun: {year}</Text>
       <Text>Print: {new Date().toLocaleDateString()}</Text>
 
+      <Text style={styles.sectionTitle}>Income</Text>
       <View style={styles.table}>
         <View style={styles.tableRow}>
           <View style={styles.tableCol}>
@@ -71,6 +77,7 @@ const PDFIncomeExpense = ({ data, month, year }) => (
         ))}
       </View>
 
+      <Text style={styles.sectionTitle}>Expense</Text>
       <View style={styles.table}>
         <View style={styles.tableRow}>
           <View style={styles.tableCol}>

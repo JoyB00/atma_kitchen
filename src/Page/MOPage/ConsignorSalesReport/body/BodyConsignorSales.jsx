@@ -3,7 +3,7 @@ import Button from "../../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReceipt } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import { GetConsignorSalesReport } from "../../../../api/ReportApi";
+import { GetConsignorSalesReport } from "../../../../api/ReportApi"; // Ensure this import is correct
 import ConsignorTable from "../component/ConsignorTable";
 import LoadingTable from "../component/LoadingTable";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
@@ -23,9 +23,10 @@ export default function BodyConsignorSalesReport({ search }) {
       setError(null);
       try {
         const result = await GetConsignorSalesReport(year, month);
-        console.log('Fetched Data:', result); // Log the fetched data for debugging
-        setData(result); // Perbarui state dengan data yang diterima
+        console.log('Fetched Data:', result);
+        setData(result);
       } catch (error) {
+        console.error("Error fetching data:", error);
         setError("Failed to fetch data");
       }
       setLoading(false);
@@ -71,7 +72,7 @@ export default function BodyConsignorSalesReport({ search }) {
           <p className="font-semibold underline">CONSIGNOR SALES REPORT</p>
           <p>Bulan : {month}</p>
           <p>Tahun : {year}</p>
-          <p>Print : 2 {month} {year}</p>
+          <p>Print : {new Date().toLocaleDateString()}</p>
         </div>
       </div>
 

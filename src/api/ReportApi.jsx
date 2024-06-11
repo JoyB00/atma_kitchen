@@ -60,7 +60,7 @@ const GetConsignorSalesReport = async (year, month) => {
         Authorization: `Bearer ${getToken()}`,
       },
     });
-    console.log("API Response:", response.data); // Log the API response for debugging
+    console.log("API Response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching consignor sales report:", error);

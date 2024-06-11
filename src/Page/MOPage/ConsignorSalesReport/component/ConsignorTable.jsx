@@ -12,6 +12,15 @@ export default function ConsignorTable({ search, data }) {
     setPage(p);
   };
 
+  const filteredData = data.filter(item => 
+    item.consignor_name.toLowerCase().includes(search.toLowerCase()) ||
+    item.products.some(product => 
+      product.product_name.toLowerCase().includes(search.toLowerCase())
+    )
+  );
+
+  const paginatedData = filteredData.slice(startIndex, endIndex);
+
   console.log('Table Data:', data); // Log the table data for debugging
 
   return (
@@ -34,7 +43,7 @@ export default function ConsignorTable({ search, data }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {data.flatMap((item, index) =>
+          {paginatedData.flatMap((item, index) =>
             item.products.map((product, productIndex) => (
               <motion.tr
                 className="border-t-2 border-gray-100 text-black"
@@ -82,7 +91,7 @@ export default function ConsignorTable({ search, data }) {
           <tr>
             <td colSpan={8}>
               <Pagination
-                count={Math.ceil(data.length / itemsPerPage)}
+                count={Math.ceil(filteredData.length / itemsPerPage)}
                 size="small"
                 className="mb-4 flex justify-center"
                 onChange={handleChange}

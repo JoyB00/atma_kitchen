@@ -22,6 +22,9 @@ import {
   faChartPie,
   faPlateWheat,
   faWeightScale,
+  faPerson,
+  faMoneyBillTransfer,
+  faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -215,17 +218,17 @@ export default function OperationalNavigation({
           />
           <Navigation
             label="Employee Montlhy Absence Report"
-            icon={faWeightScale}
+            icon={faPerson}
             url={"/MoDashboard/employeeAbsenceReport"}
           />
            <Navigation
             label="Income and Expense Monthly Report"
-            icon={faWeightScale}
+            icon={faMoneyBillTransfer}
             url={"/MoDashboard/incomeExpenseReport"}
           />
            <Navigation
             label="Consignor Sales Report"
-            icon={faWeightScale}
+            icon={faPeopleGroup}
             url={"/MoDashboard/consignorSalesReport"}
           />
         </div>

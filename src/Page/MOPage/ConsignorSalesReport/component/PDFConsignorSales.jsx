@@ -1,7 +1,7 @@
 import React from "react";
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
 
-// Styles untuk PDF
+// Styles for PDF
 const styles = StyleSheet.create({
   page: {
     padding: 30,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   tableCol: {
-    width: "10%", // Menyesuaikan lebar kolom kecil
+    width: "10%",
     borderStyle: "solid",
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   tableColWide: {
-    width: "20%", // Lebar lebih besar untuk kolom yang berisi teks panjang
+    width: "20%",
     borderStyle: "solid",
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   tableColWider: {
-    width: "30%", // Lebar lebih besar untuk kolom yang berisi teks sangat panjang
+    width: "30%",
     borderStyle: "solid",
     borderWidth: 1,
     borderLeftWidth: 0,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   tableCell: {
     margin: "auto",
     marginTop: 5,
-    wordWrap: "break-word", // Memotong teks yang terlalu panjang
+    wordWrap: "break-word",
   },
   bold: {
     fontWeight: "bold",
@@ -99,7 +99,7 @@ const PDFConsignorSales = ({ data, month, year }) => (
             <Text style={[styles.tableCell, styles.bold]}>Received</Text>
           </View>
         </View>
-        {data.map((item, index) => (
+        {data.flatMap((item, index) =>
           item.products.map((product, productIndex) => (
             <View style={styles.tableRow} key={`${index}-${productIndex}`}>
               {productIndex === 0 && (
@@ -132,7 +132,7 @@ const PDFConsignorSales = ({ data, month, year }) => (
               </View>
             </View>
           ))
-        ))}
+        )}
       </View>
     </Page>
   </Document>

@@ -42,20 +42,18 @@ export default function IncomeExpenseTable({ search, data }) {
           </tr>
         </thead>
         <motion.tbody initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          {filteredIncome
-            .slice(startIndex, endIndex)
-            .map(([type, amount], index) => (
-              <motion.tr key={type} className="border-t-2 border-gray-100 text-black">
-                <td className="px-6 py-6 text-center font-medium">{index + 1}</td>
-                <td className="text-start font-medium">{type}</td>
-                <td className="text-start font-medium">{formatCurrency(amount)}</td>
-              </motion.tr>
-            ))}
+          {filteredIncome.slice(startIndex, endIndex).map(([type, amount], index) => (
+            <tr key={type} className="border-b-2">
+              <td className="px-6 text-center">{startIndex + index + 1}</td>
+              <td className="py-8">{type}</td>
+              <td>{formatCurrency(amount)}</td>
+            </tr>
+          ))}
         </motion.tbody>
       </table>
 
       <h2 className="text-3xl font-semibold">Expenses</h2>
-      <table className="mb-6 w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
+      <table className="w-full rounded-2xl bg-white text-gray-500 drop-shadow-md">
         <thead className="border-b-2">
           <tr>
             <th className="px-6 text-center font-medium">No</th>
@@ -64,26 +62,16 @@ export default function IncomeExpenseTable({ search, data }) {
           </tr>
         </thead>
         <motion.tbody initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          {filteredExpenses
-            .slice(startIndex, endIndex)
-            .map(([type, amount], index) => (
-              <motion.tr key={type} className="border-t-2 border-gray-100 text-black">
-                <td className="px-6 py-6 text-center font-medium">{index + 1}</td>
-                <td className="text-start font-medium">{type}</td>
-                <td className="text-start font-medium">{formatCurrency(amount)}</td>
-              </motion.tr>
-            ))}
+          {filteredExpenses.slice(startIndex, endIndex).map(([type, amount], index) => (
+            <tr key={type} className="border-b-2">
+              <td className="px-6 text-center">{startIndex + index + 1}</td>
+              <td className="py-8">{type}</td>
+              <td>{formatCurrency(amount)}</td>
+            </tr>
+          ))}
         </motion.tbody>
       </table>
-
-      <div className="flex justify-end">
-        <Pagination
-          count={Math.ceil(filteredIncome.length / itemsPerPage)}
-          size="small"
-          className="mb-4 flex justify-center"
-          onChange={handleChange}
-        />
-      </div>
+      <Pagination count={Math.ceil(filteredIncome.length / itemsPerPage)} page={page} onChange={handleChange} />
     </div>
   );
 }
