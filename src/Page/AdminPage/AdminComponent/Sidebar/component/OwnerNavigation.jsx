@@ -4,23 +4,20 @@ import {
   faChevronRight,
   faDollar,
   faUserTie,
-  faFileArchive,
   faLock,
   faBook,
   faChartLine,
   faReceipt,
   faChartPie,
+  faWeightScale,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Button from "../../../../../Component/Button";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function OwnerNavigation({
   expandedMaster,
   setExpandedMaster,
-  expandedOperational,
-  setExpandedOperational,
   expandedReport,
   setExpandedReport,
 }) {
@@ -39,7 +36,7 @@ export default function OwnerNavigation({
           expandedMaster
             ? "rounded-3xl bg-gradient-to-b from-orange-400  to-orange-500 text-start text-white hover:text-white "
             : " text-start text-gray-400 hover:text-orange-400"
-        }py-4 mt-2 grid w-full grid-cols-4`}
+        }mt-2 grid w-full grid-cols-4 py-4`}
         onClick={() => setExpandedMaster(!expandedMaster)}
       >
         <div className="col-span-1 ms-3 text-start">
@@ -87,9 +84,9 @@ export default function OwnerNavigation({
       {expandedReport ? (
         <div className="ms-8">
           <Navigation
-            label="Sales Report"
+            label="Monthly Sales Report"
             icon={faChartLine}
-            url={"/OwnerDashboard/transactionManagement"}
+            url={"/OwnerDashboard/monthlySalesReport"}
           />
           <Navigation
             label="Product Sales Report"
@@ -100,6 +97,11 @@ export default function OwnerNavigation({
             label="Ingredient Stock Report"
             icon={faChartPie}
             url={"/OwnerDashboard/ingredientStockReport"}
+          />
+          <Navigation
+            label="Ingredient Usage Report"
+            icon={faWeightScale}
+            url={"/OwnerDashboard/ingredientUsage"}
           />
         </div>
       ) : undefined}

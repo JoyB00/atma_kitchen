@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 
 import { formatCurrency } from "../../../../lib/FormatCurrency";
 
-export default function ProductSalesTable({ search, data, length }) {
+export default function ConsignorTable({ search, data, length }) {
   const [page, setPage] = useState(1);
-  const productPerPage = 8;
+  const productPerPage = 15;
   const startIndex = (page - 1) * productPerPage;
   const endIndex = page * productPerPage;
 
@@ -21,10 +21,9 @@ export default function ProductSalesTable({ search, data, length }) {
         <thead className="border-b-2">
           <tr>
             <th className="px-6 text-center font-medium">No</th>
-            <th className="py-8 text-start font-medium ">Product</th>
-            <th className=" text-start font-medium ">Quantity</th>
-            <th className="pe-6 text-start font-medium ">Price</th>
-            <th className="pe-6 text-start font-medium ">Total</th>
+            <th className="py-8 text-start font-medium ">Ingredient Name</th>
+            <th className=" text-start font-medium ">Unit</th>
+            <th className="pe-6 text-start font-medium ">Stock</th>
           </tr>
         </thead>
         <motion.tbody
@@ -32,12 +31,12 @@ export default function ProductSalesTable({ search, data, length }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {data.product
+          {data
             .filter((item) => {
               return search.toLowerCase() === ""
                 ? item
-                : item.Product.toLowerCase().includes(search) ||
-                    item.Product.includes(search);
+                : item.ingredient_name.toLowerCase().includes(search) ||
+                    item.ingredient_name.includes(search);
             })
             .slice(startIndex, endIndex)
             .map((item, index) => (
@@ -49,27 +48,17 @@ export default function ProductSalesTable({ search, data, length }) {
                 <td className="px-6 py-6 text-center font-medium">
                   {index + 1}
                 </td>
-                <td className="text-start font-medium">{item.Product}</td>
-                <td className="text-start font-medium ">{item.Quantity} pcs</td>
-                <td className="text-start font-medium ">
-                  {formatCurrency(item.OriginalPrice)}
+                <td className="text-start font-medium">
+                  {item.ingredient_name}
                 </td>
-                <td className="text-start font-medium ">
-                  {formatCurrency(item.OriginalPrice * item.Quantity)}
-                </td>
+                <td className="text-start font-medium ">{item.unit}</td>
+                <td className="text-start font-medium ">{item.quantity}</td>
               </motion.tr>
             ))}
         </motion.tbody>
         <tfoot>
           <tr>
-            <td colSpan={5}>
-              <p className="p-8 text-end text-2xl font-semibold text-black">
-                Total : {formatCurrency(data.total)}
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td colSpan={5}>
+            <td colSpan={4}>
               <Pagination
                 count={Math.ceil(length / productPerPage)}
                 size="small"

@@ -77,6 +77,7 @@ import RootTransaction from "./Root/AdminDashboard/Transaction/RootTransaction";
 import DeliveryPage from "./Page/AdminPage/DeliveryPage/DeliveryPage";
 import PaymentConfirmationPage from "./Page/AdminPage/PaymentConfirmation/PaymentConfirmationPage";
 import UpdateStatusPage from "./Page/AdminPage/UpdateStatusPage/UpdateStatusPage";
+import LatePaymentsPage from "./Page/AdminPage/LatePaymentsPage/LatePaymentsPage.jsx";
 
 // Customer Admin
 import RootAdminCustomer from "./Root/AdminDashboard/Customer/RootAdminCustomer";
@@ -144,8 +145,14 @@ import ProductSalesReportPage from "./Page/MOPage/ProductSalesReport/ProductSale
 import RootIngredientStockReport from "./Root/MoDashboard/Report/RootIngredientStockReport";
 import IngredientStockReportPage from "./Page/MOPage/IngredientStockReport/IngredientStockReportPage";
 
+//Root Consignor
+import RootConsignorSalesReport from "./Root/MoDashboard/Report/RootConsignorSalesReport.jsx";
+import ConsignorSalesReportPage from "./Page/MOPage/ConsignorSalesReport/ConsignorSalesReportPage.jsx";
+
 // Root Owner
 import RootOwnerDashboard from "./Root/OwnerRoot/RootOwnerDashboard";
+import MonthlySalesReportPage from "./Page/MOPage/MonthlySalesReport/MonthlySalesReportPage.jsx";
+import IngredientUsageReportPage from "./Page/MOPage/IngredientUsageReport/IngredientUsageReportPage.jsx";
 
 // Employee Salary
 import RootEmployeeSalary from "./Root/OwnerRoot/RootEmployeeSalary/RootEmployeeSalary";
@@ -409,6 +416,10 @@ const router = createBrowserRouter([
                 path: "updateStatus",
                 element: <UpdateStatusPage />,
               },
+              {
+                path: "latePayments",
+                element: <LatePaymentsPage />,
+              },
             ],
           },
         ],
@@ -554,6 +565,16 @@ const router = createBrowserRouter([
           },
           // report
           {
+            path: "monthlySalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <MonthlySalesReportPage />,
+              },
+            ],
+          },
+          {
             path: "productSalesReport",
             element: <RootProductSalesReport />,
             children: [
@@ -574,12 +595,33 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "consignorSalesReport",
+            element: <RootConsignorSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <ConsignorSalesReportPage />,
+              },
+            ],
+          },
+           
+          {
             path: "ingredientUse",
             element: <RootIngredientUse />,
             children: [
               {
                 index: true,
                 element: <IngredientUsePage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientUsage",
+            element: <RootIngredientUse />,
+            children: [
+              {
+                index: true,
+                element: <IngredientUsageReportPage />,
               },
             ],
           },
@@ -632,6 +674,16 @@ const router = createBrowserRouter([
             ],
           },
           {
+            path: "monthlySalesReport",
+            element: <RootProductSalesReport />,
+            children: [
+              {
+                index: true,
+                element: <MonthlySalesReportPage />,
+              },
+            ],
+          },
+          {
             path: "productSalesReport",
             element: <RootProductSalesReport />,
             children: [
@@ -648,6 +700,16 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <IngredientStockReportPage />,
+              },
+            ],
+          },
+          {
+            path: "ingredientUsage",
+            element: <RootIngredientUse />,
+            children: [
+              {
+                index: true,
+                element: <IngredientUsageReportPage />,
               },
             ],
           },
