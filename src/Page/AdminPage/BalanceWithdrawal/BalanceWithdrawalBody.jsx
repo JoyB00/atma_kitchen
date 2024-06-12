@@ -3,7 +3,8 @@ import Button from "../../../Component/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoneyCheckDollar, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import { fetchWithdrawalRequests, confirmWithdrawalRequest } from "../../../api/BalanceWithdrawal";
+import { fetchWithdrawalRequests, confirmWithdrawalRequest } from "../../../api/BalanceApi";
+
 export default function BodyWithdrawal() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,37 +53,43 @@ export default function BodyWithdrawal() {
         </div>
       </div>
       <div>
-        <h1>Withdrawal Requests</h1>
-        <table className="w-full mt-4 bg-white shadow-md">
-          <thead>
-            <tr>
-              <th className="py-4 px-6">Customer ID</th>
-              <th className="py-4 px-6">Amount</th>
-              <th className="py-4 px-6">Bank Name</th>
-              <th className="py-4 px-6">Account Number</th>
-              <th className="py-4 px-6">Date</th>
-              <th className="py-4 px-6">Detail Information</th>
-              <th className="py-4 px-6">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {requests.map(request => (
-              <tr key={request.id}>
-                <td className="py-4 px-6">{request.customer_id}</td>
-                <td className="py-4 px-6">{request.nominal_balance}</td>
-                <td className="py-4 px-6">{request.bank_name}</td>
-                <td className="py-4 px-6">{request.account_number}</td>
-                <td className="py-4 px-6">{request.date}</td>
-                <td className="py-4 px-6">{request.detail_information}</td>
-                <td className="py-4 px-6">
-                  <Button onClick={() => handleConfirm(request.id)} className="bg-green-500 text-white px-4 py-2">
-                    Confirm
-                  </Button>
-                </td>
+    
+        {requests.length === 0 ? (
+          <div className="mt-4 p-4 bg-white shadow-md text-center">
+            No Withdraw Request yet
+          </div>
+        ) : (
+          <table className="w-full mt-4 bg-white shadow-md">
+            <thead>
+              <tr>
+                <th className="py-4 px-6">Customer ID</th>
+                <th className="py-4 px-6">Amount</th>
+                <th className="py-4 px-6">Bank Name</th>
+                <th className="py-4 px-6">Account Number</th>
+                <th className="py-4 px-6">Date</th>
+                <th className="py-4 px-6">Detail Information</th>
+                <th className="py-4 px-6">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {requests.map(request => (
+                <tr key={request.id}>
+                  <td className="py-4 px-6">{request.customer_id}</td>
+                  <td className="py-4 px-6">{request.nominal_balance}</td>
+                  <td className="py-4 px-6">{request.bank_name}</td>
+                  <td className="py-4 px-6">{request.account_number}</td>
+                  <td className="py-4 px-6">{request.date}</td>
+                  <td className="py-4 px-6">{request.detail_information}</td>
+                  <td className="py-4 px-6">
+                    <Button onClick={() => handleConfirm(request.id)} className="bg-green-500 text-white px-4 py-2">
+                      Confirm
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

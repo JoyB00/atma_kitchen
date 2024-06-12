@@ -168,6 +168,8 @@ import RootEmployeeAbsenceReport from "./Root/MoDashboard/Report/RootEmployeeAbs
 import EmployeeAbsenceReportPage from "./Page/MOPage/EmployeeAbsenceReport/EmployeeAbsenceReportPage.jsx";
 import RootIncomeandExpenseReport from "./Root/MoDashboard/Report/RootIncomeExpenseReport.jsx";
 import IncomeandExpenseReportPage from "./Page/MOPage/IncomeandExpenseReport/IncomeandExpenseReportPage.jsx";
+import BalanceWithdrawalPage from "./Page/AdminPage/BalanceWithdrawal/BalanceWithdrawalPage.jsx";
+import RootBalance from "./Root/AdminDashboard/Balance/RootBalance.jsx";
 // const RootAdmin = lazy(() =>
 //   import("./Root/AdminDashboard/Product/RootProduct")
 // );
@@ -418,6 +420,16 @@ const router = createBrowserRouter([
               {
                 path: "updateStatus",
                 element: <UpdateStatusPage />,
+              },
+            ],
+          },
+          {
+            path: "withdrawal",
+            element: <RootBalance />,
+            children: [
+              {
+                index: true,
+                element: <BalanceWithdrawalPage />,
               },
             ],
           },

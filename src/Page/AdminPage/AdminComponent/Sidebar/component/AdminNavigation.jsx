@@ -153,7 +153,7 @@ export default function AdminNavigation({
       <Navigation
         label="Balance Withdrawal"
         icon={faMoneyCheckDollar}
-        url={"/AdminDashboard/balance"}
+        url={"/AdminDashboard/withdrawal"}
       />
       <Navigation
         label="Forgot password?"
