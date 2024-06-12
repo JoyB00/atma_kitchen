@@ -14,7 +14,7 @@ export default function BalanceWithdrawalPage() {
       <Sidebar role={user.role_id} />
       <div className=" w-[99vw] pe-[1rem] ps-[20.5rem] text-left text-black">
         <NavbarAdmin
-          url={"/AdminDashboard/balance"}
+          url={"/AdminDashboard/withdrawal"}
           page="Balance Withdrawal Confirmation"
           setSearch={setSearch}
         />

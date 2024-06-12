@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { GetAbsenceReport } from "../../../../api/ReportApi";
 import Button from "../../../../Component/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faReceipt } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
-import { GetConsignorSalesReport } from "../../../../api/ReportApi"; // Ensure this import is correct
-import ConsignorTable from "../component/ConsignorTable";
 import LoadingTable from "../component/LoadingTable";
+import AbsenceTable from "../component/AbsenceTable";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import PDFConsignorSales from "../component/PDFConsignorSales";
+import PDFAbsence from "../component/PDFAbsence";
 
-export default function BodyConsignorSalesReport({ search }) {
+export default function BodyAbsenceReport({ search }) {
   const date = new Date();
   const [month, setMonth] = useState(date.getMonth() + 1);
   const [year, setYear] = useState(date.getFullYear());
@@ -22,11 +19,14 @@ export default function BodyConsignorSalesReport({ search }) {
       setLoading(true);
       setError(null);
       try {
-        const result = await GetConsignorSalesReport(year, month);
-        console.log('Fetched Data:', result);
-        setData(result);
+        const result = await GetAbsenceReport(year, month);
+        console.log('Fetched Data:', result); // Log fetched data for debugging
+        if (result && result.data) {
+          setData(result.data);
+        } else {
+          setError("Failed to fetch data");
+        }
       } catch (error) {
-        console.error("Error fetching data:", error);
         setError("Failed to fetch data");
       }
       setLoading(false);
@@ -55,13 +55,12 @@ export default function BodyConsignorSalesReport({ search }) {
   return (
     <div>
       <div className="grid w-full grid-cols-4">
-        <motion.div className="-z-2 col-span-4 me-2 grid grid-cols-3 rounded-2xl bg-gradient-to-t from-orange-400 to-orange-500 drop-shadow-md">
+        <div className="col-span-4 me-2 grid grid-cols-3 rounded-2xl bg-gradient-to-t from-orange-400 to-orange-500 drop-shadow-md">
           <h1 className="col-span-2 py-8 ps-3 text-5xl font-semibold text-white">
-            <FontAwesomeIcon icon={faReceipt} />
-            Consignor Sales Report{" "}
+            Absence Report
           </h1>
           <div className="col-span-1 ms-12 rounded-tl-full bg-orange-600" />
-        </motion.div>
+        </div>
       </div>
 
       <div className="mt-6 w-1/3 rounded-2xl bg-white p-4 drop-shadow-md">
@@ -69,10 +68,10 @@ export default function BodyConsignorSalesReport({ search }) {
         <p>Jl. Centralpark No. 10 Yogyakarta</p>
 
         <div className="pt-6">
-          <p className="font-semibold underline">CONSIGNOR SALES REPORT</p>
+          <p className="font-semibold underline">ABSENCE REPORT</p>
           <p>Bulan : {month}</p>
           <p>Tahun : {year}</p>
-          <p>Print : {new Date().toLocaleDateString()}</p>
+          <p>Print : 2 {month} {year}</p>
         </div>
       </div>
 
@@ -109,12 +108,8 @@ export default function BodyConsignorSalesReport({ search }) {
               className="bg-orange-500 text-white"
               onClick={() =>
                 handlePrint(
-                  <PDFConsignorSales
-                    data={data}
-                    month={month}
-                    year={year}
-                  />,
-                  "ConsignorSalesReport.pdf"
+                  <PDFAbsence data={data} month={month} year={year} />,
+                  "AbsenceReport.pdf"
                 )
               }
             >
@@ -131,7 +126,7 @@ export default function BodyConsignorSalesReport({ search }) {
         ) : (
           <div>
             <div className="pt-6">
-              <ConsignorTable data={data} search={search} />
+              <AbsenceTable search={search} data={data} />
             </div>
           </div>
         )}

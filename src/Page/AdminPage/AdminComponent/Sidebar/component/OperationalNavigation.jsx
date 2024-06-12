@@ -23,6 +23,8 @@ import {
   faPlateWheat,
   faWeightScale,
   faPerson,
+  faMoneyBillTransfer,
+  faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
@@ -215,14 +217,19 @@ export default function OperationalNavigation({
             url={"/MoDashboard/ingredientUsage"}
           />
           <Navigation
-            label="Absences Report"
+            label="Employee Montlhy Absence Report"
             icon={faPerson}
-            url={"/MoDashboard/absenceReport"}
+            url={"/MoDashboard/employeeAbsenceReport"}
           />
-          <Navigation
+           <Navigation
+            label="Income and Expense Monthly Report"
+            icon={faMoneyBillTransfer}
+            url={"/MoDashboard/incomeExpenseReport"}
+          />
+           <Navigation
             label="Consignor Sales Report"
-            icon={faPerson}
-            url={"/MoDashboard/consignorReport"}
+            icon={faPeopleGroup}
+            url={"/MoDashboard/consignorSalesReport"}
           />
         </div>
       ) : undefined}

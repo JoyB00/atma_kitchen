@@ -1,11 +1,33 @@
-import axios from '.';
+import { useAxios } from "./index";
 
-export const fetchWithdrawalRequests = async () => {
-  const response = await axios.get('/api/withdrawal-requests');
-  return response.data;
+const fetchWithdrawalRequests = async () => {
+  try {
+    const response = await useAxios.get('/withdrawal-requests', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
-export const confirmWithdrawalRequest = async (id) => {
-  const response = await axios.post(`/api/confirm-withdrawal/${id}`);
-  return response.data;
+const confirmWithdrawalRequest = async (id) => {
+  try {
+    const response = await useAxios.post(`/confirm-withdrawal/${id}`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
+
+export { fetchWithdrawalRequests, confirmWithdrawalRequest };
