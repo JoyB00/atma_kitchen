@@ -197,7 +197,9 @@ export function OrderHistorySearchModal({ isOpened, closeModal }) {
                         className="grid grid-cols-3 rounded-md bg-slate-200 p-4 shadow-md"
                       >
                         <span className="text-md text-slate-800">
-                          {detail.product.product_name ??
+                          {detail.product != null &&
+                            detail.product.product_name}
+                          {detail.hampers != null &&
                             detail.hampers.hampers_name}
                         </span>
                         <span className="text-md text-slate-800">
